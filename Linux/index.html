@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Linux CheatSheet</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../resources/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header>
+    <h1>Linux CheatSheet</h1>
+</header>
+
+<main>
+    <section>
+        <h2>Environment Variables</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Command</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="script">export</td>
+                <td>Set a new variable</td>
+            </tr>
+            <tr>
+                <td class="script">unset</td>
+                <td>unset a variable</td>
+            </tr>
+            <tr>
+                <td class="script">set</td>
+                <td>Listing All Set Environment Variables</td>
+            </tr>
+            <tr>
+                <td class="script">export</td>
+                <td>We can view a complete list of exported environment variables by running the export command without any arguments.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+            <tr>
+                <th>File</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="script">~/.bash_profile</td>
+                <td>To make an environment persistent for a user’s environment, we export the variable from the user’s profile script.</td>
+            </tr>
+            <tr>
+                <td class="script">/etc/profile.d/</td>
+                <td>To make a persistent global variable for all users, we create a new file and add export commands there. For example we create this file<span class="script">/etc/profile.d/http_proxy.sh</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+
+</html>
