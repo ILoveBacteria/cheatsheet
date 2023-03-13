@@ -110,6 +110,12 @@
                 <td><a href="https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form"
                        target="_blank">Link</a></td>
             </tr>
+            <tr>
+                <th scope="row">6</th>
+                <td>To import static files first call <span class="script">{% load static %}</span></td>
+                <td><a href="https://docs.djangoproject.com/en/4.1/howto/static-files/#configuring-static-files"
+                       target="_blank">Link</a></td>
+            </tr>
             </tbody>
         </table>
     </section>
@@ -136,6 +142,31 @@
                 If an invalid bound form is rendered, it can include inline error messages telling the user what data to correct.
             </li>
         </ul>
+    </section>
+    <section>
+        <h2>Notes</h2>
+        <table class="mb-3 table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Refrence</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>CORS: When site A wants to access content from another site B, it is called a Cross-Origin request.
+                     As it is disabled for security reasons, B sends an Access-Control-Allow-Origin header in the response. 
+                     By default, a domain is not allowed to access an API hosted on another domain.
+                     The <span class="script">Origin</span> header should be in request.
+                </td>
+                <td>
+                    <a href="https://pypi.org/project/django-cors-headers/"
+                       target="_blank">Link</a></td>
+            </tr>
+            </tbody>
+        </table>
     </section>
 </main>
 </body>

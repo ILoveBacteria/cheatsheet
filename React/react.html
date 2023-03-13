@@ -26,9 +26,88 @@
             passed as props). One or more of those child
             components will be responsible for displaying that state.</p>
             <p>Here is a snippet code that Menu.js is a stateless component and will update the state of its parent component</p>
-        <script src="https://gist.github.com/ILoveBacteria/d3040527558821da2fd9bd1b4f1c6c2f.js"></script>        
+        <script sync src="https://gist.github.com/ILoveBacteria/d3040527558821da2fd9bd1b4f1c6c2f.js"></script>        
     </section>
-    
+    <section class="mb-4">
+        <h2>Component Lifecycle</h2>
+        <h3>Mounting</h3>
+        <table class="mb-3 table">
+            <thead>
+            <tr>
+                <th scope="col">Sequence</th>
+                <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td><span class="script">componentWillMount()</span></td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td><span class="script">render()</span></td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td><span class="script">componentDidMount()</span></td>
+            </tr>
+            <tr>
+                <th scope="row">4</th>
+                <td><span class="script">componentWillUnmount()</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <h3>Updating</h3>
+        <table class="mb-3 table">
+            <thead>
+            <tr>
+                <th scope="col">Sequence</th>
+                <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td><span class="script">componentWillMount()</span></td>
+            </tr>
+            </tbody>
+        </table>        
+    </section>
+    <section class="mb-4">
+        <h2>JSX</h2>
+        <table class="mb-3 table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Refrence</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td><span class="script">npx babel src --out-dir out --presets react-app/prod</span>
+                    use this command to precompile the JSX
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Some dependencies: babel-cli - babel-plugin-transform-runtime - babel-preset-react-app
+                    - babel-runtime
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Use webpack to create one file javascript. And use the config file</td>
+                <td>
+                    <a href="https://webpack.js.org/guides/getting-started/"
+                        target="_blank">Link
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </main>
 </body>
 
