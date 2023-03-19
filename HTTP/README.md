@@ -39,20 +39,19 @@
 
 ### Request Headers
 
-| Header                                                          | Description                                                                 |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Accept                                                          | Media types that accept in respone                                          |
-| Referer                                                         | The previous address                                                        |
-| Origin                                                          | Initiate a requst for CORS                                                  |
-| Host                                                            | The domain name od the server                                               |
-| Cookie                                                          | Who is this client                                                          |
-| Transfer-Encoding                                               | The form of encoding used to safely transfer the entity to the user.        |
-| Content-Length                                                  | The length of the request                                                   |
-| Connection                                                      | keep-alive: Do not hand shake again - Upgrade: Change HTTP protocol to TCP. |
-| Websocket is a persistent connection - Can be sent both of them |
-| Content-Type                                                    | The media type of the body in request(used with POST and PUT)               |
-| Authorization                                                   | HTTP basic authentication. Also is used for API JWT                         |
-| User-Agent                                                      | The browser of the client                                                   |
+| Header            | Description                                                          |
+| ----------------- | -------------------------------------------------------------------- |
+| Accept            | Media types that accept in respone                                   |
+| Referer           | The previous address                                                 |
+| Origin            | Initiate a requst for CORS                                           |
+| Host              | The domain name od the server                                        |
+| Cookie            | Who is this client                                                   |
+| Transfer-Encoding | The form of encoding used to safely transfer the entity to the user. |
+| Content-Length    | The length of the request                                            |
+| Connection        | keep-alive: Do not hand shake again - Upgrade: Change HTTP protocol to TCP. Websocket is a persistent connection - Can be sent both of them                                           |
+| Content-Type      | The media type of the body in request(used with POST and PUT)        |
+| Authorization     | HTTP basic authentication. Also is used for API JWT                  |
+| User-Agent        | The browser of the client                                            |
 
 ## HTTP Methods
 
