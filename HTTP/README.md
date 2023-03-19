@@ -11,7 +11,8 @@
   - [HTTP Methods](#http-methods)
   - [HTTP Status Codes](#http-status-codes)
   - [Cookie](#cookie)
-  - [Curl](#curl)
+  - [`curl`](#curl)
+  - [`dig`](#dig)
 
 ## Handwrite Notes
 
@@ -98,7 +99,7 @@
 | HttpOnly  | True             | If this is false, we can get the cookie with JavaScript             |
 
 
-## Curl
+## `curl`
 
 | Command                            | Description                       |
 | ---------------------------------- | --------------------------------- |
@@ -106,3 +107,11 @@
 | `$ curl -I <addr>`                 | Send a HEAD request to the addr   |
 | `$ curl <addr> -X POST`            | Send a POST request               |
 | `$ curl <addr> -d "param1:value1"` | Send a POST request with data     |
+| `$ curl <addr> -H "key:value"`     | Add headers                       |
+
+## `dig`
+
+| Command          | Description         |
+| ---------------- | ------------------- |
+| `$ dig <addr>`   | request dns records |
+| `$ dig A <addr>` | request A record    |
