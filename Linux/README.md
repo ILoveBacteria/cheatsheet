@@ -32,18 +32,18 @@
 
 ## Environment Variables
 
-| Command          | Description                                                   |
-| ---------------- | ------------------------------------------------------------- |
-| `$ export <var>` | Set a new variable                                            |
-| `$ unset <var>`  | unset a variable                                              |
-| `$ set`          | Listing All Set Environment Variables                         |
-| `$ export`       | We can view a complete list of exported environment variables |
+| Command                              | Description                                                           |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| `$ echo $PATH`                       | View a variable                                                       |
+| `$ export PATH=/the/file/path:$PATH` | Adding a directory to the start of PATH will mean it is checked first |
+| `$ export PATH=$PATH:/the/file/path` | Adding a directory to the end of PATH means it will be checked last   |
+| `$ export`                           | We can view a complete list of exported environment variables         |
 
 **File and directories**
 
- `~/.bash_profile`: To make an environment persistent for a user’s environment, we export the variable from the user’s profile script
+ `~/.profile`: To persist our changes for the current user, we add our export command to the end of `~/.profile`.
 
- `/etc/profile.d/`: To make a persistent global variable for all users, we create a new file and add export commands there. For example we create this file `/etc/profile.d/http_proxy.sh`
+ `/etc/profile.d/`: We can add a new path for all users on a Unix-like system by creating a file ending in `.sh` in `/etc/profile.d/` and adding our export command to this file. For example we create this file `/etc/profile.d/http_proxy.sh`
 
 ## Linux Commands
 
