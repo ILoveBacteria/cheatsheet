@@ -42,6 +42,8 @@
 **File and directories**
 
  `~/.profile`: To persist our changes for the current user, we add our export command to the end of `~/.profile`.
+ 
+ `~/.zshenv`: To persist changes for zsh shell.
 
  `/etc/profile.d/`: We can add a new path for all users on a Unix-like system by creating a file ending in `.sh` in `/etc/profile.d/` and adding our export command to this file. For example we create this file `/etc/profile.d/http_proxy.sh`
 
