@@ -18,14 +18,13 @@
 
 ## Forms
 
-
 ### How to write a minimal form in Django
 
 [Read the doc][2]
 
 ```html
 <!-- polls/templates/polls/detail.html -->
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="{% URL 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 <fieldset>
     <legend><h1>{{ question.question_text }}</h1></legend>
@@ -118,6 +117,9 @@ def get_name(request):
 Above codes are available in [gists][4]
 
 ### Bound and unbound form instances
+
+- An unbound form has no data associated with it. When rendered to the user, it will be empty or will contain default values.
+- A bound form has submitted data, and hence can be used to tell if that data is valid. If an invalid bound form is rendered, it can include inline error messages telling the user what data to correct.
 
 
 [1]: https://pypi.org/project/django-cors-headers/
