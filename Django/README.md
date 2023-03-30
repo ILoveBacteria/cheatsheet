@@ -24,7 +24,8 @@
 
 ```html
 <!-- polls/templates/polls/detail.html -->
-<form action="{% URL 'polls:vote' question.id %}" method="post">
+{% raw %}
+<form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 <fieldset>
     <legend><h1>{{ question.question_text }}</h1></legend>
@@ -36,6 +37,7 @@
 </fieldset>
 <input type="submit" value="Vote">
 </form>
+{% endraw %}
 ```
 
 ```python
@@ -81,11 +83,13 @@ class NameForm(forms.Form):
 
 ```html
 <!-- index.html -->
+{% raw %}
 <form action="/your-name/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
 </form>
+{% endraw %}
 ```
 
 ```python
