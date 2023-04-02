@@ -11,23 +11,24 @@
       - [DELETE](#delete)
       - [UPDATE](#update)
       - [SELECT](#select)
-      - [WHERE](#where)
       - [ALTER TABLE](#alter-table)
-      - [AND](#and)
+    - [Query](#query)
+      - [WHERE](#where)
+        - [AND](#and)
+        - [BETWEEN](#between)
+        - [IS NULL / IS NOT NULL](#is-null--is-not-null)
+        - [LIKE](#like)
+        - [OR](#or)
       - [AS](#as)
       - [AVG()](#avg)
-      - [BETWEEN](#between)
       - [CASE](#case)
       - [COUNT()](#count)
       - [GROUP BY](#group-by)
       - [HAVING](#having)
       - [INNER JOIN](#inner-join)
-      - [IS NULL / IS NOT NULL](#is-null--is-not-null)
-      - [LIKE](#like)
       - [LIMIT](#limit)
       - [MAX()](#max)
       - [MIN()](#min)
-      - [OR](#or)
       - [ORDER BY](#order-by)
       - [OUTER JOIN](#outer-join)
       - [ROUND()](#round)
@@ -87,6 +88,16 @@ FROM table_name;
 ```
 SELECT statements are used to fetch data from a database. Every query will begin with SELECT.
 
+#### ALTER TABLE
+
+```sql
+ALTER TABLE table_name 
+ADD column_name datatype;
+```
+ALTER TABLE lets you add columns to a table in a database.
+
+### Query
+
 #### WHERE
 
 ```sql
@@ -96,15 +107,7 @@ WHERE column_name operator value;
 ```
 WHERE is a clause that indicates you want to filter the result set to include only rows where the following condition is true.
 
-#### ALTER TABLE
-
-```sql
-ALTER TABLE table_name 
-ADD column_name datatype;
-```
-ALTER TABLE lets you add columns to a table in a database.
-
-#### AND
+##### AND
 
 ```sql
 SELECT column_name(s)
@@ -113,6 +116,45 @@ WHERE column_1 = value_1
   AND column_2 = value_2;
 ```
 AND is an operator that combines two conditions. Both conditions must be true for the row to be included in the result set.
+
+##### BETWEEN
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name BETWEEN value_1 AND value_2;
+```
+The BETWEEN operator is used to filter the result set within a certain range. The values can be numbers, text or dates.
+
+##### IS NULL / IS NOT NULL
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IS NULL;
+```
+IS NULL and IS NOT NULL are operators used with the WHERE clause to test for empty values.
+
+##### LIKE
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name LIKE pattern;
+```
+LIKE is a special operator used with the WHERE clause to search for a specific pattern in a column.
+- `%`: Wildcard
+- `_`: Any single character
+
+##### OR
+
+```sql
+SELECT column_name
+FROM table_name
+WHERE column_name = value_1
+   OR column_name = value_2;
+```
+OR is an operator that filters the result set to only include rows where either condition is true.
 
 #### AS
 
@@ -129,15 +171,6 @@ SELECT AVG(column_name)
 FROM table_name;
 ```
 AVG() is an aggregate function that returns the average value for a numeric column.
-
-#### BETWEEN
-
-```sql
-SELECT column_name(s)
-FROM table_name
-WHERE column_name BETWEEN value_1 AND value_2;
-```
-The BETWEEN operator is used to filter the result set within a certain range. The values can be numbers, text or dates.
 
 #### CASE
 
@@ -189,24 +222,6 @@ JOIN table_2
 ```
 An inner join will combine rows from different tables if the join condition is true.
 
-#### IS NULL / IS NOT NULL
-
-```sql
-SELECT column_name(s)
-FROM table_name
-WHERE column_name IS NULL;
-```
-IS NULL and IS NOT NULL are operators used with the WHERE clause to test for empty values.
-
-#### LIKE
-
-```sql
-SELECT column_name(s)
-FROM table_name
-WHERE column_name LIKE pattern;
-```
-LIKE is a special operator used with the WHERE clause to search for a specific pattern in a column.
-
 #### LIMIT
 
 ```sql
@@ -231,16 +246,6 @@ SELECT MIN(column_name)
 FROM table_name;
 ```
 MIN() is a function that takes the name of a column as an argument and returns the smallest value in that column.
-
-#### OR
-
-```sql
-SELECT column_name
-FROM table_name
-WHERE column_name = value_1
-   OR column_name = value_2;
-```
-OR is an operator that filters the result set to only include rows where either condition is true.
 
 #### ORDER BY
 
