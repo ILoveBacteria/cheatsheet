@@ -12,31 +12,34 @@
       - [UPDATE](#update)
       - [SELECT](#select)
       - [ALTER TABLE](#alter-table)
-    - [Query](#query)
-      - [WHERE](#where)
+    - [`WHERE` Clause](#where-clause)
+      - [Operators](#operators)
         - [AND](#and)
         - [BETWEEN](#between)
         - [IS NULL / IS NOT NULL](#is-null--is-not-null)
         - [LIKE](#like)
         - [OR](#or)
-      - [AS](#as)
+    - [Aggregate Functions](#aggregate-functions)
       - [AVG()](#avg)
-      - [CASE](#case)
       - [COUNT()](#count)
+      - [MAX()](#max)
+      - [MIN()](#min)
+      - [SUM()](#sum)
+      - [ROUND()](#round)
+    - [Other Clauses](#other-clauses)
+      - [AS](#as)
+      - [CASE](#case)
       - [GROUP BY](#group-by)
       - [HAVING](#having)
       - [INNER JOIN](#inner-join)
       - [LIMIT](#limit)
-      - [MAX()](#max)
-      - [MIN()](#min)
       - [ORDER BY](#order-by)
       - [OUTER JOIN](#outer-join)
-      - [ROUND()](#round)
       - [SELECT DISTINCT](#select-distinct)
-      - [SUM](#sum)
       - [WITH](#with)
   - [Constraints](#constraints)
   - [Data Types](#data-types)
+  - [Column Reference](#column-reference)
 
 ## Commands
 
@@ -96,9 +99,7 @@ ADD column_name datatype;
 ```
 ALTER TABLE lets you add columns to a table in a database.
 
-### Query
-
-#### WHERE
+### `WHERE` Clause
 
 ```sql
 SELECT column_name(s)
@@ -106,6 +107,8 @@ FROM table_name
 WHERE column_name operator value;
 ```
 WHERE is a clause that indicates you want to filter the result set to include only rows where the following condition is true.
+
+#### Operators
 
 ##### AND
 
@@ -156,13 +159,7 @@ WHERE column_name = value_1
 ```
 OR is an operator that filters the result set to only include rows where either condition is true.
 
-#### AS
-
-```sql
-SELECT column_name AS 'Alias'
-FROM table_name;
-```
-AS is a keyword in SQL that allows you to rename a column or table using an alias.
+### Aggregate Functions
 
 #### AVG()
 
@@ -171,6 +168,56 @@ SELECT AVG(column_name)
 FROM table_name;
 ```
 AVG() is an aggregate function that returns the average value for a numeric column.
+
+#### COUNT()
+
+```sql
+SELECT COUNT(column_name)
+FROM table_name;
+```
+COUNT() is a function that takes the name of a column as an argument and counts the number of rows where the column is not NULL.
+
+#### MAX()
+
+```sql
+SELECT MAX(column_name)
+FROM table_name;
+```
+MAX() is a function that takes the name of a column as an argument and returns the largest value in that column.
+
+#### MIN()
+
+```sql
+SELECT MIN(column_name)
+FROM table_name;
+```
+MIN() is a function that takes the name of a column as an argument and returns the smallest value in that column.
+
+#### SUM()
+
+```sql
+SELECT SUM(column_name)
+FROM table_name;
+```
+SUM() is a function that takes the name of a column as an argument and returns the sum of all the values in that column.
+
+#### ROUND()
+
+```sql
+SELECT ROUND(column_name, integer)
+FROM table_name;
+```
+ROUND() is a function that takes a column name and an integer as arguments. It rounds the values in the column to the number of decimal places specified by the integer.
+
+### Other Clauses
+
+#### AS
+
+```sql
+SELECT column_name AS 'Alias'
+FROM table_name;
+```
+AS is a keyword in SQL that allows you to rename a column or table using an alias.
 
 #### CASE
 
@@ -184,14 +231,6 @@ SELECT column_name,
 FROM table_name;
 ```
 CASE statements are used to create different outputs (usually in the SELECT statement). It is SQL’s way of handling if-then logic.
-
-#### COUNT()
-
-```sql
-SELECT COUNT(column_name)
-FROM table_name;
-```
-COUNT() is a function that takes the name of a column as an argument and counts the number of rows where the column is not NULL.
 
 #### GROUP BY
 
@@ -231,22 +270,6 @@ LIMIT number;
 ```
 LIMIT is a clause that lets you specify the maximum number of rows the result set will have.
 
-#### MAX()
-
-```sql
-SELECT MAX(column_name)
-FROM table_name;
-```
-MAX() is a function that takes the name of a column as an argument and returns the largest value in that column.
-
-#### MIN()
-
-```sql
-SELECT MIN(column_name)
-FROM table_name;
-```
-MIN() is a function that takes the name of a column as an argument and returns the smallest value in that column.
-
 #### ORDER BY
 
 ```sql
@@ -266,14 +289,6 @@ LEFT JOIN table_2
 ```
 An outer join will combine rows from different tables even if the join condition is not met. Every row in the left table is returned in the result set, and if the join condition is not met, then NULL values are used to fill in the columns from the right table.
 
-#### ROUND()
-
-```sql
-SELECT ROUND(column_name, integer)
-FROM table_name;
-```
-ROUND() is a function that takes a column name and an integer as arguments. It rounds the values in the column to the number of decimal places specified by the integer.
-
 #### SELECT DISTINCT
 
 ```sql
@@ -281,14 +296,6 @@ SELECT DISTINCT column_name
 FROM table_name;
 ```
 SELECT DISTINCT specifies that the statement is going to be a query that returns unique values in the specified column(s).
-
-#### SUM
-
-```sql
-SELECT SUM(column_name)
-FROM table_name;
-```
-SUM() is a function that takes the name of a column as an argument and returns the sum of all the values in that column.
 
 #### WITH
 
@@ -328,3 +335,20 @@ CREATE TABLE celebs (
 - `char`: A range of characters of fixed length n, an error will be raised for any entries that exceed length n. Entries that are shorter than n will be space-padded.
 - `varchar`: A range of characters of variable length with a maximum length n. However, unlike char there is no space-padding to extend entries shorter than n.
 - `date`: A date (without any time value), such as 2022-06-21 (ISO 8601 format) and 6/21/2022.
+
+## Column Reference
+
+These queries are equal:
+```sql
+SELECT ROUND(imdb_rating), COUNT(name)
+FROM movies
+GROUP BY ROUND(imdb_rating)
+ORDER BY ROUND(imdb_rating);
+```
+
+```sql
+SELECT ROUND(imdb_rating), COUNT(name)
+FROM movies
+GROUP BY ROUND(imdb_rating)
+ORDER BY ROUND(imdb_rating);
+```
