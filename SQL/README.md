@@ -6,37 +6,37 @@
   - [Table Of Contents](#table-of-contents)
   - [Commands](#commands)
     - [Manipulation](#manipulation)
-      - [CREATE TABLE](#create-table)
-      - [INSERT](#insert)
-      - [DELETE](#delete)
-      - [UPDATE](#update)
-      - [SELECT](#select)
-      - [ALTER TABLE](#alter-table)
+      - [`CREATE TABLE`](#create-table)
+      - [`INSERT`](#insert)
+      - [`DELETE`](#delete)
+      - [`UPDATE`](#update)
+      - [`SELECT`](#select)
+      - [`ALTER TABLE`](#alter-table)
     - [`WHERE` Clause](#where-clause)
       - [Operators](#operators)
-        - [AND](#and)
-        - [BETWEEN](#between)
-        - [IS NULL / IS NOT NULL](#is-null--is-not-null)
-        - [LIKE](#like)
-        - [OR](#or)
+        - [`AND`](#and)
+        - [`BETWEEN`](#between)
+        - [`IS NULL` / `IS NOT NULL`](#is-null--is-not-null)
+        - [`LIKE`](#like)
+        - [`OR`](#or)
     - [Aggregate Functions](#aggregate-functions)
-      - [AVG()](#avg)
-      - [COUNT()](#count)
-      - [MAX()](#max)
-      - [MIN()](#min)
-      - [SUM()](#sum)
-      - [ROUND()](#round)
+      - [`AVG()`](#avg)
+      - [`COUNT()`](#count)
+      - [`MAX()`](#max)
+      - [`MIN()`](#min)
+      - [`SUM()`](#sum)
+      - [`ROUND()`](#round)
     - [Other Clauses](#other-clauses)
-      - [AS](#as)
-      - [CASE](#case)
-      - [GROUP BY](#group-by)
-      - [HAVING](#having)
-      - [INNER JOIN](#inner-join)
-      - [LIMIT](#limit)
-      - [ORDER BY](#order-by)
-      - [OUTER JOIN](#outer-join)
-      - [SELECT DISTINCT](#select-distinct)
-      - [WITH](#with)
+      - [`AS`](#as)
+      - [`CASE`](#case)
+      - [`GROUP BY`](#group-by)
+      - [`HAVING`](#having)
+      - [`INNER JOIN`](#inner-join)
+      - [`LIMIT`](#limit)
+      - [`ORDER BY`](#order-by)
+      - [`OUTER JOIN`](#outer-join)
+      - [`SELECT DISTINCT`](#select-distinct)
+      - [`WITH`](#with)
   - [Constraints](#constraints)
   - [Data Types](#data-types)
   - [Column Reference](#column-reference)
@@ -47,7 +47,7 @@
 
 How to use SQL to access, create, and update data stored in a database.
 
-#### CREATE TABLE
+#### `CREATE TABLE`
 
 ```sql
 CREATE TABLE table_name (
@@ -56,48 +56,48 @@ CREATE TABLE table_name (
   column_3 datatype
 );
 ```
-CREATE TABLE creates a new table in the database. It allows you to specify the name of the table and the name of each column in the table.
+`CREATE TABLE` creates a new table in the database. It allows you to specify the name of the table and the name of each column in the table.
 
-#### INSERT
+#### `INSERT`
 
 ```sql
 INSERT INTO table_name (column_1, column_2, column_3) 
 VALUES (value_1, 'value_2', value_3);
 ```
-INSERT statements are used to add a new row to a table.
+`INSERT` statements are used to add a new row to a table.
 
-#### DELETE
+#### `DELETE`
 
 ```sql
 DELETE FROM table_name
 WHERE some_column = some_value;
 ```
-DELETE statements are used to remove rows from a table.
+`DELETE` statements are used to remove rows from a table.
 
-#### UPDATE
+#### `UPDATE`
 
 ```sql
 UPDATE table_name
 SET some_column = some_value
 WHERE some_column = some_value;
 ```
-UPDATE statements allow you to edit rows in a table.
+`UPDATE` statements allow you to edit rows in a table.
 
-#### SELECT
+#### `SELECT`
 
 ```sql
 SELECT column_name 
 FROM table_name;
 ```
-SELECT statements are used to fetch data from a database. Every query will begin with SELECT.
+`SELECT` statements are used to fetch data from a database. Every query will begin with `SELECT`.
 
-#### ALTER TABLE
+#### `ALTER TABLE`
 
 ```sql
 ALTER TABLE table_name 
 ADD column_name datatype;
 ```
-ALTER TABLE lets you add columns to a table in a database.
+`ALTER TABLE` lets you add columns to a table in a database.
 
 ### `WHERE` Clause
 
@@ -106,11 +106,11 @@ SELECT column_name(s)
 FROM table_name
 WHERE column_name operator value;
 ```
-WHERE is a clause that indicates you want to filter the result set to include only rows where the following condition is true.
+`WHERE` is a clause that indicates you want to filter the result set to include only rows where the following condition is true.
 
 #### Operators
 
-##### AND
+##### `AND`
 
 ```sql
 SELECT column_name(s)
@@ -118,38 +118,38 @@ FROM table_name
 WHERE column_1 = value_1
   AND column_2 = value_2;
 ```
-AND is an operator that combines two conditions. Both conditions must be true for the row to be included in the result set.
+`AND` is an operator that combines two conditions. Both conditions must be true for the row to be included in the result set.
 
-##### BETWEEN
+##### `BETWEEN`
 
 ```sql
 SELECT column_name(s)
 FROM table_name
 WHERE column_name BETWEEN value_1 AND value_2;
 ```
-The BETWEEN operator is used to filter the result set within a certain range. The values can be numbers, text or dates.
+The `BETWEEN` operator is used to filter the result set within a certain range. The values can be numbers, text or dates.
 
-##### IS NULL / IS NOT NULL
+##### `IS NULL` / `IS NOT NULL`
 
 ```sql
 SELECT column_name(s)
 FROM table_name
 WHERE column_name IS NULL;
 ```
-IS NULL and IS NOT NULL are operators used with the WHERE clause to test for empty values.
+`IS NULL` and `IS NOT NULL` are operators used with the WHERE clause to test for empty values.
 
-##### LIKE
+##### `LIKE`
 
 ```sql
 SELECT column_name(s)
 FROM table_name
 WHERE column_name LIKE pattern;
 ```
-LIKE is a special operator used with the WHERE clause to search for a specific pattern in a column.
+`LIKE` is a special operator used with the WHERE clause to search for a specific pattern in a column.
 - `%`: Wildcard
 - `_`: Any single character
 
-##### OR
+##### `OR`
 
 ```sql
 SELECT column_name
@@ -157,69 +157,69 @@ FROM table_name
 WHERE column_name = value_1
    OR column_name = value_2;
 ```
-OR is an operator that filters the result set to only include rows where either condition is true.
+`OR` is an operator that filters the result set to only include rows where either condition is true.
 
 ### Aggregate Functions
 
-#### AVG()
+#### `AVG()`
 
 ```sql
 SELECT AVG(column_name)
 FROM table_name;
 ```
-AVG() is an aggregate function that returns the average value for a numeric column.
+`AVG()` is an aggregate function that returns the average value for a numeric column.
 
-#### COUNT()
+#### `COUNT()`
 
 ```sql
 SELECT COUNT(column_name)
 FROM table_name;
 ```
-COUNT() is a function that takes the name of a column as an argument and counts the number of rows where the column is not NULL.
+`COUNT()` is a function that takes the name of a column as an argument and counts the number of rows where the column is not NULL.
 
-#### MAX()
+#### `MAX()`
 
 ```sql
 SELECT MAX(column_name)
 FROM table_name;
 ```
-MAX() is a function that takes the name of a column as an argument and returns the largest value in that column.
+`MAX()` is a function that takes the name of a column as an argument and returns the largest value in that column.
 
-#### MIN()
+#### `MIN()`
 
 ```sql
 SELECT MIN(column_name)
 FROM table_name;
 ```
-MIN() is a function that takes the name of a column as an argument and returns the smallest value in that column.
+`MIN()` is a function that takes the name of a column as an argument and returns the smallest value in that column.
 
-#### SUM()
+#### `SUM()`
 
 ```sql
 SELECT SUM(column_name)
 FROM table_name;
 ```
-SUM() is a function that takes the name of a column as an argument and returns the sum of all the values in that column.
+`SUM()` is a function that takes the name of a column as an argument and returns the sum of all the values in that column.
 
-#### ROUND()
+#### `ROUND()`
 
 ```sql
 SELECT ROUND(column_name, integer)
 FROM table_name;
 ```
-ROUND() is a function that takes a column name and an integer as arguments. It rounds the values in the column to the number of decimal places specified by the integer.
+`ROUND()` is a function that takes a column name and an integer as arguments. It rounds the values in the column to the number of decimal places specified by the integer.
 
 ### Other Clauses
 
-#### AS
+#### `AS`
 
 ```sql
 SELECT column_name AS 'Alias'
 FROM table_name;
 ```
-AS is a keyword in SQL that allows you to rename a column or table using an alias.
+`AS` is a keyword in SQL that allows you to rename a column or table using an alias.
 
-#### CASE
+#### `CASE`
 
 ```sql
 SELECT column_name,
@@ -230,18 +230,18 @@ SELECT column_name,
   END
 FROM table_name;
 ```
-CASE statements are used to create different outputs (usually in the SELECT statement). It is SQL’s way of handling if-then logic.
+`CASE` statements are used to create different outputs (usually in the SELECT statement). It is SQL’s way of handling if-then logic.
 
-#### GROUP BY
+#### `GROUP BY`
 
 ```sql
 SELECT column_name, COUNT(*)
 FROM table_name
 GROUP BY column_name;
 ```
-GROUP BY is a clause in SQL that is only used with aggregate functions. It is used in collaboration with the SELECT statement to arrange identical data into groups.
+`GROUP BY` is a clause in SQL that is only used with aggregate functions. It is used in collaboration with the SELECT statement to arrange identical data into groups.
 
-#### HAVING
+#### `HAVING`
 
 ```sql
 SELECT column_name, COUNT(*)
@@ -249,9 +249,9 @@ FROM table_name
 GROUP BY column_name
 HAVING COUNT(*) > value;
 ```
-HAVING was added to SQL because the WHERE keyword could not be used with aggregate functions.
+`HAVING` was added to SQL because the WHERE keyword could not be used with aggregate functions.
 
-#### INNER JOIN
+#### `INNER JOIN`
 
 ```sql
 SELECT column_name(s)
@@ -261,25 +261,25 @@ JOIN table_2
 ```
 An inner join will combine rows from different tables if the join condition is true.
 
-#### LIMIT
+#### `LIMIT`
 
 ```sql
 SELECT column_name(s)
 FROM table_name
 LIMIT number;
 ```
-LIMIT is a clause that lets you specify the maximum number of rows the result set will have.
+`LIMIT` is a clause that lets you specify the maximum number of rows the result set will have.
 
-#### ORDER BY
+#### `ORDER BY`
 
 ```sql
 SELECT column_name
 FROM table_name
 ORDER BY column_name ASC | DESC;
 ```
-ORDER BY is a clause that indicates you want to sort the result set by a particular column either alphabetically or numerically.
+`ORDER BY` is a clause that indicates you want to sort the result set by a particular column either alphabetically or numerically.
 
-#### OUTER JOIN
+#### `OUTER JOIN`
 
 ```sql
 SELECT column_name(s)
@@ -289,15 +289,15 @@ LEFT JOIN table_2
 ```
 An outer join will combine rows from different tables even if the join condition is not met. Every row in the left table is returned in the result set, and if the join condition is not met, then NULL values are used to fill in the columns from the right table.
 
-#### SELECT DISTINCT
+#### `SELECT DISTINCT`
 
 ```sql
 SELECT DISTINCT column_name
 FROM table_name;
 ```
-SELECT DISTINCT specifies that the statement is going to be a query that returns unique values in the specified column(s).
+`SELECT DISTINCT` specifies that the statement is going to be a query that returns unique values in the specified column(s).
 
-#### WITH
+#### `WITH`
 
 ```sql
 WITH temporary_name AS (
@@ -307,9 +307,9 @@ SELECT *
 FROM temporary_name
 WHERE column_name operator value;
 ```
-WITH clause lets you store the result of a query in a temporary table using an alias. You can also define multiple temporary tables using a comma and with one instance of the WITH keyword.
+`WITH` clause lets you store the result of a query in a temporary table using an alias. You can also define multiple temporary tables using a comma and with one instance of the `WITH` keyword.
 
-The WITH clause is also known as common table expression (CTE) and subquery factoring.
+The `WITH` clause is also known as common table expression (CTE) and subquery factoring.
 
 ## Constraints
 
@@ -340,15 +340,15 @@ CREATE TABLE celebs (
 
 These queries are equal:
 ```sql
-SELECT ROUND(imdb_rating), COUNT(name)
+SELECT ROUND(rate), COUNT(name)
 FROM movies
-GROUP BY ROUND(imdb_rating)
-ORDER BY ROUND(imdb_rating);
+GROUP BY ROUND(rate)
+ORDER BY ROUND(rate);
 ```
 
 ```sql
-SELECT ROUND(imdb_rating), COUNT(name)
+SELECT ROUND(rate), COUNT(name)
 FROM movies
-GROUP BY ROUND(imdb_rating)
-ORDER BY ROUND(imdb_rating);
+GROUP BY ROUND(rate)
+ORDER BY ROUND(rate);
 ```
