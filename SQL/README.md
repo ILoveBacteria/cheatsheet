@@ -26,17 +26,20 @@
       - [`MIN()`](#min)
       - [`SUM()`](#sum)
       - [`ROUND()`](#round)
+    - [Multiple Tables](#multiple-tables)
+      - [`INNER JOIN`](#inner-join)
+      - [`OUTER JOIN`](#outer-join)
+      - [`CROSS JOIN`](#cross-join)
+      - [`UNION`](#union)
+      - [`WITH`](#with)
     - [Other Clauses](#other-clauses)
       - [`AS`](#as)
       - [`CASE`](#case)
       - [`GROUP BY`](#group-by)
       - [`HAVING`](#having)
-      - [`INNER JOIN`](#inner-join)
       - [`LIMIT`](#limit)
       - [`ORDER BY`](#order-by)
-      - [`OUTER JOIN`](#outer-join)
       - [`SELECT DISTINCT`](#select-distinct)
-      - [`WITH`](#with)
   - [Constraints](#constraints)
   - [Data Types](#data-types)
   - [Column Reference](#column-reference)
@@ -209,6 +212,70 @@ FROM table_name;
 ```
 `ROUND()` is a function that takes a column name and an integer as arguments. It rounds the values in the column to the number of decimal places specified by the integer.
 
+### Multiple Tables
+
+#### `INNER JOIN`
+
+```sql
+SELECT column_name(s)
+FROM table_1
+JOIN table_2
+  ON table_1.column_name = table_2.column_name;
+```
+An inner join will combine rows from different tables if the join condition is true.
+
+#### `OUTER JOIN`
+
+- `LEFT JOIN`
+- `RIGHT JOIN`
+- `FULL OUTER JOIN`: Returns all rows from both tables, whether there is a match or not.
+
+```sql
+SELECT column_name(s)
+FROM table_1
+LEFT JOIN table_2
+  ON table_1.column_name = table_2.column_name;
+```
+An outer join will combine rows from different tables even if the join condition is not met. Every row in the left table is returned in the result set, and if the join condition is not met, then NULL values are used to fill in the columns from the right table.
+
+#### `CROSS JOIN`
+
+The `CROSS JOIN` clause is used to combine each row from one table with each row from another in the result set. This `JOIN` is helpful for creating all possible combinations for the records (rows) in two tables.
+
+```sql
+SELECT shirts.shirt_color, pants.pants_color
+FROM shirts
+CROSS JOIN pants;
+```
+
+#### `UNION`
+
+The `UNION` clause is used to combine results that appear from multiple `SELECT` statements and filter duplicates.
+
+```sql
+SELECT * FROM table1
+UNION
+SELECT * FROM table2;
+```
+
+SQL has strict rules for appending data:
+- Tables must have the same number of columns.
+- The columns must have the same data types in the same order as the first table.
+
+#### `WITH`
+
+```sql
+WITH temporary_name AS (
+   SELECT *
+   FROM table_name)
+SELECT *
+FROM temporary_name
+WHERE column_name operator value;
+```
+`WITH` clause lets you store the result of a query in a temporary table using an alias. You can also define multiple temporary tables using a comma and with one instance of the `WITH` keyword.
+
+The `WITH` clause is also known as common table expression (CTE) and subquery factoring.
+
 ### Other Clauses
 
 #### `AS`
@@ -251,16 +318,6 @@ HAVING COUNT(*) > value;
 ```
 `HAVING` was added to SQL because the WHERE keyword could not be used with aggregate functions.
 
-#### `INNER JOIN`
-
-```sql
-SELECT column_name(s)
-FROM table_1
-JOIN table_2
-  ON table_1.column_name = table_2.column_name;
-```
-An inner join will combine rows from different tables if the join condition is true.
-
 #### `LIMIT`
 
 ```sql
@@ -279,16 +336,6 @@ ORDER BY column_name ASC | DESC;
 ```
 `ORDER BY` is a clause that indicates you want to sort the result set by a particular column either alphabetically or numerically.
 
-#### `OUTER JOIN`
-
-```sql
-SELECT column_name(s)
-FROM table_1
-LEFT JOIN table_2
-  ON table_1.column_name = table_2.column_name;
-```
-An outer join will combine rows from different tables even if the join condition is not met. Every row in the left table is returned in the result set, and if the join condition is not met, then NULL values are used to fill in the columns from the right table.
-
 #### `SELECT DISTINCT`
 
 ```sql
@@ -296,20 +343,6 @@ SELECT DISTINCT column_name
 FROM table_name;
 ```
 `SELECT DISTINCT` specifies that the statement is going to be a query that returns unique values in the specified column(s).
-
-#### `WITH`
-
-```sql
-WITH temporary_name AS (
-   SELECT *
-   FROM table_name)
-SELECT *
-FROM temporary_name
-WHERE column_name operator value;
-```
-`WITH` clause lets you store the result of a query in a temporary table using an alias. You can also define multiple temporary tables using a comma and with one instance of the `WITH` keyword.
-
-The `WITH` clause is also known as common table expression (CTE) and subquery factoring.
 
 ## Constraints
 
@@ -352,3 +385,5 @@ FROM movies
 GROUP BY ROUND(rate)
 ORDER BY ROUND(rate);
 ```
+
+*Reference: [https://www.codecademy.com](https://www.codecademy.com/)*
