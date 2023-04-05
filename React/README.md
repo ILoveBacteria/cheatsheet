@@ -7,6 +7,7 @@
   - [Design Patterns](#design-patterns)
   - [Component Lifecycle](#component-lifecycle)
   - [Precompile](#precompile)
+  - [JSX](#jsx)
 
 ## Design Patterns
 
@@ -104,5 +105,12 @@ if __name__ == '__main__':
     print('Done')
 ```
 
+## JSX
+
+- **Conditional:** `&&` is commonly used to render an element based on a boolean condition.
+```jsx
+{condition && <Element />}
+{condition && <p>A paragraph</p>}
+```
 
 [1]: https://webpack.js.org/guides/getting-started/
