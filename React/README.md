@@ -8,6 +8,7 @@
   - [Component Lifecycle](#component-lifecycle)
   - [Precompile](#precompile)
   - [JSX](#jsx)
+  - [Handwrite Notes](#handwrite-notes)
 
 ## Design Patterns
 
@@ -112,5 +113,15 @@ if __name__ == '__main__':
 {condition && <Element />}
 {condition && <p>A paragraph</p>}
 ```
+
+## Handwrite Notes
+
+- Passing Arguments to Event Handlers
+It is common to want to pass an extra parameter to an event handler. For example, if id is the row ID, either of the following would work:
+```jsx
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+```
+
 
 [1]: https://webpack.js.org/guides/getting-started/
