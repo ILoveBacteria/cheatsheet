@@ -15,7 +15,8 @@
     - [Code Injection](#code-injection)
     - [Server Side Template Injection](#server-side-template-injection)
     - [XSS](#xss)
-    - [Handwrite Notes](#handwrite-notes)
+  - [Recon](#recon)
+  - [Handwrite Notes](#handwrite-notes)
 
 ## Web Exploitation
 
@@ -101,7 +102,19 @@ Check these payloads:
 - `test">`
 - `<script></script>`
 
-### Handwrite Notes
+## Recon
+
+- **trufflehog:** Find credentials all over the place. [documents][2]
+```bash 
+$ trufflehog git https://github.com/ILoveBacteria/calculator-telegram-bot --no-update
+```
+
+- **SecLists:** The security tester's companion. [documents][3]
+- **dirsearch:** A tool designed to brute force directories and files in websites. [documents][4]
+  
+```bash
+
+## Handwrite Notes
 
 | #     | Key           | Description                                                                 |
 | ----- | ------------- | --------------------------------------------------------------------------- |
@@ -111,3 +124,6 @@ Check these payloads:
 
 
 [1]: https://github.com/epinna/tplmap
+[2]: https://github.com/trufflesecurity/trufflehog
+[3]: https://github.com/danielmiessler/SecLists
+[4]: https://github.com/maurosoria/dirsearch
