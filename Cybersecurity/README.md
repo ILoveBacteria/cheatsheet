@@ -15,6 +15,7 @@
     - [Code Injection](#code-injection)
     - [Server Side Template Injection](#server-side-template-injection)
     - [XSS](#xss)
+    - [Open Redirect](#open-redirect)
   - [Recon](#recon)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -102,6 +103,12 @@ Check these payloads:
 - `test">`
 - `<script></script>`
 
+### Open Redirect
+
+- Header
+- Redirect meta tag in HTML
+- `window.location` in JavaScript
+
 ## Recon
 
 - **trufflehog:** Find credentials all over the place. [documents][2]
@@ -111,8 +118,6 @@ $ trufflehog git https://github.com/ILoveBacteria/calculator-telegram-bot --no-u
 
 - **SecLists:** The security tester's companion. [documents][3]
 - **dirsearch:** A tool designed to brute force directories and files in websites. [documents][4]
-  
-```bash
 
 ## Handwrite Notes
 
