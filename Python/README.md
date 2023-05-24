@@ -9,6 +9,7 @@
     - [`ini` file](#ini-file)
     - [`yaml` file](#yaml-file)
     - [`toml` file](#toml-file)
+  - [Pandas](#pandas)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
 
@@ -85,6 +86,12 @@ HOST = "127.0.0.1"
 PORT = 5432
 DB = "xiaoxu_database"
 ```
+
+## Pandas
+
+- `df.replace(".", np.nan)`: [Link](https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement)
+- `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link](https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement)
+- `apply()`: Apply a function on every rows
 
 ## Handwrite Notes
 
