@@ -89,9 +89,10 @@ DB = "xiaoxu_database"
 
 ## Pandas
 
-- `df.replace(".", np.nan)`: [Link](https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement)
-- `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link](https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement)
+- `df.replace(".", np.nan)`: [Link to document][3]
+- `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link to document][3]
 - `apply()`: Apply a function on every rows
+- `df.drop_duplicates()`: Return DataFrame with duplicate rows removed [Link to document][4]
 
 ## Handwrite Notes
 
@@ -128,3 +129,5 @@ print(end - start)
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
 [2]: https://medium.com/codex/say-goodbye-to-loops-in-python-and-welcome-vectorization-e4df66615a52
+[3]: https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement
+[4]: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html
