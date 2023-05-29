@@ -24,3 +24,4 @@ My big cheatsheet in programming. I am improving and completing this collection 
 - [PHP Cheatsheet](PHP/)
 - [React Cheatsheet](React/)
 - [SQL Cheatsheet](SQL/)
+- [AI Cheatsheet](AI/)
