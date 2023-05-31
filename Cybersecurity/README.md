@@ -16,6 +16,8 @@
     - [Server Side Template Injection](#server-side-template-injection)
     - [XSS](#xss)
     - [Open Redirect](#open-redirect)
+    - [Path Traversal](#path-traversal)
+    - [File Upload](#file-upload)
   - [Recon](#recon)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -108,6 +110,22 @@ Check these payloads:
 - Header
 - Redirect meta tag in HTML
 - `window.location` in JavaScript
+
+### Path Traversal
+
+**Pattern:** www.stuff.com/?page=index.php
+
+- Test absolute path: `/etc/passwd`
+- Test path traversal: `../../../etc/passwd`
+- `../../image.jpg` -> `image.jpg`: The WAF is Replacing the `../`. How to bypass? `....//....//....//etc/passwd `
+- The server is concating the extension (e.x. `.jpg`): `/etc/passwd` -> `/etc/passwd.jpg`. How to bypass? Use null byte `%00` in PHP. `/etc/passwd%00.jpg` This will ignore the extension.
+
+### File Upload
+
+- Change the file extension in the request then put the file. Run it with http request and pass parameters.
+- Maybe the back-end is checking the content-type. Just change the file extension.
+- گاهی محدودیت‌هایی تعریف می‌شود که مثلا فایل `php` در هر فولدری اجرا نشود و به جای آن فقط متنش رو توی مرورگر نشون بده.
+برای دور زدنش کافیه `../` باهاش ترکیب کنیم.
 
 ## Recon
 
