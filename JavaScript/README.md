@@ -29,6 +29,7 @@ Overall, JavaScript has become an essential tool for modern web development due 
 | `$ npm i --package-lock-only` | Update `package-lock.json`                    | [Link][1] |
 | `$ npm install <package>`     | Add the `<package>` dependency to the project |           |
 | `$ npm run <script>`          | Run the script named `<script>`               |           |
+| `$ npm install`               | Install all dependencies                      |           |
 
 [1]: https://stackoverflow.com/questions/46653833/is-there-a-way-to-force-npm-to-generate-package-lock-json
 
