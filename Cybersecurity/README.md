@@ -19,6 +19,9 @@
   - [Open Redirect](#open-redirect)
   - [Path Traversal](#path-traversal)
   - [File Upload](#file-upload)
+  - [SQL Injection](#sql-injection)
+    - [Retrieving Hidden Data](#retrieving-hidden-data)
+    - [Subverting application logic](#subverting-application-logic)
   - [Recon](#recon)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -143,6 +146,24 @@ work for DOM XSS testing because it doesn't take account of changes that have be
 - Maybe the back-end is checking the content-type. Just change the file extension.
 - گاهی محدودیت‌هایی تعریف می‌شود که مثلا فایل `php` در هر فولدری اجرا نشود و به جای آن فقط متنش رو توی مرورگر نشون بده.
 برای دور زدنش کافیه `../` باهاش ترکیب کنیم.
+
+## SQL Injection
+
+Double-dash sequence `--` is a comment indicator in SQL
+
+### Retrieving Hidden Data
+
+The query in the back-end: `SELECT * FROM products WHERE category = 'Gifts' AND released = 1`
+
+After adding the payload: `SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1`
+
+### Subverting application logic
+
+Consider an application that lets users log in with a username and password. If a user submits the username *wiener* and the password *bluecheese*, the application checks the credentials by performing the following SQL query:
+```sql
+SELECT * FROM users WHERE username = 'wiener' AND password = 'bluecheese'
+```
+For example, submitting the username `administrator'--`
 
 ## Recon
 
