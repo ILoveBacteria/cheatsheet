@@ -9,6 +9,8 @@
       - [Keywords](#keywords)
     - [Constraints Satisfaction Problems (CSP)](#constraints-satisfaction-problems-csp)
       - [Keywords](#keywords-1)
+    - [Adversarial Search And Games](#adversarial-search-and-games)
+      - [Optimal Decisions In Games](#optimal-decisions-in-games)
 
 ## Solving Problems By Searching
 
@@ -41,3 +43,10 @@ unassigned
 - **Unary constraint** restricts the value of a single variable
 - **Binary constraint** relates two variables
 - *Global constraint:** One of the most common global constraints is *Alldiff*
+
+### Adversarial Search And Games
+
+#### Optimal Decisions In Games
+
+The minimax value of a terminal state is just its utility. In a non-terminal state, MAX prefers to move to a state of maximum 
+value when it is MAX’s turn to move, and MIN prefers a state of minimum value.
