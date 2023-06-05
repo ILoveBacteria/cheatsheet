@@ -15,6 +15,7 @@
     - [Code Injection](#code-injection)
     - [Server Side Template Injection](#server-side-template-injection)
     - [XSS](#xss)
+      - [DOM-Based](#dom-based)
     - [Open Redirect](#open-redirect)
     - [Path Traversal](#path-traversal)
     - [File Upload](#file-upload)
@@ -104,6 +105,22 @@ Check these payloads:
 - `<h1></h1>`
 - `test">`
 - `<script></script>`
+
+Types of XSS:
+
+- Reflected
+- Stored
+- DOM-based: e.g. `<script>document.write(document.cookie)</script>`
+
+#### DOM-Based
+
+DOM-based XSS vulnerabilities usually arise when JavaScript takes data from an attacker-controllable source, such as the URL, 
+and passes it to a sink that supports dynamic code execution, such as `eval()` or `innerHTML`. The most common source for DOM 
+XSS is the URL, which is typically accessed with the `window.location` object. An attacker can construct a link to send a victim 
+to a vulnerable page with a payload in the query string and fragment portions of the URL.
+
+use developer tools to inspect the HTML and find where your string appears. Note that the browser's "View source" option won't 
+work for DOM XSS testing because it doesn't take account of changes that have been performed in the HTML by JavaScript.
 
 ### Open Redirect
 
