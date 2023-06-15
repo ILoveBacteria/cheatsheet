@@ -10,6 +10,7 @@
     - [`yaml` file](#yaml-file)
     - [`toml` file](#toml-file)
   - [Pandas](#pandas)
+  - [Matplot](#matplot)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
 
@@ -93,6 +94,23 @@ DB = "xiaoxu_database"
 - `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link to document][3]
 - `apply()`: Apply a function on every rows
 - `df.drop_duplicates()`: Return DataFrame with duplicate rows removed [Link to document][4]
+
+## Matplot
+
+- A beautiful plotting
+
+```python
+complex, real, imag = fourier_transform(pulse_signal, t)
+fig, (ax1, ax2) = plt.subplots(2, 1)
+fig.suptitle('F.T. of pulse signal')
+ax1.plot(t, real)
+ax1.set_title('real part')
+ax2.plot(t, imag)
+ax2.set_title('imag part')
+
+for ax in fig.get_axes():
+    ax.label_outer()
+```
 
 ## Handwrite Notes
 
