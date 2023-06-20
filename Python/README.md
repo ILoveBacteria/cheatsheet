@@ -19,6 +19,12 @@
 - `$ pipenv install`: Install dependencies from `Pipfile` or `requirements.txt`.
 - `$ pipenv uninstall --all`: Uninstall all dependencies.
 - `$ pipenv graph`: Show a graph of your installed dependencies.
+- `$ pipenv lock`: Generate a `Pipfile.lock` file.
+- Add custom `test` command to `Pipfile`:
+```toml
+[scripts]
+test = "python -m unittest tests/test.py"
+```
 
 ## Config Files
 
