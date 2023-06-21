@@ -122,29 +122,30 @@ for ax in fig.get_axes():
 
 ## Unittest
 
-| Method                       | Checks that                                               |
-| ---------------------------- | --------------------------------------------------------- |
-| `assertEqual(a, b)`          | `a == b`                                                  |
-| `assertNotEqual(a, b)`       | `a != b`                                                  |
-| `assertTrue(x)`              | `bool(x) is True`                                         |
-| `assertFalse(x)`             | `bool(x) is False`                                        |
-| `assertIs(a, b)`             | `a is b`                                                  |
-| `assertIsNot(a, b)`          | `a is not b`                                              |
-| `assertIsNone(x)`            | `x is None`                                               |
-| `assertIn(a, b)`             | `a in b`                                                  |
-| `assertIsInstance(a, b)`     | `isinstance(a, b)`                                        |
-| `assertAlmostEqual(a, b)`    | `round(a-b, 7) == 0`                                      |
-| `assertGreater(a, b)`        | `a > b`                                                   |
-| `assertGreaterEqual(a, b)`   | `a >= b`                                                  |
-| `assertLess(a, b)`           | `a < b`                                                   |
-| `assertLessEqual(a, b)`      | `a <= b`                                                  |
-| `assertRegex(s, r)`          | `r.search(s)`                                             |
-| `assertMultiLineEqual(a, b)` | `a == b`, usable when `a` and `b` are strings             |
-| `assertSequenceEqual(a, b)`  | `a == b`, usable when `a` and `b` are lists, tuples, etc. |
-| `assertListEqual(a, b)`      | `a == b`, usable when `a` and `b` are lists               |
-| `assertTupleEqual(a, b)`     | `a == b`, usable when `a` and `b` are tuples              |
-| `assertSetEqual(a, b)`       | `a == b`, usable when `a` and `b` are sets                |
-| `assertDictEqual(a, b)`      | `a == b`, usable when `a` and `b` are dicts               |
+| Method                                    | Checks that                                               |
+| ----------------------------------------- | --------------------------------------------------------- |
+| `assertEqual(a, b)`                       | `a == b`                                                  |
+| `assertNotEqual(a, b)`                    | `a != b`                                                  |
+| `assertTrue(x)`                           | `bool(x) is True`                                         |
+| `assertFalse(x)`                          | `bool(x) is False`                                        |
+| `assertIs(a, b)`                          | `a is b`                                                  |
+| `assertIsNot(a, b)`                       | `a is not b`                                              |
+| `assertIsNone(x)`                         | `x is None`                                               |
+| `assertIn(a, b)`                          | `a in b`                                                  |
+| `assertIsInstance(a, b)`                  | `isinstance(a, b)`                                        |
+| `assertAlmostEqual(a, b)`                 | `round(a-b, 7) == 0`                                      |
+| `assertGreater(a, b)`                     | `a > b`                                                   |
+| `assertGreaterEqual(a, b)`                | `a >= b`                                                  |
+| `assertLess(a, b)`                        | `a < b`                                                   |
+| `assertLessEqual(a, b)`                   | `a <= b`                                                  |
+| `assertRegex(s, r)`                       | `r.search(s)`                                             |
+| `assertMultiLineEqual(a, b)`              | `a == b`, usable when `a` and `b` are strings             |
+| `assertSequenceEqual(a, b)`               | `a == b`, usable when `a` and `b` are lists, tuples, etc. |
+| `assertListEqual(a, b)`                   | `a == b`, usable when `a` and `b` are lists               |
+| `assertTupleEqual(a, b)`                  | `a == b`, usable when `a` and `b` are tuples              |
+| `assertSetEqual(a, b)`                    | `a == b`, usable when `a` and `b` are sets                |
+| `assertDictEqual(a, b)`                   | `a == b`, usable when `a` and `b` are dicts               |
+| `assertRaises(exc, fun, *args, **kwargs)` | `fun(*args, **kwargs)` raises `exc`                       |
 
 ## Handwrite Notes
 
