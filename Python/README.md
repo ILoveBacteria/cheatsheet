@@ -13,6 +13,7 @@
   - [Matplot](#matplot)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
+    - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
 
 ## Pipenv
 
@@ -149,6 +150,10 @@ end = time.time()
 print(end - start)
 ### 0.12 seconds
 ```
+
+### Difference `__repr__` and `__str__`
+
+`__repr__()` provides the official string representation of an object, aimed at the programmer. `__str__()` provides the informal string representation of an object, aimed at the user.
 
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
