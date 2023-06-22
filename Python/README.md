@@ -15,6 +15,7 @@
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
+    - [Object to dict](#object-to-dict)
 
 ## Pipenv
 
@@ -182,6 +183,23 @@ print(end - start)
 ### Difference `__repr__` and `__str__`
 
 `__repr__()` provides the official string representation of an object, aimed at the programmer. `__str__()` provides the informal string representation of an object, aimed at the user.
+
+### Object to dict
+
+The `vars()` built-in function can be used to convert an object into a dictionary in Python.
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# Create an instance of Person
+person = Person("Alice", 30)
+# Convert the object to a dictionary using vars()
+person_dict = vars(person)
+# Print the resulting dictionary
+print(person_dict)
+```
 
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
