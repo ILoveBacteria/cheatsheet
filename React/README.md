@@ -77,9 +77,12 @@ class Menu extends React.Component {
 1- Precompile the code with JSX format: `npx babel <src> --out-dir <out> --presets react-app/prod`
 
 2- Good dependencies:
-    - babel-cli
-    - babel-runtime
-    - babel-preset-react-app
+  - babel-cli
+  - babel-runtime
+  - babel-preset-react-app = "^3.1.2"
+  - babel-plugin-transform-runtime
+  - webpack-cli
+  - webpack
 
 3- Webpack creates a bundle. [Read more][1]
 
@@ -123,5 +126,9 @@ It is common to want to pass an extra parameter to an event handler. For example
 <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
 ```
 
+- You should add type module to the script tag in the HTML file
+```html
+<script defer type="module" src=""></script>
+```
 
 [1]: https://webpack.js.org/guides/getting-started/
