@@ -12,6 +12,10 @@
   - [Pandas](#pandas)
   - [Matplot](#matplot)
   - [Unittest](#unittest)
+  - [Functions that act on iterables](#functions-that-act-on-iterables)
+  - [Iterable Objects](#iterable-objects)
+    - [Generators](#generators)
+    - [Iterate](#iterate)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
@@ -147,6 +151,69 @@ for ax in fig.get_axes():
 | `assertSetEqual(a, b)`                    | `a == b`, usable when `a` and `b` are sets                |
 | `assertDictEqual(a, b)`                   | `a == b`, usable when `a` and `b` are dicts               |
 | `assertRaises(exc, fun, *args, **kwargs)` | `fun(*args, **kwargs)` raises `exc`                       |
+
+## Functions that act on iterables
+
+- `sum`: sum the contents of an iterable.
+- `sorted`: return a list of the sorted contents of an interable
+- `any`: returns `True` and ends the iteration immediately if `bool(item)` was `True` for any item in the iterable.
+- `all`: returns `True` only if `bool(item)` was `True` for all items in the iterable.
+- `max`: return the largest value in an iterable.
+- `min`: return the smallest value in an iterable.
+
+```python
+# `bool(item)` evaluates to `False` for each of these items
+>>> any((0, None, [], 0))
+False
+
+# `bool(item)` evaluates to  `True` for each of these items
+>>> all([1, (0, 1), True, "hi"])
+True
+```
+
+## Iterable Objects
+
+### Generators
+
+Because `range` is a generator, the command `range(5)` will simply store the instructions needed to produce the sequence of numbers 0-4, whereas the list `[0, 1, 2, 3, 4]` stores all of these items in memory at once.
+
+Python provides a sleek syntax for defining a simple generator in a single line of code; this expression is known as a **generator comprehension**.
+  
+```python
+# (<expression> for <var> in <iterable> if <condition>)
+# when iterated over, `even_gen` will generate 0.. 2.. 4.. ... 98
+even_gen = (i for i in range(100) if i%2 == 0)
+```
+
+### Iterate
+
+To create an object/class as an iterator you have to implement the methods `__iter__()` and `__next__()` to your object.
+
+- The `__iter__()` method acts similar, you can do operations (initializing etc.), but must always return the iterator object itself.
+- The `__next__()` method also allows you to do operations, and must return the next item in the sequence.
+- To prevent the iteration from going on forever, we can use the `StopIteration` statement.
+- The `[...]` indexing syntax is called a subscript, because it's equivalent to mathematical notation that uses actual subscripts; e.g. `a[1]` is Python for what mathematicians would write as a₁. So "subscriptable" means "able to be subscripted". Which, in Python terms, means it has to implement `__getitem__()`, since `a[1]` is just syntactic sugar for `a.__getitem__(1)`.
+
+```python
+class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+
+  def __next__(self):
+    if self.a <= 20:
+      x = self.a
+      self.a += 1
+      return x
+    else:
+      raise StopIteration
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+for x in myiter:
+  print(x)
+```
 
 ## Handwrite Notes
 
