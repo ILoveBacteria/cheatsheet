@@ -16,6 +16,16 @@
   - [Iterable Objects](#iterable-objects)
     - [Generators](#generators)
     - [Iterate](#iterate)
+  - [Method Overload](#method-overload)
+  - [Flask](#flask)
+    - [URL Building](#url-building)
+    - [Variable Rules](#variable-rules)
+    - [Extend template](#extend-template)
+    - [HTTP Methods](#http-methods)
+    - [Redirects](#redirects)
+    - [Error Handling](#error-handling)
+    - [Custom headers in response](#custom-headers-in-response)
+    - [Request Object](#request-object)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
@@ -213,6 +223,188 @@ myiter = iter(myclass)
 
 for x in myiter:
   print(x)
+```
+
+## Method Overload
+
+An efficient way to overload functions in Python
+
+```python
+from multipledispatch import dispatch
+ 
+# passing one parameter
+@dispatch(int, int)
+def product(first, second):
+    result = first*second
+    print(result)
+ 
+# passing two parameters
+@dispatch(int, int, int)
+def product(first, second, third):
+    result = first * second * third
+    print(result)
+ 
+# you can also pass data type of any value as per requirement
+@dispatch(float, float, float)
+def product(first, second, third):
+    result = first * second * third
+    print(result)
+ 
+# calling product method with 2 arguments
+product(2, 3)  # this will give output of 6
+# calling product method with 3 arguments but all int
+product(2, 3, 2)  # this will give output of 12
+# calling product method with 3 arguments but all float
+product(2.2, 3.4, 2.3)  # this will give output of 17.985999999999997
+```
+
+## Flask
+
+### URL Building
+
+To build a URL to a specific function, use the `url_for()` function. It accepts the name of the function as its first argument and any number of keyword arguments, each corresponding to a variable part of the URL rule. Unknown variable parts are appended to the URL as query parameters.
+
+Use this in templates: `{{ url_for('static', filename='dist/main.js') }}`
+
+```python
+from flask import url_for
+
+@app.route('/')
+def index():
+    return 'index'
+
+@app.route('/login')
+def login():
+    return 'login'
+
+@app.route('/user/<username>')
+def profile(username):
+    return f'{username}\'s profile'
+
+with app.test_request_context():
+    print(url_for('index'))
+    print(url_for('login'))
+    print(url_for('login', next='/'))
+    print(url_for('profile', username='John Doe'))
+```
+
+### Variable Rules
+
+`<converter:variable_name>`
+
+converters: `string` -  `int` - `float` - `path` - `uuid`
+
+### Extend template
+
+```html
+{% extends "base.html" %}
+
+{% block head %}
+    <script defer type="module" src={{ url_for('static', filename='dist/main.js') }}></script>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/game.css') }}>
+    <title>Connect-4</title>
+{% endblock %}
+
+{% block body %}
+    <div id="app"></div>
+{% endblock %}
+```
+
+### HTTP Methods
+
+By default, a route only answers to GET requests. You can use the methods argument of the route() decorator to handle different 
+HTTP methods.
+```python
+from flask import request
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return do_the_login()
+    else:
+        return show_the_login_form()
+```
+
+```python
+@app.get('/login')
+def login_get():
+    return show_the_login_form()
+
+@app.post('/login')
+def login_post():
+    return do_the_login()
+```
+
+### Redirects
+
+To redirect a user to another endpoint, use the `redirect()` function; to abort a request early with an error code, use the `abort
+()` function:
+```python
+from flask import abort, redirect, url_for
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/login')
+def login():
+    abort(401)
+    this_is_never_executed()
+```
+
+### Error Handling
+
+By default a black and white error page is shown for each error code. If you want to customize the error page, you can use the 
+`errorhandler()` decorator:
+```python
+from flask import render_template
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+```
+Note the 404 after the render_template() call. This tells Flask that the status code of that page should be 404 which means not found. By default 200 is assumed which translates to: all went well.
+
+### Custom headers in response
+
+You just need to wrap the return expression with make_response() and get the response object to modify it, then return it:
+```python
+from flask import make_response
+
+@app.errorhandler(404)
+def not_found(error):
+    resp = make_response(render_template('error.html'), 404)
+    resp.headers['X-Something'] = 'A value'
+    return resp
+```
+
+### Request Object
+```python
+from flask import request
+```
+The current request method is available by using the method attribute. To access form data (data transmitted in a `POST` or 
+`PUT` request) you can use the form attribute. Here is a full example of the two attributes mentioned above:
+```python
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if valid_login(request.form['username'],
+                       request.form['password']):
+            return log_the_user_in(request.form['username'])
+        else:
+            error = 'Invalid username/password'
+    # the code below is executed if the request method
+    # was GET or the credentials were invalid
+    return render_template('login.html', error=error)
+```
+What happens if the key does not exist in the form attribute? In that case a special `KeyError` is raised.
+
+If the data is **JSON**, the request should have the content-type header set to application/json and use `request.json[]`
+
+To access parameters submitted in the URL (`?key=value`) you can use the args attribute:
+```python
+searchword = request.args.get('key', '')
 ```
 
 ## Handwrite Notes

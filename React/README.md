@@ -7,6 +7,7 @@
   - [Design Patterns](#design-patterns)
   - [Component Lifecycle](#component-lifecycle)
   - [Precompile](#precompile)
+  - [Webpack](#webpack)
   - [JSX](#jsx)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -86,27 +87,23 @@ class Menu extends React.Component {
 
 3- Webpack creates a bundle. [Read more][1]
 
-```python
-# This python code will pre-compile the JavaScript files including JSX format
-# Then uses webpack to create a bundle file
-# ez pz
-import os
+## Webpack
 
+Config file with multiple entry points:
 
-def pre_compile():
-    os.system('npx babel <src> --out-dir <out> --presets react-app/prod')
+```javascript
+const path = require('path');
 
-
-def bundle():
-    os.system('npx webpack')
-
-
-if __name__ == '__main__':
-    print('Start pre compiling JavaScript files')
-    pre_compile()
-    print('Start bundling the app')
-    bundle()
-    print('Done')
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    search: './src/search.js',
+  },
+  output: {
+    filename: '[name].js',
+    path: __dirname + '/dist',
+  },
+};
 ```
 
 ## JSX
