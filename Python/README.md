@@ -297,6 +297,7 @@ converters: `string` -  `int` - `float` - `path` - `uuid`
 ### Extend template
 
 ```html
+{% raw %}
 {% extends "base.html" %}
 
 {% block head %}
@@ -308,6 +309,7 @@ converters: `string` -  `int` - `float` - `path` - `uuid`
 {% block body %}
     <div id="app"></div>
 {% endblock %}
+{% endraw %}
 ```
 
 ### HTTP Methods
