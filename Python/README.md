@@ -26,6 +26,9 @@
     - [Error Handling](#error-handling)
     - [Custom headers in response](#custom-headers-in-response)
     - [Request Object](#request-object)
+  - [Logging](#logging)
+    - [Log Levels](#log-levels)
+    - [Logging from multiple modules to file](#logging-from-multiple-modules-to-file)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
@@ -407,6 +410,48 @@ If the data is **JSON**, the request should have the content-type header set to 
 To access parameters submitted in the URL (`?key=value`) you can use the args attribute:
 ```python
 searchword = request.args.get('key', '')
+```
+
+## Logging
+
+### Log Levels
+
+|Level|When it’s used|
+|---|---|
+|`DEBUG`|Detailed information, typically of interest only when diagnosing problems.|
+|`INFO`|Confirmation that things are working as expected.|
+|`WARNING`|An indication that something unexpected happened, or indicative of some problem in the near future (e.g. ‘disk space low’). The software is still working as expected.|
+|`ERROR`|Due to a more serious problem, the software has not been able to perform some function.|
+|`CRITICAL`|A serious error, indicating that the program itself may be unable to continue running.|
+
+### Logging from multiple modules to file
+
+```python
+# myapp.py
+import logging
+import mylib
+
+def main():
+    logging.basicConfig(filename='myapp.log', level=logging.INFO)
+    logging.info('Started')
+    mylib.do_something()
+    logging.info('Finished')
+
+if __name__ == '__main__':
+    main()
+```
+```python
+# mylib.py
+import logging
+
+def do_something():
+    logging.info('Doing something')
+```
+If you run myapp.py, you should see this in myapp.log:
+```
+INFO:root:Started
+INFO:root:Doing something
+INFO:root:Finished
 ```
 
 ## Handwrite Notes
