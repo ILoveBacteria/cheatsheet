@@ -26,6 +26,7 @@
     - [Generate CSRF PoC](#generate-csrf-poc)
     - [Defence CSRF](#defence-csrf)
   - [SSRF](#ssrf)
+  - [Access Control](#access-control)
   - [Recon](#recon)
   - [Handwrite Notes](#handwrite-notes)
 
@@ -213,6 +214,25 @@ To access this function:
 ## SSRF
 
 In an SSRF attack against the server itself, the attacker induces the application to make an HTTP request back to the server that is hosting the application, via its loopback network interface. This will typically involve supplying a URL with a hostname like `127.0.0.1` (a reserved IP address that points to the loopback adapter) or `localhost` (a commonly used name for the same adapter).
+
+## Access Control
+
+- **Authentication** identifies the user and confirms that they are who they say they are.
+- **Session management** identifies which subsequent HTTP requests are being made by that same user.
+- **Access control** determines whether the user is allowed to carry out the action that they are attempting to perform.
+
+From a user perspective, access controls can be divided into the following categories:
+
+- **Vertical access controls** are mechanisms that restrict access to sensitive functionality that is not available to other 
+  types of users.
+- **Horizontal access controls** are mechanisms that restrict access to resources to the users who are specifically allowed to 
+  access those resources.
+- **Context-dependent access controls** restrict access to functionality and resources based upon the state of the application 
+  or the user's interaction with it.
+
+In some cases, sensitive functionality is not robustly protected but is concealed by giving it a less predictable URL: so called 
+**security by obscurity**. For example, consider an application that hosts administrative functions at the following URL: 
+`https://insecure-website.com/administrator-panel-yb556`
 
 ## Recon
 
