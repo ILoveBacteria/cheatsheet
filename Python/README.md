@@ -120,6 +120,16 @@ DB = "xiaoxu_database"
 - `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link to document][3]
 - `apply()`: Apply a function on every rows
 - `df.drop_duplicates()`: Return DataFrame with duplicate rows removed [Link to document][4]
+- Get a specific value in the cell or update it: `dataFrame.at[row_index: int, column: str] = something`
+- Add a new row to DataFrame: `df.loc[len(df.index)] = ['Amy', 89, 93]`
+- You can **filter** a pandas DataFrame with an object column and values of column are **list** by using the `.apply()` method. Here is an example:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({'A': [[1, 2], [3, 4], [5, 6]], 'B': [4, 5, 6]})
+df_filtered = df[df['A'].apply(lambda x: 2 in x)]
+```
 
 ## Matplot
 
@@ -489,6 +499,8 @@ print(end - start)
 ### Difference `__repr__` and `__str__`
 
 `__repr__()` provides the official string representation of an object, aimed at the programmer. `__str__()` provides the informal string representation of an object, aimed at the user.
+
+`os.path.exists(path)` check if a file or directory exists.
 
 ### Object to dict
 
