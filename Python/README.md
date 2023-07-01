@@ -120,7 +120,8 @@ DB = "xiaoxu_database"
 - `df.replace(r"\s*\.\s*", np.nan, regex=True)`: [Link to document][3]
 - `apply()`: Apply a function on every rows
 - `df.drop_duplicates()`: Return DataFrame with duplicate rows removed [Link to document][4]
-- Get a specific value in the cell or update it: `dataFrame.at[row_index: int, column: str] = something`
+- Access a single value for a row/column pair by label: `dataFrame.at[row_index: int, column: str] = something`
+- Access a single value for a row/column pair by integer position: `DataFrame.iat`
 - Add a new row to DataFrame: `df.loc[len(df.index)] = ['Amy', 89, 93]`
 - You can **filter** a pandas DataFrame with an object column and values of column are **list** by using the `.apply()` method. Here is an example:
 
