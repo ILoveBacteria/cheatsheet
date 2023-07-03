@@ -7,6 +7,7 @@
   - [Github Workflows](#github-workflows)
   - [Handwrite Notes](#handwrite-notes)
     - [How to undo the last commit?](#how-to-undo-the-last-commit)
+    - [How to undo the reset?](#how-to-undo-the-reset)
 
 ## Github Workflows
 
@@ -61,3 +62,8 @@ git reset --hard HEAD~1
 ```bash
 git reset HEAD~1
 ```
+
+### How to undo the reset?
+
+ - `git reflog`: Find the commit you want to go back to.
+ - then for example: `git reset "HEAD@{1}"`
