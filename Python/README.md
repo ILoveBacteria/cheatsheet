@@ -18,9 +18,11 @@
     - [Iterate](#iterate)
   - [Method Overload](#method-overload)
   - [Flask](#flask)
+    - [HTML Escaping](#html-escaping)
     - [URL Building](#url-building)
     - [Variable Rules](#variable-rules)
-    - [Extend template](#extend-template)
+    - [Rendering Templates](#rendering-templates)
+    - [Template Inheritance](#template-inheritance)
     - [HTTP Methods](#http-methods)
     - [Redirects](#redirects)
     - [Error Handling](#error-handling)
@@ -29,10 +31,12 @@
   - [Logging](#logging)
     - [Log Levels](#log-levels)
     - [Logging from multiple modules to file](#logging-from-multiple-modules-to-file)
+  - [Python Pro Tips](#python-pro-tips)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
     - [Object to dict](#object-to-dict)
+    - [Difference between `sort()` and `sorted()`](#difference-between-sort-and-sorted)
 
 ## Pipenv
 
@@ -274,6 +278,18 @@ product(2.2, 3.4, 2.3)  # this will give output of 17.985999999999997
 
 ## Flask
 
+### HTML Escaping
+
+When returning HTML (the default response type in Flask), any user-provided values rendered in the output must be escaped to protect from injection attacks. HTML templates rendered with Jinja will do this automatically.
+```python
+from markupsafe import escape
+
+@app.route("/<name>")
+def hello(name):
+    return f"Hello, {escape(name)}!"
+```
+If a user managed to submit the name `<script>alert("bad")</script>`, escaping causes it to be rendered as text, rather than running the script in the user’s browser.
+
 ### URL Building
 
 To build a URL to a specific function, use the `url_for()` function. It accepts the name of the function as its first argument and any number of keyword arguments, each corresponding to a variable part of the URL rule. Unknown variable parts are appended to the URL as query parameters.
@@ -308,7 +324,21 @@ with app.test_request_context():
 
 converters: `string` -  `int` - `float` - `path` - `uuid`
 
-### Extend template
+### Rendering Templates
+
+```python
+from flask import render_template
+
+@app.route('/hello/')
+@app.route('/hello/<name>')
+def hello(name=None):
+    return render_template('hello.html', name=name)
+```
+Flask will look for templates in the templates folder. So if your application is a module, this folder is next to that module, if it’s a package it’s actually inside your package.
+
+Inside templates you also have access to the `config`, `request`, `session` and `g` objects as well as the `url_for()` and `get_flashed_messages()` functions.
+
+### Template Inheritance
 
 ```html
 {% raw %}
@@ -465,6 +495,192 @@ INFO:root:Doing something
 INFO:root:Finished
 ```
 
+## Python Pro Tips
+
+1. for-else
+    ```python
+    numbers = [2, 4, 6, 8, 1]
+    for number in numbers:
+        if number % 2 == 1:
+            print(number)
+            break
+    else:
+        print("No odd numbers")
+    ```
+2. Get n largest or n smallest elements in a list using the module heapq
+    ```python
+    import heapq
+
+    scores = [51, 33, 64, 87, 91, 75, 15, 49, 33, 82]
+    print(heapq.nlargest(3, scores))  # [91, 87, 82]
+    print(heapq.nsmallest(5, scores))  # [15, 33, 33, 49, 51]
+    ```
+3. Pass values from a list as method arguments
+    ```python
+    my_list = [1, 2, 3, 4]
+    print(my_list)  # [1, 2, 3, 4]
+    print(*my_list)  # 1 2 3 4
+    ```
+4. Get all the elements in the middle of the list
+    ```python
+    _, *elements_in_the_middle, _ = [1, 2, 3, 4, 5, 6, 7, 8]
+    print(elements_in_the_middle)  # [2, 3, 4, 5, 6, 7]
+    ```
+5. Enum
+    ```python
+    from enum import Enum
+
+    class Status(Enum):
+        NO_STATUS = -1
+        NOT_STARTED = 0
+        IN_PROGRESS = 1
+        COMPLETED = 2
+
+    print(Status.IN_PROGRESS.name)  # IN_PROGRESS
+    print(Status.COMPLETED.value)  # 2
+    ```
+6. Repeat strings without looping
+    ```python
+    string = "Abc"
+    print(string * 5)  # AbcAbcAbcAbcAbc
+    ```
+7. Merge dictionaries in a single readable line
+    ```python
+    first_dictionary = {'name': 'Fatos', 'location': 'Munich'}
+    second_dictionary = {'name': 'Fatos', 'surname': 'Morina',
+                        'location': 'Bavaria, Munich'}
+    first_dictionary | second_dictionary  # {'name': 'Fatos', 'location': 'Bavaria, Munich', 'surname': 'Morina'}
+    second_dictionary | first_dictionary  # {'name': 'Fatos', 'location': 'Munich', 'surname': 'Morina'}
+    ```
+8. String to list
+    ```python
+    import ast
+
+    def string_to_list(string):
+        return ast.literal_eval(string)
+
+    string = "[[1, 2, 3],[4, 5, 6]]"
+    my_list = string_to_list(string)
+    print(my_list)  # [[1, 2, 3], [4, 5, 6]]
+    ```
+9. Print multiple values with a custom separator in between each value
+    ```python
+    print("29", "01", "2022", sep="/")  # 29/01/2022
+    ```
+10. You can separate big numbers with the underscore
+    ```python
+    print(1_000_000_000)  # 1000000000
+    print(1_234_567)  # 1234567
+    ```
+11. Find the unique id of a variable using id()
+    ```python
+    print(id(1))  # 4325776624
+    print(id(2))  # 4325776656
+    print(id("string"))  # 4327978288
+    ```
+12. You can turn a set into an immutable set
+    ```python
+    my_set = frozenset(['a', 'b', 'c', 'd'])
+    my_set.add("a")  # AttributeError: 'frozenset' object has no attribute 'add'
+    ```
+13. You can convert any data type into a boolean value
+    ```python
+    print(bool(.0))  # False
+    print(bool(3))  # True
+    print(bool("-"))  # True
+    print(bool("string"))  # True
+    print(bool(" "))  # True
+    ```
+14. Convert a value into a complex number
+    ```python
+    print(complex(10, 2))  # (10+2j)
+    ```
+15. You can also convert a number into a hexadecimal number:
+    ```python
+    print(hex(11))  # 0xb
+    ```
+16. You don’t need to compare the length with 0
+    ```python
+    def get_element_with_comparison(my_list):
+        if len(my_list) > 0:
+            return my_list[0]
+
+    def get_first_element(my_list):
+        if len(my_list):
+            return my_list[0]
+    ```
+17. Check the memory usage of an object
+    ```python
+    import sys
+    print(sys.getsizeof("bitcoin"))  # 56
+    ```
+18. You can define a method that can be called with as many parameters as you want
+    ```python
+    def get_sum(*arguments):
+        result = 0
+        for i in arguments:
+            result += i
+        return result
+
+    print(get_sum(1, 2, 3))  # 6
+    print(get_sum(1, 2, 3, 4, 5))  # 15
+    print(get_sum(1, 2, 3, 4, 5, 6, 7))  # 28
+    ```
+19. Magic methods for operators
+    - `__sub__()` for `-`
+    - `__mul__()` for `*`
+    - `__truediv__()` for `/`
+    - `__ne__()` for `!=`
+    - `__ge__()` for `>=`
+    - `__gt__()` for `>`
+20. Check if all characters in a string are either alphabets or numbers
+    ```python
+    name = "Password"
+    print(name.isalnum())  # True, because all characters are alphabets
+    name = "Secure Password "
+    print(name.isalnum())  # False, because it contains whitespaces
+    name = "S3cur3P4ssw0rd"
+    print(name.isalnum())  # True
+    ```
+21. Remove characters from the right based on the argument
+    ```python
+    string = "This is a sentence with  "
+    # Remove trailing spaces from the right
+    print(string.rstrip())  # "This is a sentence with"
+    string = "this here is a sentence…..,,,,aaaaasd"
+    print(string.rstrip('.,dsa'))  # "this here is a sentence"
+    # lstrip for left
+    ```
+22. Multiple conditions at a single if-statement
+    ```python
+    math_points = 51
+    biology_points = 78
+    physics_points = 56
+    history_points = 72
+
+    my_conditions = [math_points > 50, biology_points > 50,
+                    physics_points > 50, history_points > 50]
+
+    if all(my_conditions):
+        print("Congratulations! You have passed all of the exams.")
+    else:
+        print("I am sorry, but it seems that you have to repeat at least one exam.")
+    ```
+23. Count the number of elements in a string or list using Counter from `collections`
+```python
+from collections import Counter
+
+result = Counter("Banana")
+print(result)  # Counter({'a': 3, 'n': 2, 'B': 1})
+result = Counter([1, 2, 1, 3, 1, 4, 1, 5, 1, 6])
+print(result)  # Counter({1: 5, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1})
+```
+24. Find the most frequent element in a list in just one line
+```python
+my_list = ['1', 1, 0, 'a', 'b', 2, 'a', 'c', 'a']
+print(max(set(my_list), key=my_list.count))  # a
+```
+
 ## Handwrite Notes
 
 ### Vectorization
@@ -519,6 +735,11 @@ person_dict = vars(person)
 # Print the resulting dictionary
 print(person_dict)
 ```
+
+### Difference between `sort()` and `sorted()`
+
+- `sort()` sorts the original list.
+- `sorted()` returns a new sorted list.
 
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3

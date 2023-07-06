@@ -21,6 +21,8 @@
 - [SQL Cheatsheet](SQL/)
 - [AI Cheatsheet](AI/)
 - [Git Cheatsheet](Git/)
+- [Algorithm Cheatsheet](Algorithm/)
+- [Docker Cheatsheet](Docker/)
 
 ## Description
 My big cheatsheet in programming. I am improving and completing this collection of cheatsheet every week by learning new things. I hope you will find it useful.
