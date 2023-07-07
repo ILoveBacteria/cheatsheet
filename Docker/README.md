@@ -4,8 +4,12 @@
 - [Docker Cheatsheet](#docker-cheatsheet)
   - [Table Of Contents](#table-of-contents)
   - [Commands](#commands)
+    - [Basics](#basics)
+    - [Network](#network)
 
 ## Commands
+
+### Basics
 
 - `docker pull <image>`: Pull an image or a repository from a registry
 - `docker images`: List images
@@ -19,3 +23,11 @@
 - `docker rmi <image>`: Remove one or more images
 - `docker exec <container> <command>`: Run a command in a running container
 - `docker run -p5000:5000 <image>`: Run a command in a new container and map port 5000 to 5000
+- `docker build <path>`: Build an image from a Dockerfile
+
+### Network
+
+- `docker network ls`: List networks
+- `docker network create <name>`: Create a network
+- `docker network rm <name>`: Remove a network
+- `docker run --network <name> <image>`: Run a command in a new container and connect it to a network
