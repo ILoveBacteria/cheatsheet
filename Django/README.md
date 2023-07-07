@@ -4,11 +4,22 @@
 
 - [Django Cheatsheet](#django-cheatsheet)
   - [Table Of Contents](#table-of-contents)
+  - [Commands](#commands)
   - [Handwrite Notes](#handwrite-notes)
   - [Forms](#forms)
     - [How to write a minimal form in Django](#how-to-write-a-minimal-form-in-django)
     - [A simple form in Django](#a-simple-form-in-django)
     - [Bound and unbound form instances](#bound-and-unbound-form-instances)
+
+## Commands
+
+- `django-admin startproject mysite`: Create a project named `mysite`
+- `python manage.py runserver`: Run the server
+- `python manage.py startapp polls`: Create an app named `polls`
+- `python manage.py makemigrations polls`: Create migrations for `polls` app
+- `python manage.py migrate`: Apply migrations
+- `python manage.py createsuperuser`: Create a superuser
+- `python manage.py shell`: Open a shell
 
 ## Handwrite Notes
 

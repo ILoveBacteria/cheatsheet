@@ -112,6 +112,8 @@ HTML is easy to learn - You will enjoy it!
 | step        | Specifies the legal number intervals for an input field                    |
 | placeholder | Specifies a short hint that describes the expected value of an input field |
 | value       | Specifies the value of an input field                                      |
+| readonly    | The input field can not be modified                                        |
+| encType     | The form encode type                                                       |
 
 ### Form Validators
 
