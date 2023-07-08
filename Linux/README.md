@@ -177,8 +177,10 @@
  
 ## Handwrite Notes
 
-1- `$ echo moein | hexdump -e '8/1 "%02X " "\n"' | sed 's/ //g'`: Convert a string to hex
+1. `$ echo moein | hexdump -e '8/1 "%02X " "\n"' | sed 's/ //g'`: Convert a string to hex
     - `8/1 "%02X"`: Print 8 bytes per line in hex format
+2. Ubuntu is **Debian** based
+3. Fedora is **Red Hat** based 
 
 ## Files
 

@@ -5,11 +5,15 @@
 - [Django Cheatsheet](#django-cheatsheet)
   - [Table Of Contents](#table-of-contents)
   - [Commands](#commands)
+  - [CSRF Protection](#csrf-protection)
+    - [Setting the token on the AJAX request](#setting-the-token-on-the-ajax-request)
+    - [Dynamic Forms](#dynamic-forms)
   - [Handwrite Notes](#handwrite-notes)
   - [Forms](#forms)
     - [How to write a minimal form in Django](#how-to-write-a-minimal-form-in-django)
     - [A simple form in Django](#a-simple-form-in-django)
     - [Bound and unbound form instances](#bound-and-unbound-form-instances)
+    - [Access form values](#access-form-values)
 
 ## Commands
 
@@ -20,6 +24,37 @@
 - `python manage.py migrate`: Apply migrations
 - `python manage.py createsuperuser`: Create a superuser
 - `python manage.py shell`: Open a shell
+
+## CSRF Protection
+
+1. The CSRF middleware is activated by default in the MIDDLEWARE setting. If you override that setting, remember that `django.middleware.csrf.CsrfViewMiddleware` should come before any view middleware that assume that CSRF attacks have been dealt with.
+
+If you disabled it, which is not recommended, you can use `csrf_protect()` on particular views you want to protect (see below).
+
+2. In any template that uses a POST form, use the csrf_token tag inside the `<form>` element if the form is for an internal URL, e.g.: `<form method="post">{% csrf_token %}`
+This should not be done for POST forms that target external URLs, since that would cause the CSRF token to be leaked, leading to a vulnerability.
+
+3. In the corresponding view functions, ensure that `RequestContext` is used to render the response so that `{% csrf_token %}` will work properly. If you’re using the `render()` function, generic views, or contrib apps, you are covered already since these all use `RequestContext`.
+
+### Setting the token on the AJAX request
+
+```javascript
+const request = new Request(
+    /* URL */,
+    {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin' // Do not send CSRF token to another domain.
+    }
+);
+fetch(request).then(function(response) {
+    // ...
+});
+```
+
+### Dynamic Forms
+
+If your view is not rendering a template containing the `csrf_token` template tag, Django might not set the CSRF token cookie. This is common in cases where forms are dynamically added to the page. To address this case, Django provides a view decorator which forces setting of the cookie: `ensure_csrf_cookie()`.
 
 ## Handwrite Notes
 
@@ -135,6 +170,12 @@ Above codes are available in [gists][4]
 
 - An unbound form has no data associated with it. When rendered to the user, it will be empty or will contain default values.
 - A bound form has submitted data, and hence can be used to tell if that data is valid. If an invalid bound form is rendered, it can include inline error messages telling the user what data to correct.
+
+### Access form values
+
+```python
+v = form.cleaned_data['my_form_field_name']
+```
 
 
 [1]: https://pypi.org/project/django-cors-headers/

@@ -8,6 +8,7 @@
   - [Node Commands](#node-commands)
   - [HTTP Request](#http-request)
     - [Redirect](#redirect)
+  - [Access Cookies](#access-cookies)
   - [Handwrite Notes](#handwrite-notes)
 
 
@@ -71,6 +72,41 @@ fetch(url, { method: 'POST' })
             window.location.href = response.url;
         }
     })
+```
+
+## Access Cookies
+
+[js-cookie](https://github.com/js-cookie/js-cookie): A simple, lightweight JavaScript API for handling browser cookies
+
+Create a cookie, valid across the entire site:
+
+```javascript
+Cookies.set('name', 'value')
+```
+
+Create a cookie that expires 7 days from now, valid across the entire site:
+
+```javascript
+Cookies.set('name', 'value', { expires: 7 })
+```
+
+Create an expiring cookie, valid to the path of the current page:
+
+```javascript
+Cookies.set('name', 'value', { expires: 7, path: '' })
+```
+
+Read cookie:
+
+```javascript
+Cookies.get('name') // => 'value'
+Cookies.get('nothing') // => undefined
+```
+
+Read all visible cookies:
+
+```javascript
+Cookies.get() // => { name: 'value' }
 ```
 
 ## Handwrite Notes
