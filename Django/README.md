@@ -8,12 +8,22 @@
   - [CSRF Protection](#csrf-protection)
     - [Setting the token on the AJAX request](#setting-the-token-on-the-ajax-request)
     - [Dynamic Forms](#dynamic-forms)
+    - [Decorators](#decorators)
   - [Handwrite Notes](#handwrite-notes)
   - [Forms](#forms)
     - [How to write a minimal form in Django](#how-to-write-a-minimal-form-in-django)
     - [A simple form in Django](#a-simple-form-in-django)
     - [Bound and unbound form instances](#bound-and-unbound-form-instances)
     - [Access form values](#access-form-values)
+  - [Authentication](#authentication)
+    - [Authentication Settings](#authentication-settings)
+    - [Authentication Views](#authentication-views)
+    - [is\_authenticated](#is_authenticated)
+    - [How to log a user in](#how-to-log-a-user-in)
+    - [How to log a user out](#how-to-log-a-user-out)
+    - [Decorators](#decorators-1)
+  - [Django Admin](#django-admin)
+  - [`HttpRequest`](#httprequest)
 
 ## Commands
 
@@ -29,10 +39,16 @@
 
 1. The CSRF middleware is activated by default in the MIDDLEWARE setting. If you override that setting, remember that `django.middleware.csrf.CsrfViewMiddleware` should come before any view middleware that assume that CSRF attacks have been dealt with.
 
-If you disabled it, which is not recommended, you can use `csrf_protect()` on particular views you want to protect (see below).
+    If you disabled it, which is not recommended, you can use `csrf_protect()` on particular views you want to protect (see below).
 
-2. In any template that uses a POST form, use the csrf_token tag inside the `<form>` element if the form is for an internal URL, e.g.: `<form method="post">{% csrf_token %}`
-This should not be done for POST forms that target external URLs, since that would cause the CSRF token to be leaked, leading to a vulnerability.
+2. In any template that uses a POST form, use the csrf_token tag inside the `<form>` element if the form is for an internal URL, e.g.: 
+    ```html
+    {% raw %}
+    <form method="post">{% csrf_token %}
+    {% endraw %}
+    ```
+
+    This should not be done for POST forms that target external URLs, since that would cause the CSRF token to be leaked, leading to a vulnerability.
 
 3. In the corresponding view functions, ensure that `RequestContext` is used to render the response so that `{% csrf_token %}` will work properly. If you’re using the `render()` function, generic views, or contrib apps, you are covered already since these all use `RequestContext`.
 
@@ -55,6 +71,13 @@ fetch(request).then(function(response) {
 ### Dynamic Forms
 
 If your view is not rendering a template containing the `csrf_token` template tag, Django might not set the CSRF token cookie. This is common in cases where forms are dynamically added to the page. To address this case, Django provides a view decorator which forces setting of the cookie: `ensure_csrf_cookie()`.
+
+### Decorators
+
+- `csrf_exempt(view)`: This decorator marks a view as being exempt from the protection ensured by the middleware.
+- `csrf_protect(view)`: Decorator that provides the protection of CsrfViewMiddleware to a view.
+- `requires_csrf_token(view)`: Normally the csrf_token template tag will not work if CsrfViewMiddleware.process_view or an equivalent like csrf_protect has not run. The view decorator requires_csrf_token can be used to ensure the template tag does work. This decorator works similarly to csrf_protect, but never rejects an incoming request.
+- `ensure_csrf_cookie(view)`: This decorator forces a view to send the CSRF cookie.
 
 ## Handwrite Notes
 
@@ -177,6 +200,120 @@ Above codes are available in [gists][4]
 v = form.cleaned_data['my_form_field_name']
 ```
 
+## Authentication
+
+### Authentication Settings
+
+- AUTH_USER_MODEL Default: 'auth.User'
+
+- LOGIN_REDIRECT_URL Default: '/accounts/profile/'
+
+- LOGIN_URL Default: '/accounts/login/'
+
+- LOGOUT_REDIRECT_URL Default: None
+
+### Authentication Views
+
+```python
+urlpatterns = [
+    path("accounts/", include("django.contrib.auth.urls")),
+]
+```
+This will include the following URL patterns:
+
+```
+accounts/login/ [name='login']
+accounts/logout/ [name='logout']
+accounts/password_change/ [name='password_change']
+accounts/password_change/done/ [name='password_change_done']
+accounts/password_reset/ [name='password_reset']
+accounts/password_reset/done/ [name='password_reset_done']
+accounts/reset/<uidb64>/<token>/ [name='password_reset_confirm']
+accounts/reset/done/ [name='password_reset_complete']
+```
+
+If you want more control over your URLs, you can reference a specific view in your URLconf:
+
+```python
+urlpatterns = [
+    path(
+        "change-password/",
+        auth_views.PasswordChangeView.as_view(template_name="change-password.html"),
+    ),
+]
+```
+
+### is_authenticated
+
+```python
+if request.user.is_authenticated:
+    # Do something for authenticated users.
+else:
+    # Do something for anonymous users.
+```
+
+### How to log a user in
+
+To log a user in, from a view, use `login()`. It takes an `HttpRequest` object and a `User` object. `login()` saves the user’s ID in the session, using Django’s session framework.
+
+```python
+from django.contrib.auth import authenticate, login
+
+def my_view(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        ...
+    else:
+        # Return an 'invalid login' error me
+```
+
+### How to log a user out
+
+```python
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+```
+
+### Decorators
+
+- `login_required()`: If the user isn’t logged in, redirect to `settings.LOGIN_URL`, passing the current absolute path in the query string. Example: `@login_required(login_url='/accounts/login/')`
+- `user_passes_test()`: Decorator for views that checks that the user passes the given test, redirecting to the log-in page if necessary. The test should be a callable that takes the user object and returns True if the user passes.
+    ```python
+    from django.contrib.auth.decorators import user_passes_test
+
+    @user_passes_test(lambda user: user.is_staff)
+    def staff_place(request):
+        return HttpResponse("Employees must wash hands", content_type="text/plain")
+    ```
+
+## Django Admin
+
+The Django admin provides a quick way to modify model objects. Modify core/admin.py to register the Blog object:
+
+```python
+from django.contrib import admin
+from core.models import Blog
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    pass
+```
+
+## `HttpRequest`
+
+| Attribute | Description                | Examples                         |
+| --------- | -------------------------- | -------------------------------- |
+| scheme    | URL scheme                 | "http" or "https"                |
+| path      | Path portion of the URL    | "/music/bands/"                  |
+| method    | HTTP method used           | "GET" or "POST"                  |
+| GET       | Query string parameters    | `<QueryDict: {'band_id':['123']}>` |
+| POST      | Fields from an HTTP POST   | `<QueryDict: {'name':['Bob']}>`    |
+| user      | Object describing the user |
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
