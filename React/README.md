@@ -8,7 +8,10 @@
   - [Component Lifecycle](#component-lifecycle)
   - [Precompile](#precompile)
   - [Webpack](#webpack)
+    - [Config file with multiple entry points:](#config-file-with-multiple-entry-points)
+    - [Parallel Multiple Export](#parallel-multiple-export)
   - [JSX](#jsx)
+  - [Hooks](#hooks)
   - [Handwrite Notes](#handwrite-notes)
 
 ## Design Patterns
@@ -89,7 +92,7 @@ class Menu extends React.Component {
 
 ## Webpack
 
-Config file with multiple entry points:
+### Config file with multiple entry points:
 
 ```javascript
 const path = require('path');
@@ -106,12 +109,45 @@ module.exports = {
 };
 ```
 
+### Parallel Multiple Export
+
+In case you export multiple configurations, you can use the parallelism option on the configuration array to specify the maximum number of compilers that will compile in parallel.
+
+```javascript
+module.exports = [
+  {
+    //config-1
+  },
+  {
+    //config-2
+  },
+];
+module.exports.parallelism = 1;
+```
+
 ## JSX
 
 - **Conditional:** `&&` is commonly used to render an element based on a boolean condition.
 ```jsx
 {condition && <Element />}
 {condition && <p>A paragraph</p>}
+```
+
+## Hooks
+
+How to use hooks with the previous state:
+
+```javascript
+function Counter({ initialCount }) {
+  const [count, setCount] = useState(initialCount);
+  return (
+    <div>
+      Count: {count}
+      <button onClick={() => setCount(initialCount)}>Reset</button>
+      <button onClick={() => setCount((prevCount) => prevCount - 1)}>-</button>
+    </div>
+  );
+}
 ```
 
 ## Handwrite Notes

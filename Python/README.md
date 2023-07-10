@@ -11,6 +11,9 @@
     - [`toml` file](#toml-file)
   - [Pandas](#pandas)
   - [Matplot](#matplot)
+  - [NumPy](#numpy)
+    - [Basics](#basics)
+    - [How to create a basic array](#how-to-create-a-basic-array)
   - [Unittest](#unittest)
   - [Functions that act on iterables](#functions-that-act-on-iterables)
   - [Iterable Objects](#iterable-objects)
@@ -128,17 +131,16 @@ DB = "xiaoxu_database"
 - Access a single value for a row/column pair by integer position: `DataFrame.iat`
 - Add a new row to DataFrame: `df.loc[len(df.index)] = ['Amy', 89, 93]`
 - You can **filter** a pandas DataFrame with an object column and values of column are **list** by using the `.apply()` method. Here is an example:
+    ```python
+    import pandas as pd
 
-```python
-import pandas as pd
-
-df = pd.DataFrame({'A': [[1, 2], [3, 4], [5, 6]], 'B': [4, 5, 6]})
-df_filtered = df[df['A'].apply(lambda x: 2 in x)]
-```
+    df = pd.DataFrame({'A': [[1, 2], [3, 4], [5, 6]], 'B': [4, 5, 6]})
+    df_filtered = df[df['A'].apply(lambda x: 2 in x)]
+    ```
 
 ## Matplot
 
-- A beautiful plotting
+A beautiful plotting
 
 ```python
 complex, real, imag = fourier_transform(pulse_signal, t)
@@ -151,6 +153,48 @@ ax2.set_title('imag part')
 
 for ax in fig.get_axes():
     ax.label_outer()
+```
+
+## NumPy
+
+### Basics
+
+Create a NumPy array:
+
+```python
+a = np.array([1, 2, 3, 4, 5, 6])
+```
+
+The `rank` of the array is the number of dimensions. The `shape` of the array is a tuple of integers giving the size of the array along each dimension.
+
+In NumPy, dimensions are called **axes**. This means that if you have a 2D array that looks like this:
+```python
+[[0., 0., 0.],
+ [1., 1., 1.]]
+```
+Your array has 2 axes. The first axis has a length of 2 and the second axis has a length of 3.
+
+### How to create a basic array
+
+`np.array()`, `np.zeros()`, `np.ones()`, `np.empty()`, `np.arange()`, `np.linspace()`
+
+```python
+np.arange(2, 9, 2)  # array([2, 4, 6, 8])
+```
+
+You can also use `np.linspace()` to create an array with values that are spaced linearly in a specified interval:
+```python
+np.linspace(0, 10, num=5)  # array([ 0. ,  2.5,  5. ,  7.5, 10. ])
+```
+
+The default data type is floating point (`np.float64`), you can explicitly specify which data type you want using the `dtype` keyword.
+```python
+x = np.ones(2, dtype=np.int64)
+```
+
+To convert the **type** of an array, use the `.astype()`
+```python
+z.astype(float)  # array([0.,  1.,  2.])
 ```
 
 ## Unittest
