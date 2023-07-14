@@ -6,6 +6,7 @@
   - [Commands](#commands)
     - [Basics](#basics)
     - [Network](#network)
+  - [Dockerfile](#dockerfile)
 
 ## Commands
 
@@ -31,3 +32,16 @@
 - `docker network create <name>`: Create a network
 - `docker network rm <name>`: Remove a network
 - `docker run --network <name> <image>`: Run a command in a new container and connect it to a network
+
+## Dockerfile
+
+```Dockerfile
+FROM python
+WORKDIR /usr/src/app
+COPY . .
+EXPOSE 3000
+CMD [ "python", "main.py" ]
+```
+
+`CMD`: Tells the docker to what to do when the image runs.
+`EXPOSE`: Exposing port 3000 informs Docker which port the container is listening on at runtime.

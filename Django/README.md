@@ -24,6 +24,14 @@
     - [Decorators](#decorators-1)
   - [Django Admin](#django-admin)
   - [`HttpRequest`](#httprequest)
+  - [URL Dispatcher](#url-dispatcher)
+    - [Reverse](#reverse)
+  - [Flash Messages](#flash-messages)
+    - [Add and use message](#add-and-use-message)
+    - [Message\_TAGS](#message_tags)
+  - [Template Language](#template-language)
+    - [Filter](#filter)
+    - [url](#url)
 
 ## Commands
 
@@ -81,9 +89,9 @@ If your view is not rendering a template containing the `csrf_token` template ta
 
 ## Handwrite Notes
 
-1- `CORS`: When site *A* wants to access content from another site *B*, it is called a Cross-Origin request. As it is disabled for security reasons, *B* sends an `Access-Control-Allow-Origin` header in the response. By default, a domain is not allowed to access an API hosted on another domain. The `Origin` header should be in request.
+1. `CORS`: When site *A* wants to access content from another site *B*, it is called a Cross-Origin request. As it is disabled for security reasons, *B* sends an `Access-Control-Allow-Origin` header in the response. By default, a domain is not allowed to access an API hosted on another domain. The `Origin` header should be in request.
 
-[django-cors-headers][1] is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS).
+    [django-cors-headers][1] is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS).
 
 ## Forms
 
@@ -306,14 +314,87 @@ class BlogAdmin(admin.ModelAdmin):
 
 ## `HttpRequest`
 
-| Attribute | Description                | Examples                         |
-| --------- | -------------------------- | -------------------------------- |
-| scheme    | URL scheme                 | "http" or "https"                |
-| path      | Path portion of the URL    | "/music/bands/"                  |
-| method    | HTTP method used           | "GET" or "POST"                  |
+| Attribute | Description                | Examples                           |
+| --------- | -------------------------- | ---------------------------------- |
+| scheme    | URL scheme                 | "http" or "https"                  |
+| path      | Path portion of the URL    | "/music/bands/"                    |
+| method    | HTTP method used           | "GET" or "POST"                    |
 | GET       | Query string parameters    | `<QueryDict: {'band_id':['123']}>` |
 | POST      | Fields from an HTTP POST   | `<QueryDict: {'name':['Bob']}>`    |
-| user      | Object describing the user |
+| user      | Object describing the user |                                    |
+
+## URL Dispatcher
+
+### Reverse
+
+```python
+from news import views
+
+path("archive/", views.archive, name="news-archive")
+```
+
+you can use any of the following to reverse the URL:
+```python
+# using the named URL
+reverse("news-archive")
+```
+
+## Flash Messages
+
+### Add and use message
+
+To add a message, call:
+
+```python
+from django.contrib import messages
+
+messages.add_message(request, messages.INFO, "Hello world.")
+```
+
+```html
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+```
+
+### Message_TAGS
+
+Default:
+```python
+{
+    messages.DEBUG: "debug",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "error",
+}
+```
+
+Override:
+```python
+from django.contrib.messages import constants as message_constants
+
+MESSAGE_TAGS = {message_constants.INFO: ""}
+```
+
+## Template Language
+
+[Reference1](https://docs.djangoproject.com/en/4.2/ref/templates/language)
+[Reference2](https://docs.djangoproject.com/en/4.2/ref/templates/builtins)
+
+### Filter
+
+- `{{ value|default:"hello" }}`
+
+### url
+
+```html
+{% url 'some-url-name' arg1=v1 arg2=v2 %}
+```
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
