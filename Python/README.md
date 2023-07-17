@@ -34,6 +34,7 @@
   - [Logging](#logging)
     - [Log Levels](#log-levels)
     - [Logging from multiple modules to file](#logging-from-multiple-modules-to-file)
+    - [logging to `stderr`](#logging-to-stderr)
   - [Python Pro Tips](#python-pro-tips)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
@@ -539,6 +540,16 @@ INFO:root:Doing something
 INFO:root:Finished
 ```
 
+### logging to `stderr`
+
+The simplest way to log to stdout using basicConfig:
+```python
+import logging
+import sys
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+```
+
 ## Python Pro Tips
 
 1. for-else
@@ -711,19 +722,19 @@ INFO:root:Finished
         print("I am sorry, but it seems that you have to repeat at least one exam.")
     ```
 23. Count the number of elements in a string or list using Counter from `collections`
-```python
-from collections import Counter
+    ```python
+    from collections import Counter
 
-result = Counter("Banana")
-print(result)  # Counter({'a': 3, 'n': 2, 'B': 1})
-result = Counter([1, 2, 1, 3, 1, 4, 1, 5, 1, 6])
-print(result)  # Counter({1: 5, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1})
-```
+    result = Counter("Banana")
+    print(result)  # Counter({'a': 3, 'n': 2, 'B': 1})
+    result = Counter([1, 2, 1, 3, 1, 4, 1, 5, 1, 6])
+    print(result)  # Counter({1: 5, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1})
+    ```
 24. Find the most frequent element in a list in just one line
-```python
-my_list = ['1', 1, 0, 'a', 'b', 2, 'a', 'c', 'a']
-print(max(set(my_list), key=my_list.count))  # a
-```
+    ```python
+    my_list = ['1', 1, 0, 'a', 'b', 2, 'a', 'c', 'a']
+    print(max(set(my_list), key=my_list.count))  # a
+    ```
 
 ## Handwrite Notes
 

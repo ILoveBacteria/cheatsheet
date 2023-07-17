@@ -10,6 +10,8 @@
   - [Webpack](#webpack)
     - [Config file with multiple entry points:](#config-file-with-multiple-entry-points)
     - [Parallel Multiple Export](#parallel-multiple-export)
+    - [Loaders](#loaders)
+    - [Webpack and Tailwindcss](#webpack-and-tailwindcss)
   - [JSX](#jsx)
   - [Hooks](#hooks)
   - [Handwrite Notes](#handwrite-notes)
@@ -124,6 +126,30 @@ module.exports = [
 ];
 module.exports.parallelism = 1;
 ```
+
+### Loaders
+
+Webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+
+1. The test property identifies which file or files should be transformed.
+2. The use property indicates which loader should be used to do the transforming.
+
+```javascript
+const path = require('path');
+
+module.exports = {
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+```
+
+### Webpack and Tailwindcss
+
+Read this [doc](https://gist.github.com/bradtraversy/1c93938c1fe4f10d1e5b0532ae22e16a)
 
 ## JSX
 
