@@ -1,5 +1,6 @@
 # Django Cheatsheet
 
+{% raw %}
 ## Table Of Contents
 
 - [Django Cheatsheet](#django-cheatsheet)
@@ -51,9 +52,7 @@
 
 2. In any template that uses a POST form, use the csrf_token tag inside the `<form>` element if the form is for an internal URL, e.g.: 
     ```html
-    {% raw %}
     <form method="post">{% csrf_token %}
-    {% endraw %}
     ```
 
     This should not be done for POST forms that target external URLs, since that would cause the CSRF token to be leaked, leading to a vulnerability.
@@ -101,7 +100,6 @@ If your view is not rendering a template containing the `csrf_token` template ta
 
 ```html
 <!-- polls/templates/polls/detail.html -->
-{% raw %}
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 <fieldset>
@@ -114,7 +112,6 @@ If your view is not rendering a template containing the `csrf_token` template ta
 </fieldset>
 <input type="submit" value="Vote">
 </form>
-{% endraw %}
 ```
 
 ```python
@@ -160,13 +157,11 @@ class NameForm(forms.Form):
 
 ```html
 <!-- index.html -->
-{% raw %}
 <form action="/your-name/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
 </form>
-{% endraw %}
 ```
 
 ```python
@@ -401,3 +396,4 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 [3]: https://docs.djangoproject.com/en/4.1/topics/forms/#building-a-form-in-django
 [4]: https://gist.github.com/ILoveBacteria/55b374670d65ceeb38e0e7c789bcf6af
 [5]: https://gist.github.com/ILoveBacteria/b343c8ad8b9fa162db2f7554b1fa0fd1
+{% endraw %}
