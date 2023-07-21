@@ -36,11 +36,13 @@
     - [Logging from multiple modules to file](#logging-from-multiple-modules-to-file)
     - [logging to `stderr`](#logging-to-stderr)
   - [Python Pro Tips](#python-pro-tips)
+  - [String Case Methods](#string-case-methods)
   - [Handwrite Notes](#handwrite-notes)
     - [Vectorization](#vectorization)
     - [Difference `__repr__` and `__str__`](#difference-__repr__-and-__str__)
     - [Object to dict](#object-to-dict)
     - [Difference between `sort()` and `sorted()`](#difference-between-sort-and-sorted)
+    - [Difference between two dates](#difference-between-two-dates)
 
 ## Pipenv
 
@@ -736,6 +738,12 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     print(max(set(my_list), key=my_list.count))  # a
     ```
 
+## String Case Methods
+
+1. `capitalize()`: Capitalize the first character of a string.
+2. `istitle()`: Check if the first character of each word is capitalized.
+3. `center()`
+
 ## Handwrite Notes
 
 ### Vectorization
@@ -795,6 +803,19 @@ print(person_dict)
 
 - `sort()` sorts the original list.
 - `sorted()` returns a new sorted list.
+
+### Difference between two dates
+
+The `d2 - d1` is `timedelta` object, which has a `days` attribute. Not other attributes like `months` or `years`!
+
+```python
+from datetime import datetime
+
+def days_between(d1, d2):
+    d1 = datetime.strptime(d1, "%Y-%m-%d")
+    d2 = datetime.strptime(d2, "%Y-%m-%d")
+    return abs((d2 - d1).days)
+```
 
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
