@@ -16,6 +16,7 @@
     - [A simple form in Django](#a-simple-form-in-django)
     - [Bound and unbound form instances](#bound-and-unbound-form-instances)
     - [Access form values](#access-form-values)
+    - [Custom Validators](#custom-validators)
   - [Authentication](#authentication)
     - [Authentication Settings](#authentication-settings)
     - [Authentication Views](#authentication-views)
@@ -24,6 +25,9 @@
     - [How to log a user out](#how-to-log-a-user-out)
     - [Decorators](#decorators-1)
   - [Django Admin](#django-admin)
+    - [Register Models](#register-models)
+    - [Customizing Models](#customizing-models)
+    - [Adding Search Box](#adding-search-box)
   - [`HttpRequest`](#httprequest)
   - [URL Dispatcher](#url-dispatcher)
     - [Reverse](#reverse)
@@ -33,6 +37,9 @@
   - [Template Language](#template-language)
     - [Filter](#filter)
     - [url](#url)
+  - [Models](#models)
+    - [Choices](#choices)
+    - [Commands](#commands-1)
 
 ## Commands
 
@@ -203,17 +210,50 @@ Above codes are available in [gists][4]
 v = form.cleaned_data['my_form_field_name']
 ```
 
+### Custom Validators
+
+A validator is a callable object or function that takes a value and returns nothing if the value is valid or raises a `ValidationError` if not
+
+```python
+slug = forms.CharField(validators=[validators.validate_slug])
+```
+
+The `clean_<fieldname>()` method is called on a form subclass – where `<fieldname>` is replaced with the name of the form field attribute. This method does any cleaning that is specific to that particular attribute, unrelated to the type of field that it is. This method is not passed any parameters. You will need to look up the value of the field in `self.cleaned_data` and remember that it will be a Python object at this point, not the original string submitted in the form (it will be in cleaned_data because the general field `clean()` method, above, has already cleaned the data once).
+
+```python
+#forms.py
+from django.forms import ModelForm, ValidationError  # Import ValidationError
+from .models import Palindrome
+
+class PalindromeForm(ModelForm):
+    def clean_word(self):
+        # Get the user submitted word from the cleaned_data dictionary
+        data = self.cleaned_data["word"]
+
+        # Check if the word is the same forward and backward
+        if data != "".join(reversed(data)):
+            # If not, raise an error
+            raise ValidationError("The word is not a palindrome")
+
+        # Return data even though it was not modified
+        return data
+
+    class Meta:
+        model = Palindrome
+        fields = ["word"]
+```
+
 ## Authentication
 
 ### Authentication Settings
 
-- AUTH_USER_MODEL Default: 'auth.User'
+- AUTH_USER_MODEL Default: `auth.User`
 
-- LOGIN_REDIRECT_URL Default: '/accounts/profile/'
+- LOGIN_REDIRECT_URL Default: `/accounts/profile/`
 
-- LOGIN_URL Default: '/accounts/login/'
+- LOGIN_URL Default: `/accounts/login/`
 
-- LOGOUT_REDIRECT_URL Default: None
+- LOGOUT_REDIRECT_URL Default: `None`
 
 ### Authentication Views
 
@@ -296,6 +336,8 @@ def logout_view(request):
 
 ## Django Admin
 
+### Register Models
+
 The Django admin provides a quick way to modify model objects. Modify core/admin.py to register the Blog object:
 
 ```python
@@ -305,6 +347,51 @@ from core.models import Blog
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
     pass
+```
+
+### Customizing Models
+
+You can customize change list pages in far more ways than just modifying an object’s string representation. The `list_display` attribute of an `admin.ModelAdmin` object specifies what columns are shown in the change list.
+
+```python
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ("last_name", "first_name")
+```
+
+Adding the `ordering` attribute will default all queries on Person to be ordered by last_name then first_name.
+
+```python
+class Person(models.Model):
+    # ...
+    class Meta:
+        ordering = ("last_name", "first_name")
+    # ...
+```
+
+The `list_display` tuple can reference any attribute of the object being listed. It can also reference a method in the admin.ModelAdmin itself. Modify `PersonAdmin` again:
+
+```python
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ("last_name", "first_name", "show_average")
+
+    def show_average(self, obj):
+        from django.db.models import Avg
+        result = Grade.objects.filter(person=obj).aggregate(Avg("grade"))
+        return result["grade__avg"]
+```
+
+In the above code, you add a column to the admin that displays each student’s grade average. `show_average()` is called once for each object displayed in the list.
+
+### Adding Search Box
+
+Anything the user types in the search box is used in an `OR` clause of the fields filtering the `QuerySet`. By default, each search parameter is surrounded by `%` signs, meaning if you search for r, then any word with an r inside will appear in the results. You can be more precise by specifying a `__` modifier on the search field.
+
+```python
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    search_fields = ("last_name__startswith", )
 ```
 
 ## `HttpRequest`
@@ -390,6 +477,30 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 ```html
 {% url 'some-url-name' arg1=v1 arg2=v2 %}
 ```
+
+## Models
+
+### Choices
+
+The first element in each tuple is the value that will be stored in the database. The second element is displayed by the field’s form widget.
+
+```python
+YEAR_IN_SCHOOL_CHOICES = [
+    ("FR", "Freshman"),
+    ("SO", "Sophomore"),
+    ("JR", "Junior"),
+    ("SR", "Senior"),
+    ("GR", "Graduate"),
+]
+```
+
+### Commands
+
+- `python manage.py makemigrations`: Create migrations for changes in models
+- `python manage.py migrate`: Apply migrations
+- `Model.objects.all()`: Get all objects
+- `Model.objects.filter()`: Get objects by filter
+- `Model.objects.get()`: Get a single object
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
