@@ -29,6 +29,8 @@
     - [Customizing Models](#customizing-models)
     - [Adding Search Box](#adding-search-box)
   - [`HttpRequest`](#httprequest)
+  - [Http Methods](#http-methods)
+    - [Decorators](#decorators-2)
   - [URL Dispatcher](#url-dispatcher)
     - [Reverse](#reverse)
   - [Flash Messages](#flash-messages)
@@ -36,10 +38,23 @@
     - [Message\_TAGS](#message_tags)
   - [Template Language](#template-language)
     - [Filter](#filter)
+    - [Custom Template Tags and Filters](#custom-template-tags-and-filters)
+      - [First Step](#first-step)
+      - [Load Modules](#load-modules)
+      - [Register](#register)
     - [url](#url)
   - [Models](#models)
     - [Choices](#choices)
     - [Commands](#commands-1)
+    - [Field Type Parameters](#field-type-parameters)
+    - [Deep Copy](#deep-copy)
+    - [Manager](#manager)
+      - [Manager Names](#manager-names)
+      - [Extra Manager](#extra-manager)
+      - [Modifying a manager’s initial `QuerySet`](#modifying-a-managers-initial-queryset)
+      - [Default managers](#default-managers)
+    - [Field lookups](#field-lookups)
+      - [Compare Operators](#compare-operators)
 
 ## Commands
 
@@ -405,6 +420,27 @@ class PersonAdmin(admin.ModelAdmin):
 | POST      | Fields from an HTTP POST   | `<QueryDict: {'name':['Bob']}>`    |
 | user      | Object describing the user |                                    |
 
+## Http Methods
+
+### Decorators
+
+The decorators in `django.views.decorators.http` can be used to restrict access to views based on the request method. These decorators will return a `django.http.HttpResponseNotAllowed` if the conditions are not met.
+
+1. `require_http_methods(request_method_list)`
+    ```python
+    from django.views.decorators.http import require_http_methods
+
+    @require_http_methods(["GET", "POST"])
+    def my_view(request):
+        # I can assume now that only GET or POST requests make it this far
+        pass
+    ```
+2. `require_GET()`
+3. `require_POST()`
+4. `require_safe()`
+   
+    Decorator to require that a view only accepts the `GET` and `HEAD` methods. These methods are commonly considered “safe” because they should not have the significance of taking an action other than retrieving the requested resource.
+
 ## URL Dispatcher
 
 ### Reverse
@@ -472,6 +508,71 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 
 - `{{ value|default:"hello" }}`
 
+### Custom Template Tags and Filters
+
+#### First Step
+
+```
+polls/
+    __init__.py
+    models.py
+    templatetags/
+        __init__.py
+        poll_extras.py
+    views.py
+```
+
+#### Load Modules
+
+In every templates that we want to use our custom tags:
+
+```html
+{% load poll_extras %}
+```
+
+#### Register
+
+To be a valid tag library, the module must contain a module-level variable named `register` that is a `template.Library` instance, in which all the tags and filters are registered. So, near the top of your module, put the following:
+
+```python
+from django import template
+
+register = template.Library()
+```
+
+Custom filters are Python functions that take one or two arguments:
+
+- The value of the variable (input) – not necessarily a string.
+- The value of the argument – this can have a default value, or be left out altogether.
+For example, in the filter `{{ var|foo:"bar" }}`, the filter foo would be passed the variable `var` and the argument `bar`.
+
+Once you’ve written your filter definition, you need to register it with your Library instance, to make it available to Django’s template language:
+```python
+register.filter("cut", cut)
+register.filter("lower", lower)
+```
+
+The `Library.filter()` method takes two arguments:
+
+- The name of the filter – a string.
+- The compilation function – a Python function (not the name of the function as a string).
+
+You can use `register.filter()` as a decorator instead:
+
+```python
+@register.filter(name="cut")
+def cut(value, arg):
+    return value.replace(arg, "")
+
+
+@register.filter
+def lower(value):
+    return value.lower()
+```
+If you leave off the name argument, as in the second example above, Django will use the function’s name as the filter name.
+
+Finally, `register.filter()` also accepts three keyword arguments, `is_safe`, `needs_autoescape`, and `expects_localtime`. 
+
 ### url
 
 ```html
@@ -501,6 +602,88 @@ YEAR_IN_SCHOOL_CHOICES = [
 - `Model.objects.all()`: Get all objects
 - `Model.objects.filter()`: Get objects by filter
 - `Model.objects.get()`: Get a single object
+
+### Field Type Parameters
+
+- `editable`: Default `True`
+
+### Deep Copy
+
+Just change the primary key of your object and run save().
+
+```python
+obj = Foo.objects.get(pk=<some_existing_pk>)
+obj.pk = None
+obj.save()
+```
+
+### Manager
+
+#### Manager Names
+
+Using this example model, `Person.objects` will generate an `AttributeError` exception, but `Person.people.all()` will provide a list of all `Person` objects.
+
+```python
+from django.db import models
+
+
+class Person(models.Model):
+    # ...
+    people = models.Manager()
+```
+
+#### Extra Manager
+
+Adding extra Manager methods is the preferred way to add **table-level** functionality to your models. (For **row-level** functionality – i.e., functions that act on a single instance of a model object – use Model methods, not custom Manager methods.)
+
+For example, this custom Manager adds a method with_counts():
+```python
+from django.db import models
+from django.db.models.functions import Coalesce
+
+
+class PollManager(models.Manager):
+    def with_counts(self):
+        return self.annotate(num_responses=Coalesce(models.Count("response"), 0))
+
+
+class OpinionPoll(models.Model):
+    question = models.CharField(max_length=200)
+    objects = PollManager()
+```
+
+#### Modifying a manager’s initial `QuerySet`
+
+You can override a Manager’s base `QuerySet` by overriding the `Manager.get_queryset()` method.
+```python
+class DahlBookManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(author="Roald Dahl")
+```
+
+#### Default managers
+
+Django interprets the first Manager defined in a class as the **default** Manager. You can specify a custom default manager using `Meta.default_manager_name`.
+
+### Field lookups
+
+Field lookups are how you specify the meat of an SQL `WHERE` clause. They’re specified as keyword arguments to the `QuerySet` methods `filter()`, `exclude()` and `get()`.
+
+#### Compare Operators
+
+1. `gt`
+    Example:
+    ```python
+    Entry.objects.filter(id__gt=4)
+    ```
+    SQL equivalent:
+    ```python
+    SELECT ... WHERE id > 4;
+    ```
+
+2. `gte`
+3. `lt`
+4. `lte`
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
