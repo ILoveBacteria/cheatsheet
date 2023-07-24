@@ -4,6 +4,11 @@
 
 - [Linux Cheatsheet](#linux-cheatsheet)
   - [Table Of Contents](#table-of-contents)
+  - [LPIC](#lpic)
+    - [101.1 Determine and configure hardware settings](#1011-determine-and-configure-hardware-settings)
+    - [101.2 Boot the System](#1012-boot-the-system)
+    - [101.3 Change runlevels / boot targets and shutdown or reboot the system](#1013-change-runlevels--boot-targets-and-shutdown-or-reboot-the-system)
+    - [102.1 Design hard disk layout](#1021-design-hard-disk-layout)
   - [Environment Variables](#environment-variables)
   - [Linux Commands](#linux-commands)
     - [`ls`](#ls)
@@ -29,6 +34,106 @@
     - [`file`](#file)
   - [Handwrite Notes](#handwrite-notes)
   - [Files](#files)
+
+## LPIC
+
+### 101.1 Determine and configure hardware settings
+
+*Source: https://linux1st.com/1011-determine-and-configure-hardware-settings.html*
+
+- **sysfs** is a pseudo file system provided by the Linux kernel
+- **udev** (userspace `/dev`) is a device manager for the Linux kernel.
+- **D-Bus** is a message bus system, a simple way for applications to talk to one another.
+- **proc** is where the Kernel keeps its settings and properties.
+  - `/proc/cpuinfo` or `meminfo`
+- `lsusb`, `lspci`, `lsblk`, `lshw`, `lsmod`
+- Remove and add modules:
+  ```shell
+  $ rmmod iwlwifi
+  $ modprobe iwlwifi
+  ```
+
+### 101.2 Boot the System
+
+*Source: https://linux1st.com/1012-boot-the-system.html*
+
+- You can check `/sys/firmware/efi` or `/boot/efi` to see if you are using a **UEFI** system or not.
+- `journalctl -k` to check Kernel logs or use `journalctl -b` to check for boot logs
+```shell
+$ systemctl list-units
+$ systemctl list-units --type=target
+$ systemctl cat graphical.target
+$ systemctl stop sshd
+$ systemctl start sshd
+$ systemctl status sshd
+$ systemctl enable sshd
+```
+
+### 101.3 Change runlevels / boot targets and shutdown or reboot the system
+
+*Source: https://linux1st.com/1013-change-runlevels-boot-targets-and-shutdown-or-reboot-the-system.html*
+
+1. `rescue`: Local file systems are mounted, there is no networking, and only root user (maintenance mode)
+2. `emergency`: Only the root file system and in read-only mode, No networking and only root (maintenance mode)
+3. `reboot`
+4. `halt`: Stops all processes and halts CPU activities
+5. `poweroff`: Like halt but also sends an ACPI shutdown signal (No lights!)
+```shell  
+$ systemctl isolate emergency
+$ systemctl is-system-running
+maintenance
+```
+`shutdown` command:
+
+- Default is a 1-minute delay and then going to runlevel 1
+- `-h` will halt the system
+- `-r` will reboot the system
+- Time is `hh:mm` or n (minutes) or now
+- Whatever you add, will be broadcasted to logged-in users using the wall command
+- If the command is running, `ctrl+c` or the `shutdown -c` will cancel it
+
+**Notifying users:**
+- `wall`: Sending wall messages to logged-in users
+- `who -T` will show `mesg` status.
+
+### 102.1 Design hard disk layout
+
+*Source: https://linux1st.com/1021-design-hard-disk-layout.html*
+
+| Directory | Description                                       |
+| --------- | ------------------------------------------------- |
+| bin       | Essential command binaries                        |
+| boot      | Static files of the boot loader                   |
+| dev       | Device files                                      |
+| etc       | Host-specific system configuration                |
+| home      | Home directory of the users                       |
+| lib       | Essential shared libraries and kernel modules     |
+| media     | Mount point for removable media                   |
+| mnt       | Mount point for mounting a filesystem temporarily |
+| opt       | Add-on application software packages              |
+| root      | Home directory of the root user                   |
+| sbin      | Essential system binaries                         |
+| srv       | Data for services provided by this system         |
+| tmp       | Temporary files, sometimes purged on each boot    |
+| usr       | Secondary hierarchy                               |
+| var       | Variable data (logs, ...)                         |
+
+**Commands:**
+```shell
+$ fdisk /dev/sda
+Command (m for help): p
+```
+```shell
+$ sudo parted /dev/sda p
+```
+```shell
+$ gparted # A graphical tool for managing disks and partitions.
+```
+
+**3 different swap design:**
+- Debian 11: Uses a swap partition
+- Ubuntu 22.04: Uses a swap file
+- Fedora 36: uses zram In short, zram is a virtual disk on your RAM which can be used as swap space or be mounted anywhere you like; A common example is `\tmp`. Let's see.
 
 ## Environment Variables
 
@@ -184,11 +289,11 @@
 
 ## Files
 
-|File name|Descriprtion|Reference|
-|---|---|---|
-|`/etc/passwd`|Used to keep track of every registered user that has access to a system|[Link][1]|
-|`/tmp/fifo`|Named pipe. It is a file that can be used as a communication channel between multi processes (`$ mkfifo pipe1`)|[Link][2]|
-|`/etc/shadow`|The shadow file stores the hashed passwords|[Link][3]|
+| File name     | Descriprtion                                                                                                    | Reference |
+| ------------- | --------------------------------------------------------------------------------------------------------------- | --------- |
+| `/etc/passwd` | Used to keep track of every registered user that has access to a system                                         | [Link][1] |
+| `/tmp/fifo`   | Named pipe. It is a file that can be used as a communication channel between multi processes (`$ mkfifo pipe1`) | [Link][2] |
+| `/etc/shadow` | The shadow file stores the hashed passwords                                                                     | [Link][3] |
 
 
 
