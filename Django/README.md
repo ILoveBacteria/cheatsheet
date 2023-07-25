@@ -57,6 +57,14 @@
       - [Compare Operators](#compare-operators)
     - [Relations](#relations)
       - [Following relationships backward](#following-relationships-backward)
+  - [Django Rest Framework](#django-rest-framework)
+    - [Serializer](#serializer)
+    - [Function Based Views](#function-based-views)
+    - [Class Based Views](#class-based-views)
+      - [`RetrieveAPIView`](#retrieveapiview)
+      - [`CreateAPIView`](#createapiview)
+      - [`ListAPIView`](#listapiview)
+      - [`ListCreateAPIView`](#listcreateapiview)
 
 ## Commands
 
@@ -702,6 +710,68 @@ You can **override** the `FOO_set` name by setting the `related_name` parameter 
 >>> b.entries.filter(headline__contains="Lennon")
 >>> b.entries.count()
 ```
+
+## Django Rest Framework
+
+### Serializer
+
+Very looks like model forms.
+
+```python
+rom rest_framework import serializers
+from .models import Product
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+```
+
+### Function Based Views
+
+```python
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+
+@api_view(['GET'])
+def my_api(request):
+    instance = Product.objects.all()
+    data = ProductSerializer(instance, many=True).data
+    return Response(data)
+```
+
+### Class Based Views
+
+One of the key benefits of class-based views is the way they allow you to compose bits of reusable behavior.
+
+#### `RetrieveAPIView`
+
+Used for **read-only** endpoints to represent a **single** model instance. Provides a `get` method handler.
+```python
+from rest_framework import generics
+from .models import Product
+from .serializers import ProductSerializer
+
+class MyAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+```
+```python
+path('<int:pk>', views.MyAPIView.as_view())
+```
+
+#### `CreateAPIView`
+Used for **create-only** endpoints. Provides a `post` method handler.
+
+#### `ListAPIView`
+Used for **read-only** endpoints to represent a collection of model instances. Provides a `get` method handler.
+
+#### `ListCreateAPIView`
+Used for **read-write** endpoints to represent a collection of model instances. Provides `get` and `post` method handlers.
+
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
