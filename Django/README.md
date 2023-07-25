@@ -55,6 +55,8 @@
       - [Default managers](#default-managers)
     - [Field lookups](#field-lookups)
       - [Compare Operators](#compare-operators)
+    - [Relations](#relations)
+      - [Following relationships backward](#following-relationships-backward)
 
 ## Commands
 
@@ -684,6 +686,22 @@ Field lookups are how you specify the meat of an SQL `WHERE` clause. They’re s
 2. `gte`
 3. `lt`
 4. `lte`
+
+### Relations
+
+#### Following relationships backward
+
+By default, this Manager is named `FOO_set`, where `FOO` is the source model name, **lowercased**. This Manager returns `QuerySets`.
+
+You can **override** the `FOO_set` name by setting the `related_name` parameter in the `ForeignKey` definition.
+```python
+>>> b = Blog.objects.get(id=1)
+>>> b.entries.all()  # Returns all Entry objects related to Blog.
+
+# b.entries is a Manager that returns QuerySets.
+>>> b.entries.filter(headline__contains="Lennon")
+>>> b.entries.count()
+```
 
 [1]: https://pypi.org/project/django-cors-headers/
 [2]: https://docs.djangoproject.com/en/4.1/intro/tutorial04/#write-a-minimal-form
