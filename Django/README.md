@@ -59,12 +59,18 @@
       - [Following relationships backward](#following-relationships-backward)
   - [Django Rest Framework](#django-rest-framework)
     - [Serializer](#serializer)
+      - [`ModelSerializer`](#modelserializer)
+      - [Custom Method Field](#custom-method-field)
     - [Function Based Views](#function-based-views)
     - [Class Based Views](#class-based-views)
       - [`RetrieveAPIView`](#retrieveapiview)
       - [`CreateAPIView`](#createapiview)
       - [`ListAPIView`](#listapiview)
       - [`ListCreateAPIView`](#listcreateapiview)
+    - [Serializer Relations](#serializer-relations)
+      - [`SlugRelatedField`](#slugrelatedfield)
+      - [`HyperlinkedRelatedField`](#hyperlinkedrelatedfield)
+    - [Requests](#requests)
 
 ## Commands
 
@@ -715,7 +721,9 @@ You can **override** the `FOO_set` name by setting the `related_name` parameter 
 
 ### Serializer
 
-Very looks like model forms.
+#### `ModelSerializer`
+
+Very looks like model forms:
 
 ```python
 rom rest_framework import serializers
@@ -725,6 +733,22 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+        # Other attributes
+        exclude = ['users']
+        depth = 1  # Specifying nested serialization
+```
+
+#### Custom Method Field
+
+```python
+class PostSerializer(serializers.ModelSerializer):
+    owner = serializers.SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = ('title', 'body', 'created', 'owner')
+
+    def get_owner(self, obj):
+        return obj.owner.username
 ```
 
 ### Function Based Views
@@ -766,11 +790,56 @@ path('<int:pk>', views.MyAPIView.as_view())
 #### `CreateAPIView`
 Used for **create-only** endpoints. Provides a `post` method handler.
 
+You can override the save method and customize what data is saved. For example:
+```python
+def perform_create(self, serializer):
+    serializer.save(owner=self.request.user)
+```
+The owner content will override.
+
 #### `ListAPIView`
 Used for **read-only** endpoints to represent a collection of model instances. Provides a `get` method handler.
 
 #### `ListCreateAPIView`
 Used for **read-write** endpoints to represent a collection of model instances. Provides `get` and `post` method handlers.
+
+### Serializer Relations
+
+#### `SlugRelatedField`
+
+- `many` - If applied to a to-many relationship, you should set this argument to `True`.
+- `queryset` - The queryset used for model instance lookups when validating the field input. Relationships must either set a `queryset` explicitly, or set `read_only=True`.
+
+```python
+class AlbumSerializer(serializers.ModelSerializer):
+    tracks = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='title'
+     )
+
+    class Meta:
+        model = Album
+        fields = ['album_name', 'artist', 'tracks']
+```
+
+#### `HyperlinkedRelatedField`
+
+```python
+class AlbumSerializer(serializers.ModelSerializer):
+    tracks = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='track-detail'
+    )
+
+    class Meta:
+        model = Album
+        fields = ['album_name', 'artist', 'tracks']
+```
+
+### Requests
+1. `.data`: returns the parsed content of the request body.
 
 
 [1]: https://pypi.org/project/django-cors-headers/
