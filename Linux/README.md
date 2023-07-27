@@ -9,6 +9,9 @@
     - [101.2 Boot the System](#1012-boot-the-system)
     - [101.3 Change runlevels / boot targets and shutdown or reboot the system](#1013-change-runlevels--boot-targets-and-shutdown-or-reboot-the-system)
     - [102.1 Design hard disk layout](#1021-design-hard-disk-layout)
+    - [102.2 Install a boot manager](#1022-install-a-boot-manager)
+    - [102.3 Manage shared libraries](#1023-manage-shared-libraries)
+    - [102.4 Use Debian package management](#1024-use-debian-package-management)
   - [Environment Variables](#environment-variables)
   - [Linux Commands](#linux-commands)
     - [`ls`](#ls)
@@ -131,6 +134,59 @@ $ gparted # A graphical tool for managing disks and partitions.
 - Debian 11: Uses a swap partition
 - Ubuntu 22.04: Uses a swap file
 - Fedora 36: uses zram In short, zram is a virtual disk on your RAM which can be used as swap space or be mounted anywhere you like; A common example is `\tmp`. Let's see.
+
+### 102.2 Install a boot manager
+*Link to [source](https://linux1st.com/1022-install-a-boot-manager.html)*
+
+
+**GRUB2:** 
+
+On BIOS systems it is installed on `/boot/grub/` or `/boot/grub2/` and under UEFI it goes in `/boot/efi/EFI/distro-name/` (say `/boot/efi/EFI/fedora/`). GRUB2's configuration file is called `grub.cfg`.
+
+**Commands:**
+
+```shell
+grub-install /dev/sda # Install
+
+update-grub
+# or
+grub2-mkconfig > /boot/grub2/grub.cfg
+```
+`update-grub`: Reads the configuration files from `/etc/grub.d/` and `/etc/default/grub/` and create the `grub.cfg`
+
+### 102.3 Manage shared libraries
+*Link to [source](https://linux1st.com/1023-manage-shared-libraries.html)*
+
+Linux dynamic libraries have names like `libLIBNAME.so.VERSION` and are located at places like `/lib*/` and `/usr/lib*/`
+
+The `ldd` command helps you find: 
+- If a program is dynamically or statically linked
+- What libraries a program needs
+
+```shell
+$ ldd /sbin/ldconfig
+not a dynamic executable
+```
+
+**Configs:**
+
+`/etc/ld.so.conf`
+
+Run `ldconfig` to update the cache.
+
+### 102.4 Use Debian package management
+*Link to [source](https://linux1st.com/1024-use-debian-package-management.html)*
+
+```shell
+apt-get update  # Updating sources information
+apt-get install tmux
+apt-get install -s tmux # simulate
+apt-get install --download-only tmux
+apt-get remove tmux
+apt-get autoremove # remove automatically installed dependencies
+apt-get upgrade
+apt-get dist-upgrade  # going to a new distribution
+```
 
 ## Environment Variables
 
