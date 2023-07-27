@@ -61,11 +61,22 @@ CREATE TABLE table_name (
 ```
 `CREATE TABLE` creates a new table in the database. It allows you to specify the name of the table and the name of each column in the table.
 
+Example:
+```sql
+CREATE TABLE Orders (
+  OrderID int NOT NULL,
+  OrderNumber int NOT NULL,
+  PersonID int,
+  PRIMARY KEY (OrderID),
+  FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+```
+
 #### `INSERT`
 
 ```sql
 INSERT INTO table_name (column_1, column_2, column_3) 
-VALUES (value_1, 'value_2', value_3);
+VALUES (value_1, value_2, value_3);
 ```
 `INSERT` statements are used to add a new row to a table.
 
