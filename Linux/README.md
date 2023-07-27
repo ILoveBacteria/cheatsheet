@@ -38,8 +38,7 @@
 ## LPIC
 
 ### 101.1 Determine and configure hardware settings
-
-*Source: https://linux1st.com/1011-determine-and-configure-hardware-settings.html*
+*Link to [source](https://linux1st.com/1011-determine-and-configure-hardware-settings.html)*
 
 - **sysfs** is a pseudo file system provided by the Linux kernel
 - **udev** (userspace `/dev`) is a device manager for the Linux kernel.
@@ -54,8 +53,7 @@
   ```
 
 ### 101.2 Boot the System
-
-*Source: https://linux1st.com/1012-boot-the-system.html*
+*Link to [source](https://linux1st.com/1012-boot-the-system.html)*
 
 - You can check `/sys/firmware/efi` or `/boot/efi` to see if you are using a **UEFI** system or not.
 - `journalctl -k` to check Kernel logs or use `journalctl -b` to check for boot logs
@@ -70,8 +68,7 @@ $ systemctl enable sshd
 ```
 
 ### 101.3 Change runlevels / boot targets and shutdown or reboot the system
-
-*Source: https://linux1st.com/1013-change-runlevels-boot-targets-and-shutdown-or-reboot-the-system.html*
+*Link to [source](https://linux1st.com/1013-change-runlevels-boot-targets-and-shutdown-or-reboot-the-system.html)*
 
 1. `rescue`: Local file systems are mounted, there is no networking, and only root user (maintenance mode)
 2. `emergency`: Only the root file system and in read-only mode, No networking and only root (maintenance mode)
@@ -83,7 +80,8 @@ $ systemctl isolate emergency
 $ systemctl is-system-running
 maintenance
 ```
-`shutdown` command:
+
+**`shutdown` command:**
 
 - Default is a 1-minute delay and then going to runlevel 1
 - `-h` will halt the system
@@ -97,8 +95,7 @@ maintenance
 - `who -T` will show `mesg` status.
 
 ### 102.1 Design hard disk layout
-
-*Source: https://linux1st.com/1021-design-hard-disk-layout.html*
+*Link to [source](https://linux1st.com/1021-design-hard-disk-layout.html)*
 
 | Directory | Description                                       |
 | --------- | ------------------------------------------------- |
@@ -289,7 +286,7 @@ $ gparted # A graphical tool for managing disks and partitions.
 
 ## Files
 
-| File name     | Descriprtion                                                                                                    | Reference |
+| File name     | Description                                                                                                    | Reference |
 | ------------- | --------------------------------------------------------------------------------------------------------------- | --------- |
 | `/etc/passwd` | Used to keep track of every registered user that has access to a system                                         | [Link][1] |
 | `/tmp/fifo`   | Named pipe. It is a file that can be used as a communication channel between multi processes (`$ mkfifo pipe1`) | [Link][2] |
