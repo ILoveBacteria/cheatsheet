@@ -12,6 +12,7 @@
     - [102.2 Install a boot manager](#1022-install-a-boot-manager)
     - [102.3 Manage shared libraries](#1023-manage-shared-libraries)
     - [102.4 Use Debian package management](#1024-use-debian-package-management)
+    - [102.6 Linux as a virtualization guest](#1026-linux-as-a-virtualization-guest)
   - [Environment Variables](#environment-variables)
   - [Linux Commands](#linux-commands)
     - [`ls`](#ls)
@@ -58,8 +59,25 @@
 ### 101.2 Boot the System
 *Link to [source](https://linux1st.com/1012-boot-the-system.html)*
 
-- You can check `/sys/firmware/efi` or `/boot/efi` to see if you are using a **UEFI** system or not.
-- `journalctl -k` to check Kernel logs or use `journalctl -b` to check for boot logs
+You can check `/sys/firmware/efi` or `/boot/efi` to see if you are using a **UEFI** system or not.
+
+```shell
+journalctl -k # to check Kernel logs
+journalctl -b # check for boot logs
+cat /var/log/dmesg  # show only the data during the boot.
+cat /var/log/messages # Include init logs
+```
+**Which init is using**
+```shell
+$ which init
+/sbin/init
+$ readlink -f /sbin/init
+/usr/lib/systemd/systemd
+$ ps -p 1
+PID TTY TIME     CMD
+1   ?   00:00:06 systemd
+$ pstree  # the hierarchy of processes
+```
 ```shell
 $ systemctl list-units
 $ systemctl list-units --type=target
@@ -187,6 +205,28 @@ apt-get autoremove # remove automatically installed dependencies
 apt-get upgrade
 apt-get dist-upgrade  # going to a new distribution
 ```
+
+### 102.6 Linux as a virtualization guest
+
+Link to [source](https://linux1st.com/1026-linux-as-a-virtualization-guest.html)
+
+**Check CPU supports hypervisor**
+`vmx` (for Intel CPUs) or `svm` (for AMD CPUs) in `/proc/cpuinfo` in flags. Based on the CPU you should have `kvm` or `kvm-amd` kernel modules loaded.
+```shell
+lsmod | grep -i kvm
+sudo modprobe kvm
+```
+
+**Guest-specific configs**
+
+After *cloning* we need to change these on each machine before booting them:
+- Host Name
+- NIC MAC Address
+- NIC IP (If not using DHCP)
+- Machine ID (delete the /etc/machine-id and /var/lib/dbus/machine-id and run dbus-uuidgen --ensure. These two files might be soft links to each other)
+- Encryption Keys like SSH Fingerprints and PGP keys
+- HDD UUIDs
+- Any other UUIDs on the system
 
 ## Environment Variables
 
