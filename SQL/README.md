@@ -225,6 +225,8 @@ FROM table_name;
 
 ### Multiple Tables
 
+![SQL Joins](https://wikiwebpedia.com/wp-content/uploads/join-in-sql.png)
+
 #### `INNER JOIN`
 
 ```sql
