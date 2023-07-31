@@ -8,10 +8,15 @@
     - [Manipulation](#manipulation)
       - [`CREATE TABLE`](#create-table)
       - [`INSERT`](#insert)
+        - [INSERT VALUES](#insert-values)
+        - [INSERT SELECT](#insert-select)
       - [`DELETE`](#delete)
       - [`UPDATE`](#update)
       - [`SELECT`](#select)
       - [`ALTER TABLE`](#alter-table)
+        - [Add Column](#add-column)
+        - [Delete(Drop) Column](#deletedrop-column)
+        - [Modify Datatype](#modify-datatype)
     - [`WHERE` Clause](#where-clause)
       - [Operators](#operators)
         - [`AND`](#and)
@@ -74,11 +79,20 @@ CREATE TABLE Orders (
 
 #### `INSERT`
 
+##### INSERT VALUES
+
 ```sql
 INSERT INTO table_name (column_1, column_2, column_3) 
 VALUES (value_1, value_2, value_3);
 ```
 `INSERT` statements are used to add a new row to a table.
+
+##### INSERT SELECT
+```sql
+INSERT INTO table2
+SELECT * FROM table1
+WHERE condition;
+```
 
 #### `DELETE`
 
@@ -107,11 +121,23 @@ FROM table_name;
 
 #### `ALTER TABLE`
 
+##### Add Column
 ```sql
 ALTER TABLE table_name 
 ADD column_name datatype;
 ```
-`ALTER TABLE` lets you add columns to a table in a database.
+
+##### Delete(Drop) Column
+```sql
+ALTER TABLE table_name
+DROP COLUMN column_name;
+```
+
+##### Modify Datatype
+```sql
+ALTER TABLE table_name
+MODIFY COLUMN column_name datatype;
+```
 
 ### `WHERE` Clause
 
