@@ -237,7 +237,7 @@ var myarray = [length]datatype{values} // An array
 myslice := myarray[start:end] // A slice made from the array
 ```
 ```go
-arr1 := [6]int{10, 11, 12, 13, 14,15}
+arr1 := [6]int{10, 11, 12, 13, 14, 15}
 myslice := arr1[2:4]
 ```
 ```
