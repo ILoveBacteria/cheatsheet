@@ -44,6 +44,7 @@
 ## Formatting Verbs
 
 ### General Formatting Verbs
+
 | Verb  | Description                                   |
 | ----- | --------------------------------------------- |
 | `%v`  | is used to print the *value* of the arguments |
@@ -80,6 +81,7 @@ string
 ```
 
 ### Integer Formatting Verbs
+
 | Verb   | Description                                |
 | ------ | ------------------------------------------ |
 | `%b`   | Base 2                                     |
@@ -129,6 +131,7 @@ F
 ```
 
 ### String Formatting Verbs
+
 | Verb    | Description                                                 |
 | ------- | ----------------------------------------------------------- |
 | `%s`    | Prints the value as plain string                            |
@@ -163,11 +166,13 @@ Hello
 ```
 
 ### Boolean Formatting Verbs
+
 | Verb | Description                                                              |
 | ---- | ------------------------------------------------------------------------ |
 | `%t` | Value of the boolean operator in true or false format (same as using %v) |
 
 ### Float Formatting Verbs
+
 | Verb    | Description                               |
 | ------- | ----------------------------------------- |
 | `%e`    | Scientific notation with 'e' as exponent  |
