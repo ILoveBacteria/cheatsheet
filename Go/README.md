@@ -133,14 +133,14 @@ F
 
 ### String Formatting Verbs
 
-| Verb    | Description                                                 |
-| ------- | ----------------------------------------------------------- |
-| `%s`    | Prints the value as plain string                            |
-| `%q`    | Prints the value as a double-quoted string                  |
-| `%8s`   | Prints the value as plain string (width 8, right justified) |
-| ` %-8s` | Prints the value as plain string (width 8, left justified)  |
-| `%x`    | Prints the value as hex dump of byte values                 |
-| `% x`   | Prints the value as hex dump with spaces                    |
+| Verb   | Description                                                 |
+| ------ | ----------------------------------------------------------- |
+| `%s`   | Prints the value as plain string                            |
+| `%q`   | Prints the value as a double-quoted string                  |
+| `%8s`  | Prints the value as plain string (width 8, right justified) |
+| `%-8s` | Prints the value as plain string (width 8, left justified)  |
+| `%x`   | Prints the value as hex dump of byte values                 |
+| `% x`  | Prints the value as hex dump with spaces                    |
 
 ```go
 package main
@@ -168,9 +168,9 @@ Hello
 
 ### Boolean Formatting Verbs
 
-| Verb | Description                                                              |
-| ---- | ------------------------------------------------------------------------ |
-| `%t` | Value of the boolean operator in true or false format (same as using %v) |
+| Verb | Description                                                                |
+| ---- | -------------------------------------------------------------------------- |
+| `%t` | Value of the boolean operator in true or false format (same as using `%v`) |
 
 ### Float Formatting Verbs
 
@@ -350,10 +350,10 @@ var a = struct_name{"Akshay", "PremNagar", "Dehradun", "Uttarakhand", 252636}
 
 ## Method
 
-|Method|Function|
-|------|----------|
-|It contains a receiver.|It does not contain a receiver.|
-|Methods of the same name but different types can be defined in the program.|Functions of the same name but different type are not allowed to be defined in the program.|
+| Method                                                                      | Function                                                                                    |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| It contains a receiver.                                                     | It does not contain a receiver.                                                             |
+| Methods of the same name but different types can be defined in the program. | Functions of the same name but different type are not allowed to be defined in the program. |
 
 ### Struct Type Receiver
 
