@@ -40,6 +40,7 @@
     - [Create String From Slice](#create-string-from-slice)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
+    - [`rune` datatype](#rune-datatype)
 
 ## Formatting Verbs
 
@@ -494,3 +495,24 @@ mystring1 := string(myslice1)
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Can be used **inside** and **outside** of functions                  | Can only be used **inside** functions                                                               |
 | Variable declaration and value assignment can be done **separately** | Variable declaration and value assignment cannot be done separately (must be done in the same line) |
+
+### `rune` datatype
+
+rune in Go is a data type that stores codes that represent **Unicode** characters. This method results in an encoded output of variable length from **1-4 Bytes**. For this reason, rune is also known as an alias for `int32`, as each rune can store an integer value of at most 32-bits.
+
+Furthermore, Go does **not** have a `char` data type, so all variables initialized with a character would automatically be **typecasted** into `int32`, which, in this case, represents a `rune`.
+
+Here, it might seem like rune is the char alternative for Go, but that is not actually true. In Go, strings are actually made up of **sequences of bytes**, not a sequence of rune.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+    var str string = "ABCD"
+    r_array := []rune(str)
+    fmt.Printf("Array of rune values for A, B, C and D: %U\n", r_array)
+}
+```
