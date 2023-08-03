@@ -5,7 +5,9 @@
 
 - [Django Cheatsheet](#django-cheatsheet)
   - [Table Of Contents](#table-of-contents)
-  - [Commands](#commands)
+  - [Django-Admin Commands](#django-admin-commands)
+    - [Built-in Commands](#built-in-commands)
+    - [Custom Commands](#custom-commands)
   - [CSRF Protection](#csrf-protection)
     - [Setting the token on the AJAX request](#setting-the-token-on-the-ajax-request)
     - [Dynamic Forms](#dynamic-forms)
@@ -45,7 +47,7 @@
     - [url](#url)
   - [Models](#models)
     - [Choices](#choices)
-    - [Commands](#commands-1)
+    - [Commands](#commands)
     - [Field Type Parameters](#field-type-parameters)
     - [Deep Copy](#deep-copy)
     - [Manager](#manager)
@@ -56,7 +58,8 @@
     - [Field lookups](#field-lookups)
       - [Compare Operators](#compare-operators)
     - [Relations](#relations)
-      - [Following relationships backward](#following-relationships-backward)
+      - [OneToMany](#onetomany)
+      - [OneToOne](#onetoone)
   - [Django Rest Framework](#django-rest-framework)
     - [Serializer](#serializer)
       - [`ModelSerializer`](#modelserializer)
@@ -72,7 +75,9 @@
       - [`HyperlinkedRelatedField`](#hyperlinkedrelatedfield)
     - [Requests](#requests)
 
-## Commands
+## Django-Admin Commands
+
+### Built-in Commands
 
 - `django-admin startproject mysite`: Create a project named `mysite`
 - `python manage.py runserver`: Run the server
@@ -81,6 +86,55 @@
 - `python manage.py migrate`: Apply migrations
 - `python manage.py createsuperuser`: Create a superuser
 - `python manage.py shell`: Open a shell
+
+### Custom Commands
+
+Add `management/commands` directory to the application. `_` modules will be **ignored**.
+```
+polls/
+    __init__.py
+    models.py
+    management/
+        __init__.py
+        commands/
+            __init__.py
+            _private.py
+            closepoll.py
+    tests.py
+    views.py
+```
+Add this sample class:
+```python
+from django.core.management.base import BaseCommand, CommandError
+
+class Command(BaseCommand):
+    help = "Closes the specified poll for voting"
+
+    def add_arguments(self, parser):
+        # Positional arguments
+        parser.add_argument("poll_ids", nargs="+", type=int)
+
+        # Named (optional) arguments
+        parser.add_argument(
+            "--delete",
+            action="store_true",
+            help="Delete poll instead of closing it",
+        )
+
+    def handle(self, *args, **options):
+        for poll_id in options["poll_ids"]:
+            try:
+                poll = Poll.objects.get(pk=poll_id)
+            except Poll.DoesNotExist:
+                raise CommandError('Poll "%s" does not exist' % poll_id)
+
+            poll.opened = False
+            poll.save()
+
+            self.stdout.write(
+                self.style.SUCCESS('Successfully closed poll "%s"' % poll_id)
+            )
+```
 
 ## CSRF Protection
 
@@ -703,7 +757,7 @@ Field lookups are how you specify the meat of an SQL `WHERE` clause. They’re s
 
 ### Relations
 
-#### Following relationships backward
+#### OneToMany
 
 By default, this Manager is named `FOO_set`, where `FOO` is the source model name, **lowercased**. This Manager returns `QuerySets`.
 
@@ -716,6 +770,21 @@ You can **override** the `FOO_set` name by setting the `related_name` parameter 
 >>> b.entries.filter(headline__contains="Lennon")
 >>> b.entries.count()
 ```
+
+#### OneToOne
+
+```python
+class EntryDetail(models.Model):
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+    details = models.TextField()
+
+ed = EntryDetail.objects.get(id=2)
+ed.entry  # Returns the related Entry object.
+e = Entry.objects.get(id=2)
+e.entrydetail  # returns the related EntryDetail object (Reverse)
+```
+
+If **no** object has been assigned to this relationship, Django will **raise** a `DoesNotExist` exception.
 
 ## Django Rest Framework
 
