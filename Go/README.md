@@ -25,11 +25,11 @@
     - [Defer functions](#defer-functions)
     - [Pass Functions as Value](#pass-functions-as-value)
   - [Structure](#structure)
-    - [Create](#create)
   - [Method](#method)
     - [Struct Type Receiver](#struct-type-receiver)
     - [Non-Struct Type Receiver](#non-struct-type-receiver)
     - [Pointer Receiver](#pointer-receiver)
+  - [Interface](#interface)
   - [Map](#map)
   - [String](#string)
     - [Access Bytes](#access-bytes)
@@ -39,6 +39,7 @@
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
+    - [Stringer Interface](#stringer-interface)
 
 ## Formatting Verbs
 
@@ -341,7 +342,6 @@ func main() {
 
 ## Structure
 
-### Create
 ```go
 type struct_name struct {
   member1 datatype;
@@ -442,6 +442,69 @@ func main() {
     p.show("ECE")
     fmt.Println("Author's name: ", res.name)
     fmt.Println("Branch Name(After): ", res.branch)
+}
+```
+
+## Interface
+
+```go
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+// This method means type T implements the interface I,
+// but we don't need to explicitly declare that it does so.
+func (t T) M() {
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I = T{"hello"}
+	i.M()
+}
+```
+
+**Interface values with nil underlying values:** If the concrete value inside the interface itself is `nil`, the method will be called with a nil **receiver**.
+
+**The empty interface:** An empty interface may hold values of any type. (**Every type** implements at least zero methods.)
+
+```go
+func main() {
+	var i interface{}
+	describe(i)
+	i = 42
+	describe(i)
+	i = "hello"
+	describe(i)
+}
+
+func describe(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+
+**Type assertions**
+```go
+t, ok := i.(T)
+```
+If `i` holds a `T`, then `t` will be the underlying value and ok will be true.
+
+If not, `ok` will be false and `t` will be the zero value of type `T`, and no panic occurs.
+
+**Type Switches**
+
+```go
+switch v := i.(type) {
+case T:
+    // here v has type T
+case S:
+    // here v has type S
+default:
+    // no match; here v has the same type as i
 }
 ```
 
@@ -551,5 +614,15 @@ func main() {
     var str string = "ABCD"
     r_array := []rune(str)
     fmt.Printf("Array of rune values for A, B, C and D: %U\n", r_array)
+}
+```
+
+### Stringer Interface
+
+A Stringer is a type that can describe itself as a string. The fmt package (and many others) look for this interface to print values.
+
+```go
+type Stringer interface {
+    String() string
 }
 ```
