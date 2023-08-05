@@ -38,6 +38,8 @@
   - [String](#string)
     - [Access Bytes](#access-bytes)
     - [Create String From Slice](#create-string-from-slice)
+  - [Concurrency](#concurrency)
+  - [time Package](#time-package)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -486,6 +488,49 @@ Character = l Bytes = 108
 myslice1 := []byte{0x47, 0x65, 0x65, 0x6b, 0x73}
 mystring1 := string(myslice1)
 ```
+
+## Concurrency
+
+```go
+go f(x, y, z) // starts a new goroutine
+ch := make(chan int, 100) // channel of integers, buffer size 100
+v, ok := <-ch // receives from channel ch
+close(ch)     // closes channel ch
+```
+
+Only the **sender** should **close** a channel, never the receiver. Sending on a closed channel will cause a panic.
+
+The loop `for i := range c` receives values from the channel repeatedly **until** it is closed.
+
+```go
+select {
+  case c <- x:
+    x, y = y, x+y
+  case <-quit:
+    fmt.Println("quit")
+    return
+  }
+```
+
+A select blocks until **one** of its cases can run, then it executes that case. It chooses one at **random** if multiple are ready.
+
+```go
+func (c *SafeCounter) Inc(key string) {
+	c.mu.Lock()
+	// Lock so only one goroutine at a time can access the map c.v.
+	c.v[key]++
+	c.mu.Unlock()
+}
+```
+
+## time Package
+
+```go
+tick := time.Tick(100 * time.Millisecond)
+boom := time.After(500 * time.Millisecond)
+```
+
+The tick **channel** will receive a value **every** 100ms. The boom channel will receive a single value **after** 500ms.
 
 ## Handwrite Notes
 
