@@ -13,18 +13,17 @@
     - [Syntax](#syntax)
     - [Array Initialization](#array-initialization)
   - [Slices](#slices)
-    - [Create a Slice With `[]datatype{values}`](#create-a-slice-with-datatypevalues)
-    - [Create a Slice From an Array](#create-a-slice-from-an-array)
-    - [Create a Slice With The `make()` Function](#create-a-slice-with-the-make-function)
+    - [Create a Slice](#create-a-slice)
     - [Append](#append)
     - [Copy](#copy)
     - [Sort](#sort)
-  - [The Range Keyword](#the-range-keyword)
+  - [Loop](#loop)
   - [Functions](#functions)
     - [Variadic](#variadic)
     - [Named Return Values](#named-return-values)
     - [Multiple Return Values](#multiple-return-values)
     - [Defer functions](#defer-functions)
+    - [Pass Functions as Value](#pass-functions-as-value)
   - [Structure](#structure)
     - [Create](#create)
   - [Method](#method)
@@ -32,9 +31,6 @@
     - [Non-Struct Type Receiver](#non-struct-type-receiver)
     - [Pointer Receiver](#pointer-receiver)
   - [Map](#map)
-    - [Create](#create-1)
-    - [Delete Element](#delete-element)
-    - [Key Exists](#key-exists)
   - [String](#string)
     - [Access Bytes](#access-bytes)
     - [Create String From Slice](#create-string-from-slice)
@@ -55,9 +51,6 @@
 | `%#v` | Prints the value in Go-syntax format          |
 
 ```go
-package main
-import ("fmt")
-
 func main() {
   var i = 15.5
   var txt = "Hello World!"
@@ -100,9 +93,6 @@ string
 | `%04d` | Pad with zeroes (width 4)                  |
 
 ```go
-package main
-import ("fmt")
-
 func main() {
   var i = 15
  
@@ -145,9 +135,6 @@ F
 | `% x`  | Prints the value as hex dump with spaces                    |
 
 ```go
-package main
-import ("fmt")
-
 func main() {
   var txt = "Hello"
  
@@ -185,9 +172,6 @@ Hello
 | `%g`    | Exponent as needed, only necessary digits |
 
 ```go
-package main
-import ("fmt")
-
 func main() {
   var i = 3.141
 
@@ -231,31 +215,15 @@ arr4 := [5]int{1:10,2:40} // Only Specific Elements
 
 ## Slices
 
-- `len()` function - returns the length of the slice (the number of elements in the slice)
-- `cap()` function - returns the capacity of the slice (the number of elements the slice can grow or shrink to)
+`len()` function - returns the length of the slice (the number of elements in the slice)
 
-### Create a Slice With `[]datatype{values}`
+`cap()` function - returns the capacity of the slice (the number of elements the slice can grow or shrink to)
+
+### Create a Slice
 ```go
 slice_name := []datatype{values}
-```
-
-### Create a Slice From an Array
-```go
 var myarray = [length]datatype{values} // An array
 myslice := myarray[start:end] // A slice made from the array
-```
-```go
-arr1 := [6]int{10, 11, 12, 13, 14, 15}
-myslice := arr1[2:4]
-```
-```
-myslice = [12 13]
-length = 2
-capacity = 4
-```
-
-### Create a Slice With The `make()` Function
-```go
 slice_name := make([]type, length, capacity)
 ```
 
@@ -273,14 +241,19 @@ copy(dest, src)
 
 ### Sort
 
-**Functions:**
+Functions:
 1. `Ints`
 2. `IntsAreSorted`
 
-## The Range Keyword
+## Loop
+
 ```go
 for index, value := array|slice|map {
    // code to be executed for each iteration
+}
+
+for {
+  // forever loop
 }
 ```
 
@@ -332,8 +305,38 @@ func main() {
     // is defer function
     defer mul(23, 56)
 }
+```
 
+### Pass Functions as Value
 
+```go
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func main() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 12))
+
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
+}
+```
+```go
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func main() {
+	pos, neg := adder(), adder()
+	fmt.Println(pos(i), neg(-2*i))
+}
 ```
 
 ## Structure
@@ -444,22 +447,11 @@ func main() {
 
 ## Map
 
-### Create
-
-Note: The `make()` function is the **right way** to create an empty map. If you make an empty map in a different way and write to it, it will causes a runtime **panic**.
 ```go
 var a = map[KeyType]ValueType{key1:value1, key2:value2,...}
 var a = make(map[KeyType]ValueType)
-```
-
-### Delete Element
-```go
 delete(map_name, key)
-```
-
-### Key Exists
-```go
-val, ok := map_name[key]
+val, ok := map_name[key]  // ok is true if key is present in the map, else false
 ```
 
 ## String
