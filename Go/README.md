@@ -36,6 +36,7 @@
     - [Create String From Slice](#create-string-from-slice)
   - [Concurrency](#concurrency)
   - [time Package](#time-package)
+  - [Error](#error)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -586,6 +587,17 @@ boom := time.After(500 * time.Millisecond)
 ```
 
 The tick **channel** will receive a value **every** 100ms. The boom channel will receive a single value **after** 500ms.
+
+## Error
+
+Create a new error:
+
+```go
+error := errors.New("Invalid Name")
+error := fmt.Errorf("%d is negative\nAge can't be negative", age)
+```
+
+For **custom** errors, implement `Error()` function.
 
 ## Handwrite Notes
 
