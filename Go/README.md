@@ -39,6 +39,7 @@
   - [Error](#error)
   - [File](#file)
     - [Read](#read)
+  - [Generics](#generics)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -522,6 +523,23 @@ default:
 }
 ```
 
+**Down Casting:**
+```go
+type Human interface {
+	walk() string
+}
+
+type Person struct {
+	name string
+	age  int
+}
+
+func main() {
+	var h Human = Person{"Moein", 20}
+	fmt.Println(h.(Person).age) // Down casting
+}
+```
+
 ## Map
 
 ```go
@@ -594,6 +612,21 @@ func (c *SafeCounter) Inc(key string) {
 }
 ```
 
+**WaitGroup**
+```go
+var wg sync.WaitGroup
+
+	for i := 1; i <= 5; i++ {
+		wg.Add(1)
+		i := i
+		go func() {
+			defer wg.Done()
+			worker(i)
+		}()
+	}
+	wg.Wait()
+```
+
 ## time Package
 
 ```go
@@ -645,6 +678,19 @@ for scanner.Scan() {
   fmt.Println(s)
 }
 ```
+
+## Generics
+
+```go
+func MapKeys[K comparable, V any](m map[K]V) []K {
+    r := make([]K, 0, len(m))
+    for k := range m {
+        r = append(r, k)
+    }
+    return r
+}
+```
+`K` has the `comparable` constraint, meaning that we can compare values of this type with the `==` and `!=` operators. `V` has the `any` constraint, meaning that it’s not restricted in any way (any is an alias for `interface{}`).
 
 ## Handwrite Notes
 
