@@ -37,6 +37,8 @@
   - [Concurrency](#concurrency)
   - [time Package](#time-package)
   - [Error](#error)
+  - [File](#file)
+    - [Read](#read)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -353,6 +355,17 @@ type struct_name struct {
 
 var a = struct_name{"Akshay", "PremNagar", "Dehradun", "Uttarakhand", 252636}
 ```
+Struct Embedding:
+```go
+type base struct {
+  num int
+}
+
+type container struct {
+  base
+  str string
+}
+```
 
 ## Method
 
@@ -565,6 +578,8 @@ select {
   case <-quit:
     fmt.Println("quit")
     return
+  default:
+    fmt.Println("default")
   }
 ```
 
@@ -585,6 +600,15 @@ func (c *SafeCounter) Inc(key string) {
 tick := time.Tick(100 * time.Millisecond)
 boom := time.After(500 * time.Millisecond)
 ```
+```go
+timer := time.NewTimer(2 * time.Second)
+<-timer.C
+//One reason a timer may be useful is that you can cancel the timer before it fires.
+stop := timer.Stop()
+  if stop {
+    fmt.Println("Timer stopped")
+  }
+```
 
 The tick **channel** will receive a value **every** 100ms. The boom channel will receive a single value **after** 500ms.
 
@@ -598,6 +622,29 @@ error := fmt.Errorf("%d is negative\nAge can't be negative", age)
 ```
 
 For **custom** errors, implement `Error()` function.
+
+Wrap and Unwrap errors:
+
+```go
+wrap = fmt.Errorf("...%w...",criticalError,...)
+errors.Unwrap(wrap)
+```
+
+## File
+
+### Read
+
+```go
+content, err := os.ReadFile("test.txt") // returns []byte
+
+// Read line by line
+f, err := os.Open("test.txt")
+scanner := bufio.NewScanner(f)
+for scanner.Scan() {
+  s := scanner.Text()
+  fmt.Println(s)
+}
+```
 
 ## Handwrite Notes
 
