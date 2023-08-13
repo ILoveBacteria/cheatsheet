@@ -50,6 +50,9 @@
   - [File](#file)
     - [Read](#read)
   - [Generics](#generics)
+  - [CLI](#cli)
+    - [Arguments and Flags](#arguments-and-flags)
+    - [Subcommands](#subcommands)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -767,6 +770,28 @@ func MapKeys[K comparable, V any](m map[K]V) []K {
 }
 ```
 `K` has the `comparable` constraint, meaning that we can compare values of this type with the `==` and `!=` operators. `V` has the `any` constraint, meaning that it’s not restricted in any way (any is an alias for `interface{}`).
+
+## CLI
+
+### Arguments and Flags
+
+```go
+args := os.Args // All arguments
+value := flag.String("action", "read", "a string that represent the action")
+flag.Parse()  // This should be called after all flags are defined and before flags are accessed by the program.
+flag.Args() // All arguments after flags (tail arguments)
+fmt.Println(*value)
+```
+
+### Subcommands
+
+Create a custom subcommand:
+```go
+fooCmd := flag.NewFlagSet("foo", flag.ExitOnError)
+fooEnable := fooCmd.Bool("enable", false, "enable")
+fooCmd.Parse(os.Args[2:])
+fooCmd.Args()
+```
 
 ## Handwrite Notes
 
