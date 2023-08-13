@@ -16,7 +16,6 @@
     - [Create a Slice](#create-a-slice)
     - [Append](#append)
     - [Copy](#copy)
-    - [Sort](#sort)
   - [Loop](#loop)
   - [Functions](#functions)
     - [Variadic](#variadic)
@@ -25,17 +24,28 @@
     - [Defer functions](#defer-functions)
     - [Pass Functions as Value](#pass-functions-as-value)
   - [Structure](#structure)
+    - [Struct Embedding](#struct-embedding)
   - [Method](#method)
     - [Struct Type Receiver](#struct-type-receiver)
     - [Non-Struct Type Receiver](#non-struct-type-receiver)
     - [Pointer Receiver](#pointer-receiver)
   - [Interface](#interface)
+    - [Type assertions](#type-assertions)
+    - [Down Casting](#down-casting)
   - [Map](#map)
   - [String](#string)
     - [Access Bytes](#access-bytes)
     - [Create String From Slice](#create-string-from-slice)
+    - [String Functions](#string-functions)
   - [Concurrency](#concurrency)
+    - [Channel](#channel)
+    - [Mutex](#mutex)
+    - [WaitGroup](#waitgroup)
+    - [Atomic](#atomic)
   - [time Package](#time-package)
+  - [Sort Package](#sort-package)
+    - [Built-in functions](#built-in-functions)
+    - [Custom Sort](#custom-sort)
   - [Error](#error)
   - [File](#file)
     - [Read](#read)
@@ -54,6 +64,7 @@
 | `%v`  | is used to print the *value* of the arguments |
 | `%T`  | is used to print the *type* of the arguments  |
 | `%#v` | Prints the value in Go-syntax format          |
+| `%+v` | Prints the struct with field names            |
 
 ```go
 func main() {
@@ -244,12 +255,6 @@ Takes in two slices dest and src:
 copy(dest, src)
 ```
 
-### Sort
-
-Functions:
-1. `Ints`
-2. `IntsAreSorted`
-
 ## Loop
 
 ```go
@@ -356,7 +361,8 @@ type struct_name struct {
 
 var a = struct_name{"Akshay", "PremNagar", "Dehradun", "Uttarakhand", 252636}
 ```
-Struct Embedding:
+
+### Struct Embedding
 ```go
 type base struct {
   num int
@@ -502,7 +508,7 @@ func describe(i interface{}) {
 }
 ```
 
-**Type assertions**
+### Type assertions
 ```go
 t, ok := i.(T)
 ```
@@ -523,7 +529,7 @@ default:
 }
 ```
 
-**Down Casting:**
+### Down Casting
 ```go
 type Human interface {
 	walk() string
@@ -576,7 +582,39 @@ myslice1 := []byte{0x47, 0x65, 0x65, 0x6b, 0x73}
 mystring1 := string(myslice1)
 ```
 
+### String Functions
+```go
+p("Contains:  ", s.Contains("test", "es"))
+p("Count:     ", s.Count("test", "t"))
+p("HasPrefix: ", s.HasPrefix("test", "te"))
+p("HasSuffix: ", s.HasSuffix("test", "st"))
+p("Index:     ", s.Index("test", "e"))
+p("Join:      ", s.Join([]string{"a", "b"}, "-"))
+p("Repeat:    ", s.Repeat("a", 5))
+p("Replace:   ", s.Replace("foo", "o", "0", -1))
+p("Replace:   ", s.Replace("foo", "o", "0", 1))
+p("Split:     ", s.Split("a-b-c-d-e", "-"))
+p("ToLower:   ", s.ToLower("TEST"))
+p("ToUpper:   ", s.ToUpper("test"))
+```
+```
+Contains:   true
+Count:      2
+HasPrefix:  true
+HasSuffix:  true
+Index:      1
+Join:       a-b
+Repeat:     aaaaa
+Replace:    f00
+Replace:    f0o
+Split:      [a b c d e]
+ToLower:    test
+ToUpper:    TEST
+```
+
 ## Concurrency
+
+### Channel
 
 ```go
 go f(x, y, z) // starts a new goroutine
@@ -603,16 +641,24 @@ select {
 
 A select blocks until **one** of its cases can run, then it executes that case. It chooses one at **random** if multiple are ready.
 
+### Mutex
+
+Note that mutexes must not be **copied**
+
 ```go
-func (c *SafeCounter) Inc(key string) {
-	c.mu.Lock()
-	// Lock so only one goroutine at a time can access the map c.v.
-	c.v[key]++
-	c.mu.Unlock()
+type Container struct {
+    mu       sync.Mutex
+    counters map[string]int
+}
+
+func (c *Container) inc(name string) {
+    c.mu.Lock()
+    defer c.mu.Unlock() //using a defer statement.
+    c.counters[name]++
 }
 ```
 
-**WaitGroup**
+### WaitGroup
 ```go
 var wg sync.WaitGroup
 
@@ -626,6 +672,18 @@ var wg sync.WaitGroup
 	}
 	wg.Wait()
 ```
+
+### Atomic
+```go
+import "sync/atomic"
+
+func main() {
+  var ops uint64
+  atomic.AddUint64(&ops, 1)
+}
+```
+
+Reading atomics safely while they are being updated is also possible, using functions like `atomic.LoadUint64`.
 
 ## time Package
 
@@ -644,6 +702,24 @@ stop := timer.Stop()
 ```
 
 The tick **channel** will receive a value **every** 100ms. The boom channel will receive a single value **after** 500ms.
+
+## Sort Package
+
+### Built-in functions
+
+`sort` package implements sorting for built-ins and user-defined types.
+```go
+sort.Strings(strs)
+sort.Ints(ints)
+sort.IntsAreSorted(ints)
+```
+
+### Custom Sort
+```go
+sort.Slice(p, func(i, j int) bool {
+		return p[i].age < p[j].age
+	})
+```
 
 ## Error
 
