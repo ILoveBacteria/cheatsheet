@@ -53,6 +53,11 @@
   - [CLI](#cli)
     - [Arguments and Flags](#arguments-and-flags)
     - [Subcommands](#subcommands)
+  - [HTTP](#http)
+    - [Parse URL](#parse-url)
+    - [Client](#client)
+    - [Server](#server)
+  - [Hash](#hash)
   - [Handwrite Notes](#handwrite-notes)
     - [Difference Between `var` and `:=`](#difference-between-var-and-)
     - [`rune` datatype](#rune-datatype)
@@ -791,6 +796,46 @@ fooCmd := flag.NewFlagSet("foo", flag.ExitOnError)
 fooEnable := fooCmd.Bool("enable", false, "enable")
 fooCmd.Parse(os.Args[2:])
 fooCmd.Args()
+```
+
+## HTTP
+
+### Parse URL
+```go
+u, err := url.Parse(r.URL.String())
+email, ok := u.Query()["email"]
+```
+
+### Client
+```go
+resp, _ := http.Get("https://google.com")
+defer resp.Body.Close()
+```
+
+### Server
+```go
+func root(w http.ResponseWriter, _ *http.Request) {
+	m := map[string]any{
+		"name":   "Moein",
+		"age":    20,
+		"isNoob": true,
+	}
+	enc := json.NewEncoder(w)
+	enc.Encode(m)
+}
+
+func main() {
+	http.HandleFunc("/", root)
+	http.ListenAndServe("localhost:80", nil)
+}
+```
+
+## Hash
+```go
+s := "sha256 this string"
+h := sha256.New()
+h.Write([]byte(s))
+bs := h.Sum(nil)
 ```
 
 ## Handwrite Notes
