@@ -13,8 +13,8 @@
     - [102.3 Manage shared libraries](#1023-manage-shared-libraries)
     - [102.4 Use Debian package management](#1024-use-debian-package-management)
     - [102.6 Linux as a virtualization guest](#1026-linux-as-a-virtualization-guest)
-  - [Environment Variables](#environment-variables)
   - [Linux Commands](#linux-commands)
+  - [Bash](#bash)
 
 ## LPIC
 
@@ -205,28 +205,22 @@ After *cloning* we need to change these on each machine before booting them:
 - HDD UUIDs
 - Any other UUIDs on the system
 
-## Environment Variables
-
-| Command                              | Description                                                           |
-| ------------------------------------ | --------------------------------------------------------------------- |
-| `$ echo $PATH`                       | View a variable                                                       |
-| `$ export PATH=/the/file/path:$PATH` | Adding a directory to the start of PATH will mean it is checked first |
-| `$ export PATH=$PATH:/the/file/path` | Adding a directory to the end of PATH means it will be checked last   |
-| `$ export`                           | We can view a complete list of exported environment variables         |
-
-**File and directories**
-
- `~/.profile`: To persist our changes for the current user, we add our export command to the end of `~/.profile`.
- 
- `~/.zshenv`: To persist changes for zsh shell.
-
- `/etc/profile.d/`: We can add a new path for all users on a Unix-like system by creating a file ending in `.sh` in `/etc/profile.d/` and adding our export command to this file. For example we create this file `/etc/profile.d/http_proxy.sh`
-
 ## Linux Commands
 
-| Command | Description                           |
-| ------- | ------------------------------------- |
-| `rev`   | Reverse lines of a file or files      |
-| `seq`   | Print sequences of numbers            |
-| `yes`   | Print a string until interrupted      |
-| `date`  | Print or set the system date and time |
+| Command          | Description                           |
+| ---------------- | ------------------------------------- |
+| `rev`            | Reverse lines of a file or files      |
+| `seq`            | Print sequences of numbers            |
+| `yes`            | Print a string until interrupted      |
+| `date`           | Print or set the system date and time |
+| `netstat -tulpn` | List all listening ports              |
+
+## Bash
+
+Read line by line from a file:
+```shell
+cat peptides.txt | while read line 
+do
+  # do something with $line here
+done
+```
