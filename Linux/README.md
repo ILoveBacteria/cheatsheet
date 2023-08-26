@@ -16,6 +16,7 @@
   - [Linux Commands](#linux-commands)
   - [Bash](#bash)
   - [Systemd](#systemd)
+    - [Known parameters](#known-parameters)
 
 ## LPIC
 
@@ -229,6 +230,8 @@ done
 ## Systemd
 
 [good link](https://linuxhandbook.com/create-systemd-services/)
+[good link2](https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6)
+[Full guide](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
 
 Put services for user here: `~/.config/systemd/user/`
 
@@ -238,6 +241,7 @@ Put services for user here: `~/.config/systemd/user/`
 Description=Apache web server
 After=network.target
 Before=nextcloud-web.service
+StartLimitIntervalSec=180
 
 [Service]
 ExecStart=/usr/local/apache2/bin/httpd -D FOREGROUND -k start
@@ -249,3 +253,39 @@ Restart=always
 WantedBy=default.target
 RequiredBy=network.target
 ```
+
+### Known parameters
+
+`WorkingDirectory=`
+
+Takes a directory path relative to the service's root directory specified by RootDirectory=, or the special value "~". Sets the working directory for executed processes. If set to "~", the home directory of the user specified in User= is used. If not set, defaults to the root directory when systemd is running as a system instance and the respective user's home directory if run as user. If the setting is prefixed with the "-" character, a missing working directory is not considered fatal. If RootDirectory=/RootImage= is not set, then WorkingDirectory= is relative to the root of the system running the service manager. Note that setting this parameter might result in additional dependencies to be added to the unit (see above).
+
+`User=, Group=`
+Set the UNIX user or group that the processes are executed as, respectively. Takes a single user or group name, or a numeric ID as argument. For system services (services run by the system service manager, i.e. managed by PID 1) and for user services of the root user (services managed by root's instance of systemd --user), the default is "root", but User= may be used to specify a different user. For user services of any other user, switching user identity is not permitted, hence the only valid setting is the same user the user's service manager is running as. If no group is set, the default group of the user is used. This setting does not affect commands whose command line is prefixed with "+".
+
+`Nice=`
+Sets the default nice level (scheduling priority) for executed processes. Takes an integer between -20 (highest priority) and 19 (lowest priority). In case of resource contention, smaller values mean more resources will be made available to the unit's processes, larger values mean less resources will be made available. See setpriority(2) for details.
+
+`ExecStart=`
+Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
+
+`ExecStart=`
+Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
+
+`ExecStart=`
+Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
+
+`ExecReload=`
+Commands to execute to trigger a configuration reload in the service. 
+
+`ExecStop=`
+Commands to execute to stop the service started via ExecStart=.
+
+`RestartSec=`
+Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
+
+`Restart=`
+Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. If set to no (the default), the service will not be restarted. 
+
+`StartLimitIntervalSec=`
+Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
