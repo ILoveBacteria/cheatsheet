@@ -15,6 +15,7 @@
     - [102.6 Linux as a virtualization guest](#1026-linux-as-a-virtualization-guest)
   - [Linux Commands](#linux-commands)
   - [Bash](#bash)
+  - [Systemd](#systemd)
 
 ## LPIC
 
@@ -223,4 +224,28 @@ cat peptides.txt | while read line
 do
   # do something with $line here
 done
+```
+
+## Systemd
+
+[good link](https://linuxhandbook.com/create-systemd-services/)
+
+Put services for user here: `~/.config/systemd/user/`
+
+```ini
+# something.service
+[Unit]
+Description=Apache web server
+After=network.target
+Before=nextcloud-web.service
+
+[Service]
+ExecStart=/usr/local/apache2/bin/httpd -D FOREGROUND -k start
+ExecReload=/usr/local/apache2/bin/httpd -k graceful
+Type=notify
+Restart=always
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target
 ```
