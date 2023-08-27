@@ -15,6 +15,7 @@
     - [102.6 Linux as a virtualization guest](#1026-linux-as-a-virtualization-guest)
   - [Linux Commands](#linux-commands)
   - [Bash](#bash)
+  - [Swap](#swap)
   - [Systemd](#systemd)
     - [Known parameters](#known-parameters)
 
@@ -227,6 +228,13 @@ do
 done
 ```
 
+## Swap
+
+How to configure a swapfile in ubuntu.[see this link](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
+
+1. How to create swapfile
+2. config swappiness percentage
+
 ## Systemd
 
 [good link](https://linuxhandbook.com/create-systemd-services/)
@@ -265,12 +273,6 @@ Set the UNIX user or group that the processes are executed as, respectively. Tak
 
 `Nice=`
 Sets the default nice level (scheduling priority) for executed processes. Takes an integer between -20 (highest priority) and 19 (lowest priority). In case of resource contention, smaller values mean more resources will be made available to the unit's processes, larger values mean less resources will be made available. See setpriority(2) for details.
-
-`ExecStart=`
-Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
-
-`ExecStart=`
-Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
 
 `ExecStart=`
 Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
