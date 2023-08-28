@@ -43,6 +43,7 @@
     - [Object to dict](#object-to-dict)
     - [Difference between `sort()` and `sorted()`](#difference-between-sort-and-sorted)
     - [Difference between two dates](#difference-between-two-dates)
+  - [Redis](#redis)
 
 ## Pipenv
 
@@ -816,6 +817,30 @@ def days_between(d1, d2):
     d2 = datetime.strptime(d2, "%Y-%m-%d")
     return abs((d2 - d1).days)
 ```
+
+## Redis
+
+```python
+import redis
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+r.set('foo', 'bar')
+# True
+r.get('foo')
+# bar
+
+r.hset('user-session:123', mapping={
+    'name': 'John',
+    "surname": 'Smith',
+    "company": 'Redis',
+    "age": 29
+})
+# True
+r.hgetall('user-session:123')
+# {'surname': 'Smith', 'name': 'John', 'company': 'Redis', 'age': '29'}
+```
+
+All responses are returned as bytes in Python. To receive decoded strings, set `decode_responses=True`.
 
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3

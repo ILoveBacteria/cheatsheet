@@ -26,6 +26,13 @@
 - `docker run -p5000:5000 <image>`: Run a command in a new container and map port 5000 to 5000
 - `docker build <path>`: Build an image from a Dockerfile
 
+### Options
+
+- `--name`: Assign a name to container.
+- `--network`: `none` | `bridge` | `host` | `network-name|network-id`
+- `--restart`: `on-failure[:max-retries]` | `always` | `no` | `unless-stopped`
+- `--rm`: Automatically remove the container when it exits.
+
 ### Network
 
 - `docker network ls`: List networks
@@ -44,4 +51,5 @@ CMD [ "python", "main.py" ]
 ```
 
 `CMD`: Tells the docker to what to do when the image runs.
+
 `EXPOSE`: Exposing port 3000 informs Docker which port the container is listening on at runtime.

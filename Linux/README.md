@@ -18,6 +18,7 @@
   - [Swap](#swap)
   - [Systemd](#systemd)
     - [Known parameters](#known-parameters)
+  - [Handwrite Notes](#handwrite-notes)
 
 ## LPIC
 
@@ -291,3 +292,10 @@ Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or 
 
 `StartLimitIntervalSec=`
 Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
+
+## Handwrite Notes
+
+1. After changing user groups, The user should login again
+    ```shell
+    su - ${USER}
+    ```
