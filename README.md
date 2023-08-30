@@ -24,6 +24,7 @@
 - [Algorithm Cheatsheet](Algorithm/)
 - [Docker Cheatsheet](Docker/)
 - [Go Cheatsheet](Go/)
+- [MySQL Cheatsheet](MySQL/)
 
 ## Description
 My big cheatsheet in programming. I am improving and completing this collection of cheatsheet every week by learning new things. I hope you will find it useful.
