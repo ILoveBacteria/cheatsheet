@@ -31,6 +31,7 @@
     - [Error Handling](#error-handling)
     - [Custom headers in response](#custom-headers-in-response)
     - [Request Object](#request-object)
+    - [SSL](#ssl)
   - [Logging](#logging)
     - [Log Levels](#log-levels)
     - [Logging from multiple modules to file](#logging-from-multiple-modules-to-file)
@@ -44,6 +45,7 @@
     - [Difference between `sort()` and `sorted()`](#difference-between-sort-and-sorted)
     - [Difference between two dates](#difference-between-two-dates)
   - [Redis](#redis)
+  - [Environment Variable](#environment-variable)
 
 ## Pipenv
 
@@ -501,6 +503,24 @@ To access parameters submitted in the URL (`?key=value`) you can use the args at
 searchword = request.args.get('key', '')
 ```
 
+### SSL
+
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+if __name__ == "__main__":
+    app.run(ssl_context=('cert.pem', 'key.pem'))
+```
+
+```shell
+$ flask run --cert=cert.pem --key=key.pem
+```
+
 ## Logging
 
 ### Log Levels
@@ -842,6 +862,14 @@ r.hgetall('user-session:123')
 
 All responses are returned as bytes in Python. To receive decoded strings, set `decode_responses=True`.
 
+## Environment Variable
+
+```python
+# Retrieving the value of an environment variable with a default value
+database_url = os.environ.get("DATABASE_URL", "localhost:5432")
+# Setting a new environment variable
+os.environ["API_KEY"] = "YOUR_API_KEY"
+```
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
 [2]: https://medium.com/codex/say-goodbye-to-loops-in-python-and-welcome-vectorization-e4df66615a52

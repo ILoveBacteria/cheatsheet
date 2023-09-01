@@ -5,6 +5,7 @@
   - [Table Of Contents](#table-of-contents)
   - [Commands](#commands)
     - [Basics](#basics)
+    - [Push](#push)
     - [Options](#options)
     - [Network](#network)
   - [Dockerfile](#dockerfile)
@@ -26,6 +27,12 @@
 - `docker rmi <image>`: Remove one or more images
 - `docker exec <container> <command>`: Run a command in a running container
 - `docker run -p5000:5000 <image>`: Run a command in a new container and map port 5000 to 5000
+- `docker image prune -a`: Remove all images.
+
+### Push
+
+1. `docker tag my-image username/my-repo`
+2. `docker push username/my-repo`
 
 ### Options
 
