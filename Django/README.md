@@ -47,7 +47,6 @@
     - [url](#url)
   - [Models](#models)
     - [Choices](#choices)
-    - [Commands](#commands)
     - [Field Type Parameters](#field-type-parameters)
     - [Deep Copy](#deep-copy)
     - [Manager](#manager)
@@ -56,7 +55,7 @@
       - [Modifying a manager’s initial `QuerySet`](#modifying-a-managers-initial-queryset)
       - [Default managers](#default-managers)
     - [Field lookups](#field-lookups)
-      - [Compare Operators](#compare-operators)
+    - [Aggregate](#aggregate)
     - [Relations](#relations)
       - [OneToMany](#onetomany)
       - [OneToOne](#onetoone)
@@ -665,14 +664,6 @@ YEAR_IN_SCHOOL_CHOICES = [
 ]
 ```
 
-### Commands
-
-- `python manage.py makemigrations`: Create migrations for changes in models
-- `python manage.py migrate`: Apply migrations
-- `Model.objects.all()`: Get all objects
-- `Model.objects.filter()`: Get objects by filter
-- `Model.objects.get()`: Get a single object
-
 ### Field Type Parameters
 
 - `editable`: Default `True`
@@ -737,23 +728,27 @@ Django interprets the first Manager defined in a class as the **default** Manage
 
 ### Field lookups
 
-Field lookups are how you specify the meat of an SQL `WHERE` clause. They’re specified as keyword arguments to the `QuerySet` methods `filter()`, `exclude()` and `get()`.
-
-#### Compare Operators
-
 1. `gt`
-    Example:
-    ```python
-    Entry.objects.filter(id__gt=4)
-    ```
-    SQL equivalent:
-    ```python
-    SELECT ... WHERE id > 4;
-    ```
-
 2. `gte`
 3. `lt`
 4. `lte`
+5. `startswith`: abc%
+6. `istartswith`: Case-insensitive version of `startswith`
+7. `endswith`: %abc
+8. `contains`: %abc%
+9. `in`: WHERE id IN (1, 3, 4)
+
+### Aggregate
+
+```python
+Person.objects.aggregate(
+    average=Avg("age"),
+    max_age=Max("age"),
+    min_age=Min("age"),
+    sum_age=Sum("age"),
+    count=Count("age"),
+    )
+```
 
 ### Relations
 
