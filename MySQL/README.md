@@ -5,9 +5,18 @@
   - [Table of Content](#table-of-content)
   - [Commands](#commands)
   - [Logical Operators](#logical-operators)
-    - [ANY and ALL Operators](#any-and-all-operators)
   - [Case](#case)
   - [Functions](#functions)
+  - [Constraints](#constraints)
+    - [Unique](#unique)
+    - [Primary Key](#primary-key)
+    - [Foreign Key](#foreign-key)
+    - [Check](#check)
+    - [Default](#default)
+    - [Index](#index)
+    - [Auto Increment](#auto-increment)
+  - [Data Types](#data-types)
+    - [Date](#date)
 
 ## Commands
 
@@ -38,20 +47,17 @@
 - `BETWEEN`
 - `IN`
 - `LIKE`
-- `ANY`
 - `ALL`
 - `EXISTS`
-
-### ANY and ALL Operators
-
-```sql
-SELECT column_name(s)
-FROM table_name
-WHERE column_name operator ANY
-  (SELECT column_name
-  FROM table_name
-  WHERE condition);
-```
+- `ANY`
+    ```sql
+    SELECT column_name(s)
+    FROM table_name
+    WHERE column_name operator ANY
+      (SELECT column_name
+      FROM table_name
+      WHERE condition);
+    ```
 
 ## Case
 
@@ -80,3 +86,110 @@ FROM OrderDetails;
     SELECT ProductName, UnitPrice * (UnitsInStock + COALESCE(UnitsOnOrder, 0))
     FROM Products;
     ```
+
+## Constraints
+
+- `NOT NULL` - Ensures that a column cannot have a NULL value
+- `UNIQUE` - Ensures that all values in a column are different
+- `PRIMARY KEY` - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+- `FOREIGN KEY` - Prevents actions that would destroy links between tables
+- `CHECK` - Ensures that the values in a column satisfies a specific condition
+- `DEFAULT` - Sets a default value for a column if no value is specified
+- `CREATE INDEX` - Used to create and retrieve data from the database very quickly
+
+### Unique
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    UNIQUE (ID)
+    -- OR with name
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+```
+
+```sql
+-- Add UNIQUE
+ALTER TABLE Persons
+ADD UNIQUE (ID);
+-- OR
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+-- Drop UNIQUE
+ALTER TABLE Persons
+DROP INDEX UC_Person;
+```
+
+### Primary Key
+
+```sql
+-- Drop a primary key
+ALTER TABLE Persons
+DROP PRIMARY KEY;
+```
+
+### Foreign Key
+
+```sql
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+    -- OR
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+```
+
+### Check
+
+```sql
+CREATE TABLE Persons (
+    Age int,
+    CHECK (Age>=18)
+);
+```
+
+### Default
+
+```sql
+-- Create table
+City varchar(255) DEFAULT 'something'
+OrderDate date DEFAULT CURRENT_DATE()
+-- Alter add
+ALTER TABLE Persons
+ALTER City SET DEFAULT 'something';
+-- Alter drop
+ALTER TABLE Persons
+ALTER City DROP DEFAULT;
+```
+
+### Index
+
+```sql
+-- Duplicate values are allowed
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+-- Unique values
+CREATE UNIQUE INDEX index_name
+```
+
+### Auto Increment
+
+```sql
+-- Create table
+Personid int NOT NULL AUTO_INCREMENT,
+-- sequence start with another value
+ALTER TABLE Persons AUTO_INCREMENT=100;
+```
+
+## Data Types
+
+### Date
+
+- `DATE` - format YYYY-MM-DD
+- `DATETIME` - format: YYYY-MM-DD HH:MI:SS
+- `TIMESTAMP` - format: YYYY-MM-DD HH:MI:SS
+- `YEAR` - format YYYY or YY
