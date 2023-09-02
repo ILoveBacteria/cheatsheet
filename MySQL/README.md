@@ -4,6 +4,10 @@
 - [MySQL Cheatsheet](#mysql-cheatsheet)
   - [Table of Content](#table-of-content)
   - [Commands](#commands)
+  - [Logical Operators](#logical-operators)
+    - [ANY and ALL Operators](#any-and-all-operators)
+  - [Case](#case)
+  - [Functions](#functions)
 
 ## Commands
 
@@ -25,3 +29,54 @@
 - `CREATE USER 'sammy'@'localhost' IDENTIFIED BY 'password'`
 
 `FLUSH PRIVILEGES` Many guides suggest running the FLUSH PRIVILEGES command immediately after a CREATE USER or GRANT statement in order to reload the grant tables to ensure that the new privileges are put into effect:
+
+## Logical Operators
+
+- `AND`
+- `OR`
+- `NOT`
+- `BETWEEN`
+- `IN`
+- `LIKE`
+- `ANY`
+- `ALL`
+- `EXISTS`
+
+### ANY and ALL Operators
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE column_name operator ANY
+  (SELECT column_name
+  FROM table_name
+  WHERE condition);
+```
+
+## Case
+
+```sql
+SELECT OrderID, Quantity,
+CASE
+    WHEN Quantity > 30 THEN 'The quantity is greater than 30'
+    WHEN Quantity = 30 THEN 'The quantity is 30'
+    ELSE 'The quantity is under 30'
+END AS QuantityText
+FROM OrderDetails;
+```
+
+## Functions
+
+- `CONCAT()`: Concatenate strings
+- `CONCAT_WS()`: Concatenate with separator
+- `CHAR_LENGTH()`: Return the number of characters in a string
+- `IFNULL()`: If expr1 is not NULL, IFNULL() returns expr1; otherwise it returns expr2.
+    ```sql
+    SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0))
+    FROM Products;
+    ```
+- `COALESCE()`: Return the first non-NULL argument
+    ```sql
+    SELECT ProductName, UnitPrice * (UnitsInStock + COALESCE(UnitsOnOrder, 0))
+    FROM Products;
+    ```
