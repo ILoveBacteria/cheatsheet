@@ -17,6 +17,7 @@
     - [Auto Increment](#auto-increment)
   - [Data Types](#data-types)
     - [Date](#date)
+  - [Handwrite Notes](#handwrite-notes)
 
 ## Commands
 
@@ -193,3 +194,15 @@ ALTER TABLE Persons AUTO_INCREMENT=100;
 - `DATETIME` - format: YYYY-MM-DD HH:MI:SS
 - `TIMESTAMP` - format: YYYY-MM-DD HH:MI:SS
 - `YEAR` - format YYYY or YY
+
+## Handwrite Notes
+
+```sql
+-- Add column to a specific position
+ALTER TABLE locations
+ADD region_id INT 
+AFTER state_province;
+-- Add to first
+ALTER TABLE locations
+ADD region_id INT FIRST;
+```
