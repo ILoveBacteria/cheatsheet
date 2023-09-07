@@ -576,6 +576,9 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 ### Filter
 
 - `{{ value|default:"hello" }}`
+- lower
+- truncateword
+- filesizeformat
 
 ### Custom Template Tags and Filters
 
