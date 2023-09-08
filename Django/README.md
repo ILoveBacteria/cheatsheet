@@ -30,11 +30,10 @@
     - [Register Models](#register-models)
     - [Customizing Models](#customizing-models)
     - [Adding Search Box](#adding-search-box)
+    - [Inlines](#inlines)
   - [`HttpRequest`](#httprequest)
-  - [Http Methods](#http-methods)
-    - [Decorators](#decorators-2)
+  - [Http Method Decorators](#http-method-decorators)
   - [URL Dispatcher](#url-dispatcher)
-    - [Reverse](#reverse)
   - [Flash Messages](#flash-messages)
     - [Add and use message](#add-and-use-message)
     - [Message\_TAGS](#message_tags)
@@ -422,8 +421,6 @@ def logout_view(request):
 
 ### Register Models
 
-The Django admin provides a quick way to modify model objects. Modify core/admin.py to register the Blog object:
-
 ```python
 from django.contrib import admin
 from core.models import Blog
@@ -435,13 +432,13 @@ class BlogAdmin(admin.ModelAdmin):
 
 ### Customizing Models
 
-You can customize change list pages in far more ways than just modifying an object’s string representation. The `list_display` attribute of an `admin.ModelAdmin` object specifies what columns are shown in the change list.
-
-```python
-@admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
-    list_display = ("last_name", "first_name")
-```
+- `sortable_by`: Add sort option by clicking on the columns.
+- `list_filter`
+- `list_editable`
+- `search_fields`
+- `list_display`
+- `readonly_fields`
+- `inlines`
 
 Adding the `ordering` attribute will default all queries on Person to be ordered by last_name then first_name.
 
@@ -453,7 +450,7 @@ class Person(models.Model):
     # ...
 ```
 
-The `list_display` tuple can reference any attribute of the object being listed. It can also reference a method in the admin.ModelAdmin itself. Modify `PersonAdmin` again:
+It can also reference a method in the admin.ModelAdmin itself:
 
 ```python
 @admin.register(Person)
@@ -466,16 +463,27 @@ class PersonAdmin(admin.ModelAdmin):
         return result["grade__avg"]
 ```
 
-In the above code, you add a column to the admin that displays each student’s grade average. `show_average()` is called once for each object displayed in the list.
+`show_average()` is called once for each object displayed in the list.
 
 ### Adding Search Box
 
-Anything the user types in the search box is used in an `OR` clause of the fields filtering the `QuerySet`. By default, each search parameter is surrounded by `%` signs, meaning if you search for r, then any word with an r inside will appear in the results. You can be more precise by specifying a `__` modifier on the search field.
+Anything the user types in the search box is used in an `OR` clause of the fields filtering the `QuerySet`. By default, each search parameter is surrounded by `%` signs. You can be more precise by specifying a `__` modifier on the search field.
 
 ```python
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     search_fields = ("last_name__startswith", )
+```
+
+### Inlines
+
+```python
+# OR use -> admin.StackedInline
+class BookInline(admin.TabularInline):
+    model = Book
+
+class AuthorAdmin(admin.ModelAdmin):
+    inlines = [BookInline]
 ```
 
 ## `HttpRequest`
@@ -489,9 +497,7 @@ class PersonAdmin(admin.ModelAdmin):
 | POST      | Fields from an HTTP POST   | `<QueryDict: {'name':['Bob']}>`    |
 | user      | Object describing the user |                                    |
 
-## Http Methods
-
-### Decorators
+## Http Method Decorators
 
 The decorators in `django.views.decorators.http` can be used to restrict access to views based on the request method. These decorators will return a `django.http.HttpResponseNotAllowed` if the conditions are not met.
 
@@ -511,8 +517,6 @@ The decorators in `django.views.decorators.http` can be used to restrict access 
     Decorator to require that a view only accepts the `GET` and `HEAD` methods. These methods are commonly considered “safe” because they should not have the significance of taking an action other than retrieving the requested resource.
 
 ## URL Dispatcher
-
-### Reverse
 
 ```python
 from news import views
