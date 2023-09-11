@@ -31,6 +31,7 @@
     - [Customizing Models](#customizing-models)
     - [Adding Search Box](#adding-search-box)
     - [Inlines](#inlines)
+    - [Actions](#actions)
   - [`HttpRequest`](#httprequest)
   - [Http Method Decorators](#http-method-decorators)
   - [URL Dispatcher](#url-dispatcher)
@@ -44,6 +45,7 @@
       - [Load Modules](#load-modules)
       - [Register](#register)
     - [url](#url)
+    - [Context Processors](#context-processors)
   - [Models](#models)
     - [Choices](#choices)
     - [Field Type Parameters](#field-type-parameters)
@@ -439,6 +441,7 @@ class BlogAdmin(admin.ModelAdmin):
 - `list_display`
 - `readonly_fields`
 - `inlines`
+- `actions`
 
 Adding the `ordering` attribute will default all queries on Person to be ordered by last_name then first_name.
 
@@ -484,6 +487,17 @@ class BookInline(admin.TabularInline):
 
 class AuthorAdmin(admin.ModelAdmin):
     inlines = [BookInline]
+```
+
+### Actions
+
+```python
+class ArticleAdmin(admin.ModelAdmin):
+    actions = ["make_published"]
+
+    @admin.action(description="Mark selected stories as published")
+    def make_published(self, request, queryset):
+        queryset.update(status="p")
 ```
 
 ## `HttpRequest`
@@ -653,6 +667,16 @@ Finally, `register.filter()` also accepts three keyword arguments, `is_safe`, `n
 
 ```html
 {% url 'some-url-name' arg1=v1 arg2=v2 %}
+```
+
+### Context Processors
+
+```python
+def site_settings(request):
+    return {'site_name': 'My awesome site', 'site_creation_date': '12/12/12'}
+
+# Add this to the context_processors list
+'yourapp.context_processors.site_settings'  # <-- our custom context processor
 ```
 
 ## Models
