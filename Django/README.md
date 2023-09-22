@@ -34,6 +34,8 @@
     - [Actions](#actions)
   - [`HttpRequest`](#httprequest)
   - [Http Method Decorators](#http-method-decorators)
+  - [Generic Views](#generic-views)
+  - [Cursor Pagination](#cursor-pagination)
   - [URL Dispatcher](#url-dispatcher)
   - [Flash Messages](#flash-messages)
     - [Add and use message](#add-and-use-message)
@@ -529,6 +531,17 @@ The decorators in `django.views.decorators.http` can be used to restrict access 
 4. `require_safe()`
    
     Decorator to require that a view only accepts the `GET` and `HEAD` methods. These methods are commonly considered “safe” because they should not have the significance of taking an action other than retrieving the requested resource.
+
+## Generic Views
+
+- CreateView: Needs absolute url of detail view
+- ListView
+- DetailView
+- UpdateView
+- DeleteView
+- FormView
+
+## Cursor Pagination
 
 ## URL Dispatcher
 

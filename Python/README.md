@@ -46,6 +46,7 @@
     - [Difference between two dates](#difference-between-two-dates)
   - [Redis](#redis)
   - [Environment Variable](#environment-variable)
+  - [Working With Dates](#working-with-dates)
 
 ## Pipenv
 
@@ -869,6 +870,15 @@ All responses are returned as bytes in Python. To receive decoded strings, set `
 database_url = os.environ.get("DATABASE_URL", "localhost:5432")
 # Setting a new environment variable
 os.environ["API_KEY"] = "YOUR_API_KEY"
+```
+
+## Working With Dates
+
+Add, Subtract:
+```python
+from datetime import datetime, timedelta
+print("Current time: ", datetime.now())
+print(datetime.now() - timedelta(days=5, hours=-5))
 ```
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
