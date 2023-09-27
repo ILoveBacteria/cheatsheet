@@ -42,6 +42,7 @@
     - [Message\_TAGS](#message_tags)
   - [Template Language](#template-language)
     - [Filter](#filter)
+      - [Tip](#tip)
     - [Custom Template Tags and Filters](#custom-template-tags-and-filters)
       - [First Step](#first-step)
       - [Load Modules](#load-modules)
@@ -610,6 +611,15 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 - lower
 - truncateword
 - filesizeformat
+
+#### Tip
+
+```html
+<h1>Number of posts: {{ posts.count }}</h1>
+<h1>Number of posts: {{ posts|length }}</h1>
+```
+
+Actually, in this very specific case, using the length template filter - which just calls len() - would be more efficient. That's because calling .count() on a queryset that hasn't been evaluated causes it to go back to the database to do a SELECT COUNT, whereas len() forces the queryset to be evaluated.
 
 ### Custom Template Tags and Filters
 
