@@ -62,6 +62,7 @@
     - [Aggregate](#aggregate)
     - [Relations](#relations)
       - [OneToMany](#onetomany)
+      - [ManyToMany](#manytomany)
       - [OneToOne](#onetoone)
   - [Django Rest Framework](#django-rest-framework)
     - [Serializer](#serializer)
@@ -818,6 +819,39 @@ You can **override** the `FOO_set` name by setting the `related_name` parameter 
 # b.entries is a Manager that returns QuerySets.
 >>> b.entries.filter(headline__contains="Lennon")
 >>> b.entries.count()
+```
+
+#### ManyToMany
+
+```python
+from django.db import models
+
+
+class Publication(models.Model):
+    title = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
+
+
+class Article(models.Model):
+    headline = models.CharField(max_length=100)
+    publications = models.ManyToManyField(Publication)
+
+    class Meta:
+        ordering = ["headline"]
+
+    def __str__(self):
+        return self.headline
+```
+
+Add or Create:
+```python
+>>> a2.publications.add(p1, p2)
+>>> a2.publications.create(title="Science News")
 ```
 
 #### OneToOne
