@@ -71,6 +71,7 @@
       - [Custom Method Field](#custom-method-field)
     - [Function Based Views](#function-based-views)
     - [Class Based Views](#class-based-views)
+      - [`APIView`](#apiview)
       - [`RetrieveAPIView`](#retrieveapiview)
       - [`CreateAPIView`](#createapiview)
       - [`ListAPIView`](#listapiview)
@@ -951,6 +952,15 @@ def my_api(request):
 ### Class Based Views
 
 One of the key benefits of class-based views is the way they allow you to compose bits of reusable behavior.
+
+#### `APIView`
+
+`APIView` classes are different from regular `View` classes in the following ways:
+
+- Requests passed to the handler methods will be REST framework's `Request` instances, not Django's `HttpRequest` instances.
+- Handler methods may return REST framework's `Response`, instead of Django's `HttpResponse`. The view will manage content negotiation and setting the correct renderer on the response.
+- Any APIException exceptions will be caught and mediated into appropriate responses.
+- Incoming requests will be authenticated and appropriate permission and/or throttle checks will be run before dispatching the request to the handler method.
 
 #### `RetrieveAPIView`
 
