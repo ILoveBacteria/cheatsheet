@@ -66,6 +66,7 @@
       - [OneToOne](#onetoone)
   - [Django Rest Framework](#django-rest-framework)
     - [Serializer](#serializer)
+      - [`Serializer`](#serializer-1)
       - [`ModelSerializer`](#modelserializer)
       - [Custom Method Field](#custom-method-field)
     - [Function Based Views](#function-based-views)
@@ -872,6 +873,34 @@ If **no** object has been assigned to this relationship, Django will **raise** a
 ## Django Rest Framework
 
 ### Serializer
+
+#### `Serializer`
+
+Custom `create`, `update` and validation functions.
+
+```python
+class SnippetSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(required=False, allow_blank=True, max_length=100)
+    code = serializers.CharField(style={'base_template': 'textarea.html'})
+    linenos = serializers.BooleanField(required=False)
+
+    def create(self, validated_data):
+        """
+        Create and return a new `Snippet` instance, given the validated data.
+        """
+        return Snippet.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing `Snippet` instance, given the validated data.
+        """
+        instance.title = validated_data.get('title', instance.title)
+        instance.linenos = validated_data.get('linenos', instance.linenos)
+        instance.language = validated_data.get('language', instance.language)
+        instance.save()
+        return instance
+```
 
 #### `ModelSerializer`
 

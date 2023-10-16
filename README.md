@@ -27,6 +27,7 @@
 - [MySQL Cheatsheet](MySQL/)
 - [QA Cheatsheet](QA/)
 - [OS Cheatsheet](OS/)
+- [Term Cheatsheet](Term/)
 
 ## Description
 My big cheatsheet in programming. I am improving and completing this collection of cheatsheet every week by learning new things. I hope you will find it useful.
