@@ -69,8 +69,11 @@
       - [`Serializer`](#serializer-1)
       - [`ModelSerializer`](#modelserializer)
       - [Custom Method Field](#custom-method-field)
-    - [Function Based Views](#function-based-views)
-    - [Class Based Views](#class-based-views)
+    - [`ViewSet`](#viewset)
+      - [Actions](#actions-1)
+    - [`Router`](#router)
+    - [Views](#views)
+      - [Function Based Views](#function-based-views)
       - [`APIView`](#apiview)
       - [`RetrieveAPIView`](#retrieveapiview)
       - [`CreateAPIView`](#createapiview)
@@ -933,7 +936,69 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.owner.username
 ```
 
-### Function Based Views
+### `ViewSet`
+
+First of all let's refactor our UserList and UserDetail views into a **single** UserViewSet. We can remove the two views, and replace them with a single class:
+```python
+from rest_framework import viewsets
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+```
+
+#### Actions
+
+```python
+@action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+def highlight(self, request, *args, **kwargs):
+    snippet = self.get_object()
+    return Response(snippet.highlighted)
+
+def list(self, request):
+    pass
+
+def create(self, request):
+    pass
+
+def retrieve(self, request, pk=None):
+    pass
+
+def update(self, request, pk=None):
+    pass
+
+def partial_update(self, request, pk=None):
+    pass
+
+def destroy(self, request, pk=None):
+    pass
+```
+
+### `Router`
+```python
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from snippets import views
+
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'snippets', views.SnippetViewSet,basename="snippet")
+router.register(r'users', views.UserViewSet,basename="user")
+
+# The API URLs are now determined automatically by the router.
+urlpatterns = [
+    path('', include(router.urls)),
+]
+```
+
+Registering the viewsets with the router is similar to providing a urlpattern. We include two arguments - the **URL prefix** for the views, and the viewset itself.
+
+### Views
+
+#### Function Based Views
 
 ```python
 from .models import Product
@@ -949,10 +1014,6 @@ def my_api(request):
     return Response(data)
 ```
 
-### Class Based Views
-
-One of the key benefits of class-based views is the way they allow you to compose bits of reusable behavior.
-
 #### `APIView`
 
 `APIView` classes are different from regular `View` classes in the following ways:
@@ -960,7 +1021,8 @@ One of the key benefits of class-based views is the way they allow you to compos
 - Requests passed to the handler methods will be REST framework's `Request` instances, not Django's `HttpRequest` instances.
 - Handler methods may return REST framework's `Response`, instead of Django's `HttpResponse`. The view will manage content negotiation and setting the correct renderer on the response.
 - Any APIException exceptions will be caught and mediated into appropriate responses.
-- Incoming requests will be authenticated and appropriate permission and/or throttle checks will be run before dispatching the request to the handler method.
+- Incoming requests will be **authenticated** and appropriate permission and/or **throttle** checks will be run before dispatching the request to the handler method.
+- Implement `get`, `post`, `put`, `delete` methods.
 
 #### `RetrieveAPIView`
 
