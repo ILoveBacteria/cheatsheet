@@ -35,6 +35,7 @@
   - [`HttpRequest`](#httprequest)
   - [Http Method Decorators](#http-method-decorators)
   - [Generic Views](#generic-views)
+    - [Attributes and Methods](#attributes-and-methods)
   - [Cursor Pagination](#cursor-pagination)
   - [URL Dispatcher](#url-dispatcher)
   - [Flash Messages](#flash-messages)
@@ -547,6 +548,16 @@ The decorators in `django.views.decorators.http` can be used to restrict access 
 - UpdateView
 - DeleteView
 - FormView
+
+### Attributes and Methods
+
+- `model`: The model that this view will display data for. Specifying `model = Publisher` is effectively the same as specifying `queryset = Publisher.objects.all()`.
+- `form_class`: The form class to use when instantiating the form.
+- `template_name`
+- `extra_context`
+- `form_valid`: Called when a valid form is POSTed. It should return an `HttpResponse`.
+- `get_context_data`: Returns a dictionary representing the template context. It takes an existing context dictionary (as returned by `super().get_context_data(**kwargs)`) and adds new context variables to it.
+- `success_url`: The URL to redirect to after processing a valid form. This takes precedence over `get_success_url()`.
 
 ## Cursor Pagination
 
