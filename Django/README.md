@@ -84,6 +84,7 @@
       - [`SlugRelatedField`](#slugrelatedfield)
       - [`HyperlinkedRelatedField`](#hyperlinkedrelatedfield)
     - [Requests](#requests)
+  - [Django Environment](#django-environment)
 
 ## Django-Admin Commands
 
@@ -1104,6 +1105,10 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 ### Requests
 1. `.data`: returns the parsed content of the request body.
+
+## Django Environment
+
+1. `DJANGO_SETTINGS_MODULE`: When you use Django, you have to tell it which settings you’re using.
 
 
 [1]: https://pypi.org/project/django-cors-headers/
