@@ -38,6 +38,7 @@
     - [Attributes and Methods](#attributes-and-methods)
   - [Cursor Pagination](#cursor-pagination)
   - [URL Dispatcher](#url-dispatcher)
+  - [Redirect](#redirect)
   - [Flash Messages](#flash-messages)
     - [Add and use message](#add-and-use-message)
     - [Message\_TAGS](#message_tags)
@@ -51,6 +52,7 @@
     - [url](#url)
     - [Context Processors](#context-processors)
   - [Models](#models)
+    - [Abstract Model](#abstract-model)
     - [Choices](#choices)
     - [Field Type Parameters](#field-type-parameters)
     - [Deep Copy](#deep-copy)
@@ -195,6 +197,16 @@ If your view is not rendering a template containing the `csrf_token` template ta
 
     [django-cors-headers][1] is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS).
 
+2. How to correctly set a user password:
+    ```python
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+    ```
+
 ## Forms
 
 ### How to write a minimal form in Django
@@ -314,7 +326,7 @@ A validator is a callable object or function that takes a value and returns noth
 slug = forms.CharField(validators=[validators.validate_slug])
 ```
 
-The `clean_<fieldname>()` method is called on a form subclass – where `<fieldname>` is replaced with the name of the form field attribute. This method does any cleaning that is specific to that particular attribute, unrelated to the type of field that it is. This method is not passed any parameters. You will need to look up the value of the field in `self.cleaned_data` and remember that it will be a Python object at this point, not the original string submitted in the form (it will be in cleaned_data because the general field `clean()` method, above, has already cleaned the data once).
+The `clean_<fieldname>()` method is called on a form subclass – where `<fieldname>` is replaced with the name of the form field attribute. This method does any cleaning that is **specific to that particular attribute**, unrelated to the type of field that it is. This method is **not passed** any parameters. You will need to look up the value of the field in `self.cleaned_data` and remember that it will be a Python object at this point, not the original string submitted in the form (it will be in cleaned_data because the general field `clean()` method, above, has already cleaned the data once).
 
 ```python
 #forms.py
@@ -576,6 +588,14 @@ you can use any of the following to reverse the URL:
 reverse("news-archive")
 ```
 
+## Redirect
+
+The arguments could be `redirect()`:
+
+1. A **model**: the model’s `get_absolute_url()` function will be called.
+2. A **view name**, possibly with arguments: `reverse()` will be used to reverse-resolve the name.
+3. An **absolute** or **relative** URL, which will be used as-is for the redirect location.
+
 ## Flash Messages
 
 ### Add and use message
@@ -721,6 +741,19 @@ def site_settings(request):
 ```
 
 ## Models
+
+### Abstract Model
+
+If you want to define a model that you can **reuse** by **deriving** from it, **abstract** base classes are the way to go.
+
+```python
+class CommonInfo(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.PositiveIntegerField()
+
+    class Meta:
+        abstract = True
+```
 
 ### Choices
 
