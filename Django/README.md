@@ -99,6 +99,7 @@
 - `python manage.py migrate`: Apply migrations
 - `python manage.py createsuperuser`: Create a superuser
 - `python manage.py shell`: Open a shell
+- `python manage.py collectstatic`: Collect static files into `STATIC_ROOT`
 
 ### Custom Commands
 
