@@ -19,6 +19,7 @@
     - [Bound and unbound form instances](#bound-and-unbound-form-instances)
     - [Access form values](#access-form-values)
     - [Custom Validators](#custom-validators)
+    - [ModelForm](#modelform)
   - [Authentication](#authentication)
     - [Authentication Settings](#authentication-settings)
     - [Authentication Views](#authentication-views)
@@ -351,6 +352,21 @@ class PalindromeForm(ModelForm):
         model = Palindrome
         fields = ["word"]
 ```
+
+### ModelForm
+
+```python
+class ArticleForm(ModelForm):
+    class Meta:
+        model = Article
+        fields = ['pub_date', 'headline', 'content', 'reporter']
+```
+
+To **save** the form, call `form.save()`. This will return the created object. 
+
+If we want to not **immediately** save the object to the database, we can call `form.save(commit=False)`. This will return an object that hasn’t yet been saved to the database. This is useful if we want to do **custom** processing on the object before saving it, or if we want to use one of the specialized model saving options. 
+
+`save_m2m()` is another method that is provided by `ModelForm` that gives us the ability to save the many-to-many relationships along with the object.
 
 ## Authentication
 
