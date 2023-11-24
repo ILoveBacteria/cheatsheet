@@ -77,6 +77,7 @@ FROM OrderDetails;
 - `CONCAT()`: Concatenate strings
 - `CONCAT_WS()`: Concatenate with separator
 - `CHAR_LENGTH()`: Return the number of characters in a string
+- `CONVERT()`: Convert a value into a specified datatype [link](https://www.w3schools.com/sql/func_mysql_convert.asp)
 - `IFNULL()`: If expr1 is not NULL, IFNULL() returns expr1; otherwise it returns expr2.
     ```sql
     SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0))
