@@ -78,6 +78,10 @@ FROM OrderDetails;
 - `CONCAT_WS()`: Concatenate with separator
 - `CHAR_LENGTH()`: Return the number of characters in a string
 - `CONVERT()`: Convert a value into a specified datatype [link](https://www.w3schools.com/sql/func_mysql_convert.asp)
+- `ST_X()`: Return X coordinate of point
+- `ST_Y()`: Return Y coordinate of point
+- `ST_DISTANCE()`: Return distance between two points
+- `ST_DISTANCE_SPHERE()`: Return distance between two points on a sphere in meters
 - `IFNULL()`: If expr1 is not NULL, IFNULL() returns expr1; otherwise it returns expr2.
     ```sql
     SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0))
