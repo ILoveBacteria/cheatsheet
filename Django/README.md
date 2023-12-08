@@ -484,7 +484,28 @@ class BlogAdmin(admin.ModelAdmin):
 - `readonly_fields`
 - `inlines`
 - `actions`
+- `list_editable`
+- `readonly_fields`
+- `form`: Custom model form
 - `fieldsets`
+    ```python
+    class FlatPageAdmin(admin.ModelAdmin):
+        fieldsets = [
+            (
+                None,
+                {
+                    "fields": ["url", "title", "content", "sites"],
+                },
+            ),
+            (
+                "Advanced options",
+                {
+                    "classes": ["collapse"],
+                    "fields": ["registration_required", "template_name"],
+                },
+            ),
+        ]
+    ```
 
 Adding the `ordering` attribute will default all queries on Person to be ordered by last_name then first_name.
 
@@ -527,9 +548,25 @@ class PersonAdmin(admin.ModelAdmin):
 # OR use -> admin.StackedInline
 class BookInline(admin.TabularInline):
     model = Book
+    extra = 3 # Number of empty slots
 
 class AuthorAdmin(admin.ModelAdmin):
     inlines = [BookInline]
+```
+
+For **many-to-many** relations we should use this:
+```python
+class Film(Model):
+    director = ManyToManyField('Director')
+```
+```python
+class DirectorInline(admin.TabularInline):
+    model = Film.director.through
+
+class FilmAdmin(admin.ModelAdmin):
+    inlines = (
+        DirectorInline,
+        )
 ```
 
 ### Actions
