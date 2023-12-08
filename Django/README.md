@@ -472,6 +472,8 @@ class BlogAdmin(admin.ModelAdmin):
     pass
 ```
 
+**Tip:** You can use `UserAdmin` for the `User` model.
+
 ### Customizing Models
 
 - `sortable_by`: Add sort option by clicking on the columns.
@@ -482,6 +484,7 @@ class BlogAdmin(admin.ModelAdmin):
 - `readonly_fields`
 - `inlines`
 - `actions`
+- `fieldsets`
 
 Adding the `ordering` attribute will default all queries on Person to be ordered by last_name then first_name.
 
