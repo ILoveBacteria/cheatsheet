@@ -881,6 +881,14 @@ print("Current time: ", datetime.now())
 print(datetime.now() - timedelta(days=5, hours=-5))
 ```
 
+`strftime()` and `strptime()`:
+```python
+from datetime import datetime
+now = datetime.now()
+print(now.strftime("%Y-%m-%d %H:%M:%S")) # convert datetime to string
+print(datetime.strptime("2021-01-01 12:00:00", "%Y-%m-%d %H:%M:%S")) # convert string to datetime
+```
+
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
 [2]: https://medium.com/codex/say-goodbye-to-loops-in-python-and-welcome-vectorization-e4df66615a52
 [3]: https://pandas.pydata.org/docs/user_guide/missing_data.html#string-regular-expression-replacement
