@@ -14,6 +14,7 @@
   - [NumPy](#numpy)
     - [Basics](#basics)
     - [How to create a basic array](#how-to-create-a-basic-array)
+    - [Fun Methods](#fun-methods)
   - [Unittest](#unittest)
   - [Functions that act on iterables](#functions-that-act-on-iterables)
   - [Iterable Objects](#iterable-objects)
@@ -203,6 +204,13 @@ To convert the **type** of an array, use the `.astype()`
 ```python
 z.astype(float)  # array([0.,  1.,  2.])
 ```
+
+### Fun Methods
+
+- `unique`: return the sorted unique values in an array also with their frequency
+    ```python
+    np.unique(array, return_counts=True)
+    ```
 
 ## Unittest
 
