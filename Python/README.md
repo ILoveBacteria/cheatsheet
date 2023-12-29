@@ -48,6 +48,7 @@
   - [Redis](#redis)
   - [Environment Variable](#environment-variable)
   - [Working With Dates](#working-with-dates)
+  - [Reflection](#reflection)
 
 ## Pipenv
 
@@ -154,7 +155,7 @@ A beautiful plotting
 complex, real, imag = fourier_transform(pulse_signal, t)
 fig, (ax1, ax2) = plt.subplots(2, 1)
 fig.suptitle('F.T. of pulse signal')
-ax1.plot(t, real)
+ax1.plot(t, real, color='green', alpha=0.5)
 ax1.set_title('real part')
 ax2.plot(t, imag)
 ax2.set_title('imag part')
@@ -896,6 +897,12 @@ now = datetime.now()
 print(now.strftime("%Y-%m-%d %H:%M:%S")) # convert datetime to string
 print(datetime.strptime("2021-01-01 12:00:00", "%Y-%m-%d %H:%M:%S")) # convert string to datetime
 ```
+
+## Reflection
+
+- `getattr(constants, x)`
+- `dir()`
+- `isinstance()`
 
 [1]: https://towardsdatascience.com/from-novice-to-expert-how-to-write-a-configuration-file-in-python-273e171a8eb3
 [2]: https://medium.com/codex/say-goodbye-to-loops-in-python-and-welcome-vectorization-e4df66615a52
