@@ -706,6 +706,7 @@ MESSAGE_TAGS = {message_constants.INFO: ""}
 - lower
 - truncateword
 - filesizeformat
+- join: `{{ my_list|join:", " }}`
 
 #### Tip
 
