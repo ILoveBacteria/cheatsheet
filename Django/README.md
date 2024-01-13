@@ -53,6 +53,7 @@
     - [url](#url)
     - [Context Processors](#context-processors)
   - [Models](#models)
+    - [Methods](#methods)
     - [Abstract Model](#abstract-model)
     - [Choices](#choices)
     - [Field Type Parameters](#field-type-parameters)
@@ -628,6 +629,7 @@ The decorators in `django.views.decorators.http` can be used to restrict access 
 - `form_valid`: Called when a valid form is POSTed. It should return an `HttpResponse`.
 - `get_context_data`: Returns a dictionary representing the template context. It takes an existing context dictionary (as returned by `super().get_context_data(**kwargs)`) and adds new context variables to it.
 - `success_url`: The URL to redirect to after processing a valid form. This takes precedence over `get_success_url()`.
+- `pk_url_kwarg`
 
 ## Cursor Pagination
 
@@ -799,6 +801,11 @@ def site_settings(request):
 ```
 
 ## Models
+
+### Methods
+
+- `__str__()`
+- `get_absolute_url()`
 
 ### Abstract Model
 
