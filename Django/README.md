@@ -89,6 +89,7 @@
       - [`HyperlinkedRelatedField`](#hyperlinkedrelatedfield)
     - [Requests](#requests)
   - [Django Environment](#django-environment)
+  - [django-environ](#django-environ)
 
 ## Django-Admin Commands
 
@@ -102,6 +103,7 @@
 - `python manage.py createsuperuser`: Create a superuser
 - `python manage.py shell`: Open a shell
 - `python manage.py collectstatic`: Collect static files into `STATIC_ROOT`
+- `python manage.py makemigrations --settings=toolbox.settings.dev`: Change settings file
 
 ### Custom Commands
 
@@ -834,6 +836,18 @@ YEAR_IN_SCHOOL_CHOICES = [
 ]
 ```
 
+**Integer choices:**
+```python
+class Card(models.Model):
+    class Suit(models.IntegerChoices):
+        DIAMOND = 1
+        SPADE = 2
+        HEART = 3
+        CLUB = 4
+
+    suit = models.IntegerField(choices=Suit.choices)
+```
+
 ### Field Type Parameters
 
 - `editable`: Default `True`
@@ -1207,6 +1221,10 @@ class AlbumSerializer(serializers.ModelSerializer):
 ## Django Environment
 
 1. `DJANGO_SETTINGS_MODULE`: When you use Django, you have to tell it which settings you’re using.
+
+## django-environ
+
+[Quick Start](https://django-environ.readthedocs.io/en/latest/quickstart.html)
 
 
 [1]: https://pypi.org/project/django-cors-headers/
