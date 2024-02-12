@@ -74,6 +74,7 @@
       - [`Serializer`](#serializer-1)
       - [`ModelSerializer`](#modelserializer)
       - [Custom Method Field](#custom-method-field)
+      - [Serializer Fields](#serializer-fields)
     - [`ViewSet`](#viewset)
       - [Actions](#actions-1)
     - [`Router`](#router)
@@ -1059,6 +1060,11 @@ class PostSerializer(serializers.ModelSerializer):
     def get_owner(self, obj):
         return obj.owner.username
 ```
+
+#### Serializer Fields
+
+- `read_only`: If `True`, the field will be used when **serializing** a representation, but will not be used when **creating** or **updating** an instance during **deserialization**.
+- `write_only`: If `True`, the field will be used when **creating** or **updating** an instance during **deserialization**, but will not be used when **serializing** a representation.
 
 ### `ViewSet`
 
