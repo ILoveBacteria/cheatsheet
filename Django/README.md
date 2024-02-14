@@ -89,6 +89,9 @@
       - [`SlugRelatedField`](#slugrelatedfield)
       - [`HyperlinkedRelatedField`](#hyperlinkedrelatedfield)
     - [Requests](#requests)
+    - [Authentication](#authentication-1)
+      - [Token Authentication](#token-authentication)
+        - [Generate Token](#generate-token)
   - [Django Environment](#django-environment)
   - [django-environ](#django-environ)
 
@@ -1223,6 +1226,30 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 ### Requests
 1. `.data`: returns the parsed content of the request body.
+
+### Authentication
+
+#### Token Authentication
+
+Change settings:
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+```
+
+##### Generate Token
+
+This view will return a JSON response with the token. The token is a string of random characters, and is unique to the user. This view gets `username` and `password`.
+```python
+from rest_framework.authtoken.views import obtain_auth_token
+
+urlpatterns += [
+    path('api-token-auth/', obtain_auth_token)
+]
+```
 
 ## Django Environment
 
