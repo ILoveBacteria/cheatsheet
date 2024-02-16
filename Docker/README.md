@@ -9,6 +9,7 @@
     - [Options](#options)
     - [Network](#network)
   - [Dockerfile](#dockerfile)
+    - [Sample Dockerfile for Python](#sample-dockerfile-for-python)
   - [Docker Compose](#docker-compose)
 
 ## Commands
@@ -68,6 +69,37 @@ CMD [ "0.0.0.0" ]
 - `EXPOSE`: Exposing port 3000 informs Docker which port the container is listening on at runtime.
 
 if we run this `docker run <image>` the command `pipenv run python main.py 0.0.0.0` will be run. But if we run this `docker run <image> 127.0.0.1` the command `pipenv run python main.py 127.0.0.1` will be run
+
+### Sample Dockerfile for Python
+
+```Dockerfile
+FROM python:3.10-slim-bullseye
+
+WORKDIR /usr/src/app
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+
+EXPOSE 8000
+
+ENTRYPOINT [ "/usr/src/app/docker-entrypoint.sh" ]
+```
+
+Why `PYTHONDONTWRITEBYTECODE`? To reduce the image size.
+
+Why `PYTHONUNBUFFERED`? To not buffer the stdout and stderr.
+
+```bash
+#!/bin/sh
+
+python manage.py migrate
+python manage.py collectstatics --no-input
+python manage.py runserver
+```
 
 ## Docker Compose
 
