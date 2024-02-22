@@ -126,3 +126,36 @@ docker-compose stop # terminate the container execution, but it won’t destroy 
 
 docker-compose down # remove the containers, networks, and volumes
 ```
+
+docker compose file sample:
+
+```yml
+version: "3.9"
+
+services:
+  web:
+    container_name: toolbox
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail http://127.0.0.1:8000/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+  redis:
+    container_name: redis
+    image: redis:7.2
+    healthcheck:
+      test: redis-cli ping || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 3
+```
