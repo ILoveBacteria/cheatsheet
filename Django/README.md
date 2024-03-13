@@ -488,6 +488,7 @@ class BlogAdmin(admin.ModelAdmin):
 - `list_editable`
 - `search_fields`
 - `list_display`
+- `list_display_links`: Add object detail admin link to other display fields
 - `readonly_fields`
 - `inlines`
 - `actions`
