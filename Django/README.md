@@ -8,6 +8,7 @@
   - [Django-Admin Commands](#django-admin-commands)
     - [Built-in Commands](#built-in-commands)
     - [Custom Commands](#custom-commands)
+  - [Middleware](#middleware)
   - [CSRF Protection](#csrf-protection)
     - [Setting the token on the AJAX request](#setting-the-token-on-the-ajax-request)
     - [Dynamic Forms](#dynamic-forms)
@@ -69,6 +70,8 @@
       - [OneToMany](#onetomany)
       - [ManyToMany](#manytomany)
       - [OneToOne](#onetoone)
+  - [Transaction](#transaction)
+    - [Atomic](#atomic)
   - [Django Rest Framework](#django-rest-framework)
     - [Serializer](#serializer)
       - [`Serializer`](#serializer-1)
@@ -156,6 +159,29 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS('Successfully closed poll "%s"' % poll_id)
             )
+```
+
+## Middleware
+
+Middlewares are like decorators.
+
+```python
+def simple_middleware(get_response):
+    # One-time configuration and initialization.
+
+    def middleware(request):
+        # Code to be executed for each request before
+        # the view (and later middleware) are called.
+        # Change request object. e.g. request.profile = Profile.objects.get(user=request.user.id)
+
+        response = get_response(request)
+
+        # Code to be executed for each request/response after
+        # the view is called.
+
+        return response
+
+    return middleware
 ```
 
 ## CSRF Protection
@@ -1002,6 +1028,32 @@ e.entrydetail  # returns the related EntryDetail object (Reverse)
 ```
 
 If **no** object has been assigned to this relationship, Django will **raise** a `DoesNotExist` exception.
+
+## Transaction
+
+### Atomic
+
+```python
+from django.db import transaction
+
+@transaction.atomic
+def viewfunc(request):
+    # This code executes inside a transaction.
+    do_stuff()
+```
+
+```python
+with transaction.atomic():
+    user = User.objects.create_user(username=username, password=password)
+    Profile.objects.create(
+        user=user,
+        nickname=request.POST.get('nickname'),
+        bio=request.POST.get('bio'),
+        location=request.POST.get('location'),
+        weight=request.POST.get('weight'),
+        website=request.POST.get('website'),
+    )
+```
 
 ## Django Rest Framework
 
