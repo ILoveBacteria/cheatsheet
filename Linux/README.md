@@ -37,6 +37,39 @@
   $ modprobe iwlwifi
   ```
 
+<details>
+  <summary>What is sysfs in Linux?</summary>
+  a pseudo file system provided by the Linux kernel that exports information about various kernel subsystems, hardware devices, and associated device drivers from the kernel's device model to user space through virtual files.
+</details>
+
+<details>
+  <summary>What is in `/dev`?</summary>
+  There are a lot of devices in `/dev/` and if you plug in any device, it will be assigned a file in `/dev` (say `/dev/sdb2`)
+</details>
+
+<details>
+  <summary>What details are in `/proc`?</summary>
+- IRQs (interrupt requests)
+- I/O ports (locations in memory where CPU can talk with devices)
+- DMA (direct memory access, faster than I/O ports)
+- Processes
+- Network Settings
+</details>
+
+<details>
+  <summary>Name two files under `/proc`</summary>
+- `cpuinfo`
+- `meminfo`
+</details>
+
+<details>
+  <summary>What are four commands to see hardware information?</summary>
+- `lsusb`
+- `lspci`
+- `lshw`
+- `lsblk`
+</details>
+
 ### 101.2 Boot the System
 *Link to [source](https://linux1st.com/1012-boot-the-system.html)*
 
@@ -68,6 +101,11 @@ $ systemctl start sshd
 $ systemctl status sshd
 $ systemctl enable sshd
 ```
+
+<details>
+  <summary>Which command shows the units hierarchy?</summary>
+`pstree`
+</details>
 
 ### 101.3 Change runlevels / boot targets and shutdown or reboot the system
 *Link to [source](https://linux1st.com/1013-change-runlevels-boot-targets-and-shutdown-or-reboot-the-system.html)*
