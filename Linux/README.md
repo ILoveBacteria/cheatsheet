@@ -280,7 +280,7 @@ How to configure a swapfile in ubuntu.[see this link](https://www.digitalocean.c
 [good link2](https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6)
 [Full guide](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
 
-Put services for user here: `~/.config/systemd/user/`
+Put services for user here: `/etc/systemd/system/<name>.service`. After that call `systemctl daemon-reload`
 
 ```ini
 # something.service
@@ -329,7 +329,7 @@ Configures the time to sleep before restarting a service (as configured with Res
 Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. If set to no (the default), the service will not be restarted. 
 
 `StartLimitIntervalSec=`
-Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
+Configure unit start rate limiting. Units which are started more than burst times within an interval time span are not permitted to start any more. Use `StartLimitIntervalSec=` to configure the checking interval and `StartLimitBurst=` to configure how many starts per interval are allowed.
 
 ## Handwrite Notes
 
