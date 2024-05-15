@@ -276,13 +276,10 @@ How to configure a swapfile in ubuntu.[see this link](https://www.digitalocean.c
 
 ## Systemd
 
-[good link](https://linuxhandbook.com/create-systemd-services/)
-
-[good link2](https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6)
-
-[Full guide on service](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
-
-[Full guide on units](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)
+1. [good link](https://linuxhandbook.com/create-systemd-services/)
+2. [good link2](https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6)
+3. [Full guide on service](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
+4. [Full guide on units](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)
 
 Put services for user here: `/etc/systemd/system/<name>.service`. After that call `systemctl daemon-reload`
 
@@ -341,6 +338,14 @@ RequiredBy=network.target
 11. `PropagatesReloadTo=, ReloadPropagatedFrom=`
     A space-separated list of one or more units to which reload requests from this unit shall be propagated to, or units from which reload requests shall be propagated to this unit, respectively. Issuing a reload request on a unit will automatically also enqueue reload requests on all units that are linked to it using these two settings.
 
+### A Big Question
+
+- Use `Requires` when your service must have another service running.
+- Use `BindsTo` when you want a service to stop when another service stops.
+- Use `After` for ordering services but not for dependency management34. 
+
+Hope this clarifies things! 😊 Thanks CoPilot!
+
 ## tmux
 
 |Key|Usage|
@@ -368,6 +373,7 @@ RequiredBy=network.target
 |`ctrl+f`|Forward window|
 |`ctrl+b`|Backward window|
 |`G`|Go to last line|
+|`o`|Open line below of current line|
 
 ## Handwrite Notes
 
