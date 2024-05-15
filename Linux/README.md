@@ -280,7 +280,9 @@ How to configure a swapfile in ubuntu.[see this link](https://www.digitalocean.c
 
 [good link2](https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6)
 
-[Full guide](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
+[Full guide on service](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
+
+[Full guide on units](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)
 
 Put services for user here: `/etc/systemd/system/<name>.service`. After that call `systemctl daemon-reload`
 
@@ -305,33 +307,67 @@ RequiredBy=network.target
 
 ### Known parameters
 
-`WorkingDirectory=`
+1. `WorkingDirectory=`
 
-Takes a directory path relative to the service's root directory specified by RootDirectory=, or the special value "~". Sets the working directory for executed processes. If set to "~", the home directory of the user specified in User= is used. If not set, defaults to the root directory when systemd is running as a system instance and the respective user's home directory if run as user. If the setting is prefixed with the "-" character, a missing working directory is not considered fatal. If RootDirectory=/RootImage= is not set, then WorkingDirectory= is relative to the root of the system running the service manager. Note that setting this parameter might result in additional dependencies to be added to the unit (see above).
+    Takes a directory path relative to the service's root directory specified by RootDirectory=, or the special value "~". Sets the working directory for executed processes. If set to "~", the home directory of the user specified in User= is used. If not set, defaults to the root directory when systemd is running as a system instance and the respective user's home directory if run as user. If the setting is prefixed with the "-" character, a missing working directory is not considered fatal. If RootDirectory=/RootImage= is not set, then WorkingDirectory= is relative to the root of the system running the service manager. Note that setting this parameter might result in additional dependencies to be added to the unit (see above).
 
-`User=, Group=`
-Set the UNIX user or group that the processes are executed as, respectively. Takes a single user or group name, or a numeric ID as argument. For system services (services run by the system service manager, i.e. managed by PID 1) and for user services of the root user (services managed by root's instance of systemd --user), the default is "root", but User= may be used to specify a different user. For user services of any other user, switching user identity is not permitted, hence the only valid setting is the same user the user's service manager is running as. If no group is set, the default group of the user is used. This setting does not affect commands whose command line is prefixed with "+".
+2. `User=, Group=`
+    Set the UNIX user or group that the processes are executed as, respectively. Takes a single user or group name, or a numeric ID as argument. For system services (services run by the system service manager, i.e. managed by PID 1) and for user services of the root user (services managed by root's instance of systemd --user), the default is "root", but User= may be used to specify a different user. For user services of any other user, switching user identity is not permitted, hence the only valid setting is the same user the user's service manager is running as. If no group is set, the default group of the user is used. This setting does not affect commands whose command line is prefixed with "+".
 
-`Nice=`
-Sets the default nice level (scheduling priority) for executed processes. Takes an integer between -20 (highest priority) and 19 (lowest priority). In case of resource contention, smaller values mean more resources will be made available to the unit's processes, larger values mean less resources will be made available. See setpriority(2) for details.
+3. `Nice=`
+    Sets the default nice level (scheduling priority) for executed processes. Takes an integer between -20 (highest priority) and 19 (lowest priority). In case of resource contention, smaller values mean more resources will be made available to the unit's processes, larger values mean less resources will be made available. See setpriority(2) for details.
 
-`ExecStart=`
-Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
+4. `ExecStart=`
+    Commands that are executed when this service is started. The value is split into zero or more command lines according to the rules described in the section "Command Lines" below.
 
-`ExecReload=`
-Commands to execute to trigger a configuration reload in the service. 
+5. `ExecReload=`
+    Commands to execute to trigger a configuration reload in the service. 
 
-`ExecStop=`
-Commands to execute to stop the service started via ExecStart=.
+6. `ExecStop=`
+    Commands to execute to stop the service started via ExecStart=.
 
-`RestartSec=`
-Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
+7. `RestartSec=`
+    Configures the time to sleep before restarting a service (as configured with Restart=). Takes a unit-less value in seconds, or a time span value such as "5min 20s". Defaults to 100ms.
 
-`Restart=`
-Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. If set to no (the default), the service will not be restarted. 
+8. `Restart=`
+    Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. If set to no (the default), the service will not be restarted. 
 
-`StartLimitIntervalSec=`
-Configure unit start rate limiting. Units which are started more than burst times within an interval time span are not permitted to start any more. Use `StartLimitIntervalSec=` to configure the checking interval and `StartLimitBurst=` to configure how many starts per interval are allowed.
+9. `StartLimitIntervalSec=`
+    Configure unit start rate limiting. Units which are started more than burst times within an interval time span are not permitted to start any more. Use `StartLimitIntervalSec=` to configure the checking interval and `StartLimitBurst=` to configure how many starts per interval are allowed.
+
+10. `BindsTo=`
+    Configures requirement dependencies, very similar in style to `Requires=`. However, this dependency type is **stronger**: in addition to the effect of `Requires=` it declares that if the unit bound to is **stopped**, this unit will be **stopped too**. This means a unit bound to another unit that suddenly enters inactive state will be stopped too. Units can suddenly, unexpectedly enter inactive state for different reasons: the main process of a service unit might terminate on its own choice, the backing device of a device unit might be unplugged or the mount point of a mount unit might be unmounted without involvement of the system and service manager.
+
+11. `PropagatesReloadTo=, ReloadPropagatedFrom=`
+    A space-separated list of one or more units to which reload requests from this unit shall be propagated to, or units from which reload requests shall be propagated to this unit, respectively. Issuing a reload request on a unit will automatically also enqueue reload requests on all units that are linked to it using these two settings.
+
+## tmux
+
+|Key|Usage|
+|---|---|
+|`%`|Split current window vertically|
+|`"`|	Split current window horizontally|
+|`D`|Detach from the current window|
+|`&`|Kill current window|
+|`x`|Kill current pane|
+|`,`|Rename current window|
+|`c`|Create a new window|
+
+|Command|Usage|
+|---|---|
+|`tmux ls`|Show all tmux daemons|
+|`tmux att -t session_name`|To attach to a specific one|
+
+## vim
+
+|Key|Usage|
+|---|---|
+|`i`|insert|
+|`a`|append|
+|`dd`|Delete current line|
+|`ctrl+f`|Forward window|
+|`ctrl+b`|Backward window|
+|`G`|Go to last line|
 
 ## Handwrite Notes
 
