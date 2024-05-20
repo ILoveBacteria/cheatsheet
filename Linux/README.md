@@ -358,6 +358,7 @@ Hope this clarifies things! 😊 Thanks CoPilot!
 |`,`|Rename current window|
 |`c`|Create a new window|
 
+
 |Command|Usage|
 |---|---|
 |`tmux ls`|Show all tmux daemons|
@@ -374,6 +375,11 @@ Hope this clarifies things! 😊 Thanks CoPilot!
 |`ctrl+b`|Backward window|
 |`G`|Go to last line|
 |`o`|Open line below of current line|
+|`v`|Select|
+|`V`|Select a line|
+|`d`|Delete selected characters|
+|`y`|Copy selected characters|
+|`p`|Paste selected characters|
 
 ## Handwrite Notes
 
