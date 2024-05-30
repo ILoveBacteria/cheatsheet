@@ -29,6 +29,7 @@
 - `docker exec <container> <command>`: Run a command in a running container
 - `docker run -p5000:5000 <image>`: Run a command in a new container and map port 5000 to 5000
 - `docker image prune -a`: Remove all images.
+- `docker history <image>`: List image layers.
 
 ### Push
 
@@ -48,6 +49,26 @@
 - `docker network create <name>`: Create a network
 - `docker network rm <name>`: Remove a network
 - `docker run --network <name> <image>`: Run a command in a new container and connect it to a network
+
+## Tips for Efficient Layer Caching
+
+1. More frequent change instructions at the bottom.
+2. `.dockerignore`
+3. Use smaller base images.
+4. Use `--cache-from` flag in CI/CD pipelines.
+5. Combine multiple `RUN` instructions
+    ```Dockerfile
+    RUN apt-get update && \
+        apt-get install -y some-required-package
+    ```
+6. Remove unnecessary files in the same layer
+    ```Dockerfile
+    RUN apt-get update && \
+        apt-get install -y some-required-package && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
+    ```
+
 
 ## Dockerfile
 
@@ -100,6 +121,16 @@ python manage.py migrate
 python manage.py collectstatics --no-input
 python manage.py runserver
 ```
+
+### Difference `COPY` VS `ADD`
+
+Both commands **copy** the contents of the locally available file or directory to the filesystem inside a Docker image.
+
+However, while `COPY` has no other functionalities, `ADD` can **extract** compressed files and copy files from a **remote** location via a URL.
+
+Docker's official documentation notes that users **should always** choose `COPY` over `ADD` since it is a more transparent and straightforward command. 
+
+The `RUN` command combined with `wget` or `curl` is safer and more efficient than `ADD`. This method avoids creating an additional image layer and saves space.
 
 ## Docker Compose
 
